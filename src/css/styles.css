@@ -30,16 +30,26 @@ body {
     margin: 0 auto;
     padding: 0 20px;
 }
+.logo a {
+    text-decoration: none;
+}
+
+.logo a:hover {
+    text-decoration: none;
+}
+
 .logo h1 {
     font-family: 'Lobster Two', cursive;
     font-size: 2.5rem;
     margin: 0;
     color: #d4ac0d;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    text-decoration: none;
 }
 .tagline {
-    font-size: 0.85rem; /* Slightly larger */
-    color: #696969; /* Softer white */
+    font-size: 0.85rem; 
+    color: #696969; 
+    text-decoration: none;
 }
 .main-nav ul {
     display: flex;
@@ -107,7 +117,7 @@ body {
     background-image: url('../image/hero.jpg');
     background-size: cover;
     background-position: center;
-    height: 600px;
+    height: 800px;
     display: flex;
     align-items: center;
     text-align: center;
@@ -640,6 +650,8 @@ footer {
         transform: translate(-50%, -50%);
     }
 }
+
+
 .magic-arts-section {
     background-color: #111;
     color: #fff;

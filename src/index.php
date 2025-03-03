@@ -215,7 +215,7 @@ include_once('includes/header.php');
     <!-- Magic Library Section -->
     <section id="library" class="library-section">
         <div class="container">
-            <h2>World's Largest Magic Library <span class="probably">* probably</span></h2>
+            <h2>World's Third* Largest Magic Library <span class="probably">* probably</span></h2>
             <p class="library-tagline">We have one of the most unique libraries in the whole wide world for your magical education.</p>
             
             <div class="library-content">

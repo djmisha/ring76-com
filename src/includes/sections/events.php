@@ -1,6 +1,6 @@
 <section id="events" class="events-section">
     <div class="container">
-        <h2>Upcoming Events</h2>
+        <h2>Upcoming Meetings and Events</h2>
         <div class="event-cards">
             <div class="event-card">
                 <h3>Mini-Lectures</h3>

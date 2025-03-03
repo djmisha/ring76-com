@@ -10,10 +10,12 @@
                     <div class="pupil"></div>
                 </div>
             </div>
-            
+
             <div class="logo">
+              <a href="/">
                 <h1>Ring 76</h1>
                 <p class="tagline">San Diego Magic Club</p>
+              </a>
             </div>
             
             <div class="hamburger-menu">
@@ -24,11 +26,11 @@
             
             <nav class="main-nav">
                 <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#Meetings">Meetings</a></li>
-                    <li><a href="#board of Directors">Board of Directors</a></li>
-                    <li><a href="#contact" class="nav-btn">Join Our Club</a></li>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="about.php">About Us</a></li>
+                    <li><a href="meetings.php">Meetings</a></li>
+                    <li><a href="board.php">Board of Directors</a></li>
+                    <li><a href="membership.php" class="nav-btn">Join Our Club</a></li>
                 </ul>
             </nav>
         </div>

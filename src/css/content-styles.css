@@ -1,0 +1,559 @@
+/* Content Hero Section (Formerly Meeting Hero) */
+.content-hero {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../images/meetings-hero.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.content-hero .content-container {
+    position: relative;
+    z-index: 2;
+}
+
+.content-hero h1 {
+    font-family: 'Lobster Two', cursive;
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    color: #d4ac0d;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.content-hero .lead {
+    font-size: 1.5rem;
+    color: #f0f0f0;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.content-info {
+    padding: 60px 0;
+    background-color: #1a1a1a;
+}
+
+.content-details-card {
+    background-color: #292929;
+    border-radius: 8px;
+    padding: 25px;
+    height: 100%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-left: 4px solid #8b0000;
+    transition: transform 0.3s ease;
+}
+
+.content-details-card:hover {
+    transform: translateY(-5px);
+}
+
+.content-details-card h3 {
+    color: #d4ac0d;
+    font-family: 'Lobster Two', cursive;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.content-details-card h3::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background-color: #8b0000;
+    border-radius: 2px;
+}
+
+.content-details-card p {
+    color: #d4d4d4;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+}
+
+.content-details-card strong {
+    color: #f0f0f0;
+    font-weight: 600;
+}
+
+.content-details-card em {
+    color: #d4ac0d;
+    font-style: italic;
+}
+
+.content-details-card .btn {
+    margin-top: 10px;
+    background-color: transparent;
+    border: 2px solid #8b0000;
+    color: #8b0000;
+    transition: all 0.3s ease;
+}
+
+.content-details-card .btn:hover {
+    background-color: #8b0000;
+    color: #f0f0f0;
+}
+
+/* Custom button styles extending nav-btn */
+.content-btn {
+  background-color: #8b0000;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  color: #fff !important;
+  font-family: 'Lobster Two', cursive;
+  font-size: 1.3rem;
+  margin-top: 20px !important;
+  display: inline-block;
+}
+
+.content-btn:hover {
+    background-color: #d4ac0d;
+    text-decoration: none;
+    color: #f0f0f0 !important;
+}
+
+/* Location Details Section */
+.location-details {
+    padding: 60px 0;
+    background-color: #171717;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23333' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+}
+
+.location-details h2 {
+    color: #d4ac0d;
+    font-family: 'Lobster Two', cursive;
+    font-size: 2.2rem;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.location-directions {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.location-directions li {
+    margin-bottom: 12px;
+    padding-left: 30px;
+    position: relative;
+    color: #d4d4d4;
+    font-size: 1.1rem;
+}
+
+.location-directions li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: #d4ac0d;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.location-details p {
+    color: #d4d4d4;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.location-image {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 3px solid #292929;
+}
+
+.location-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.image-caption {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.95rem;
+    color: #c5c5c5;
+    font-style: italic;
+}
+
+/* What to Expect Section */
+.what-to-expect {
+    padding: 60px 0;
+    background-color: #1a1a1a;
+}
+
+.expectation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.expectation-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 20px;
+    background-color: #292929;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.expectation-item:hover {
+    transform: translateY(-5px);
+}
+
+.emoji-icon {
+    color: inherit;
+    font-size: 2.5rem;
+    flex-shrink: 0;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.expectation-item div {
+    flex-grow: 1;
+}
+
+.expectation-item h4 {
+    color: #d4ac0d;
+    font-size: 1.3rem;
+    font-family: 'Lobster Two', cursive;
+    margin-bottom: 10px;
+}
+
+.expectation-item p {
+    color: #d4d4d4;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+/* Content Listing Section (Formerly Upcoming Meetings) */
+.content-listing {
+    padding: 60px 0;
+    background-color: #171717;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23333' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+}
+
+.content-list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.content-card {
+    display: flex;
+    background-color: #292929;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.content-card:hover {
+    transform: translateY(-5px);
+}
+
+.content-date {
+    background-color: #8b0000;
+    color: #f0f0f0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    text-align: center;
+}
+
+.content-date .month {
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.content-date .day {
+    font-size: 2.2rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.content-item-info {
+    padding: 20px 25px;
+    flex-grow: 1;
+}
+
+.content-item-info h3 {
+    color: #d4ac0d;
+    font-family: 'Lobster Two', cursive;
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+}
+
+.content-item-info p {
+    color: #d4d4d4;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.content-item-info .btn {
+    background-color: #8b0000;
+    color: #f0f0f0;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.content-item-info .btn:hover {
+    background-color: #d4ac0d;
+    color: #292929;
+    transform: translateY(-3px);
+}
+
+/* Update content card buttons */
+.content-item-info .nav-btn {
+    padding: 8px 20px;
+    font-size: 0.95rem;
+    display: inline-block;
+    text-decoration: none;
+}
+
+/* Attending Section */
+.attending-info {
+    padding: 60px 0;
+    background-color: #1a1a1a;
+}
+
+.attendance-info {
+    margin-bottom: 30px;
+}
+
+.attendance-info div {
+    margin-bottom: 25px;
+}
+
+.attendance-info h3 {
+    color: #d4ac0d;
+    font-family: 'Lobster Two', cursive;
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.attendance-info h3::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 40px;
+    height: 3px;
+    background-color: #8b0000;
+}
+
+.attendance-info p {
+    color: #d4d4d4;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.content-photo {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    border: 3px solid #292929;
+    transition: transform 0.3s ease;
+}
+
+.content-photo:hover {
+    transform: scale(1.02);
+}
+
+.btn-lg {
+    padding: 12px 30px;
+    font-size: 1.2rem;
+}
+
+/* Custom Grid System to Replace Bootstrap */
+.content-container {
+    width: 100%;
+    max-width: 1140px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.content-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.content-col {
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-bottom: 30px;
+}
+
+.content-col-full {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+.content-col-half {
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+.content-col-two-thirds {
+    flex: 0 0 66.66666667%;
+    max-width: 66.66666667%;
+}
+
+.content-offset-col {
+    margin-left: 16.666667%;
+}
+
+/* Utility Classes */
+.content-text-center {
+    text-align: center;
+}
+
+.content-align-center {
+    display: flex;
+    align-items: center;
+}
+
+.content-mt-small {
+    margin-top: 10px;
+}
+
+.content-mt-medium {
+    margin-top: 20px;
+}
+
+.content-mt-large {
+    margin-top: 30px;
+}
+
+.content-img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.content-rounded {
+    border-radius: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .content-col-half {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    .content-col-two-thirds {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    .content-offset-col {
+        margin-left: 0;
+    }
+}
+
+/* Responsive Styles */
+@media (max-width: 991px) {
+    .content-card {
+        flex-direction: column;
+    }
+    
+    .content-date {
+        width: 100%;
+        flex-direction: row;
+        padding: 10px 20px;
+        justify-content: flex-start;
+    }
+    
+    .content-date .month {
+        margin-right: 8px;
+    }
+    
+    .location-details h2,
+    .attending-info h2 {
+        text-align: center;
+    }
+    
+    .location-image {
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 767px) {
+    .content-hero h1 {
+        font-size: 2.8rem;
+    }
+    
+    .content-hero .lead {
+        font-size: 1.3rem;
+    }
+    
+    .content-details-card {
+        margin-bottom: 30px;
+    }
+    
+    .expectation-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .emoji-icon {
+        margin-bottom: 10px;
+        font-size: 3rem;
+    }
+    
+    .attendance-info h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .attendance-info h3,
+    .attendance-info p {
+        text-align: center;
+    }
+    
+    .attending-info .btn {
+        display: block;
+        margin: 0 auto;
+    }
+    
+    .attending-info .nav-btn {
+        display: block;
+        margin: 20px auto 0;
+        text-align: center;
+    }
+    
+    .content-details-card .nav-btn-outline {
+        display: block;
+        text-align: center;
+        width: fit-content;
+        margin: 15px auto 0;
+    }
+}
