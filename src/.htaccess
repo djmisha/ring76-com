@@ -1,0 +1,6 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Ensure PHP files are processed as PHP
+    AddType application/x-httpd-php .php
+</IfModule>
