@@ -1,8 +1,24 @@
 $(document).ready(function () {
+  // Fix the smooth scrolling code to handle empty "#" links
   $('a[href^="#"]').on("click", function (event) {
     event.preventDefault();
 
-    var target = $(this.getAttribute("href"));
+    var href = this.getAttribute("href");
+
+    // Handle the case where href is just "#"
+    if (href === "#") {
+      // Scroll to top of page
+      $("html, body").animate(
+        {
+          scrollTop: 0,
+        },
+        800
+      );
+      return;
+    }
+
+    // Otherwise proceed with normal anchor link behavior
+    var target = $(href);
 
     if (target.length) {
       $("html, body").animate(
@@ -392,4 +408,140 @@ $(document).ready(function () {
       $(".main-nav").removeClass("open");
     }
   });
+
+  // Magic trick - flip the entire site upside down
+  $("#flip-trick").on("click", function (e) {
+    e.preventDefault();
+
+    // Add magic sparkle effect
+    const sparkleDuration = 1000;
+
+    // Create sparkles
+    for (let i = 0; i < 50; i++) {
+      createSparkle();
+    }
+
+    // Play magic sound
+    const magicSound = new Audio("sounds/magic.mp3");
+    try {
+      magicSound.play().catch(function (error) {
+        console.log("Audio couldn't play: ", error);
+      });
+    } catch (err) {
+      console.log("Audio error: ", err);
+    }
+
+    // Wait for sparkles, then flip
+    setTimeout(function () {
+      // Toggle the upside-down class on the body
+      $("body").toggleClass("magic-upside-down");
+
+      // Add a message that appears
+      if ($("body").hasClass("magic-upside-down")) {
+        $("<div>", {
+          class: "magic-message",
+          html: "You've been magically flipped! <a href='#' id='restore-magic'>Restore</a>",
+        }).appendTo("body");
+
+        // Add listener to restore link
+        $("#restore-magic").on("click", function (e) {
+          e.preventDefault();
+          $("body").removeClass("magic-upside-down");
+          $(".magic-message").remove();
+        });
+      } else {
+        $(".magic-message").remove();
+      }
+    }, sparkleDuration);
+
+    // Function to create a single sparkle
+    function createSparkle() {
+      const sparkle = $("<div>", { class: "magic-sparkle" });
+
+      // Random position across the screen
+      const xPos = Math.random() * window.innerWidth;
+      const yPos = Math.random() * window.innerHeight;
+
+      // Random size
+      const size = Math.random() * 10 + 5;
+
+      // Random color
+      const colors = ["#d4ac0d", "#8b0000", "#fff", "#ffc107"];
+      const color = colors[Math.floor(Math.random() * colors.length)];
+
+      sparkle.css({
+        left: xPos + "px",
+        top: yPos + "px",
+        width: size + "px",
+        height: size + "px",
+        backgroundColor: color,
+      });
+
+      // Add to body
+      sparkle.appendTo("body");
+
+      // Animate and remove
+      setTimeout(function () {
+        sparkle.remove();
+      }, sparkleDuration);
+    }
+  });
 });
+
+// Add CSS rules to the document
+$("<style>")
+  .prop("type", "text/css")
+  .html(
+    `
+    .magic-upside-down {
+      transform: rotate(180deg);
+      transition: transform 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+    
+    .magic-sparkle {
+      position: fixed;
+      border-radius: 50%;
+      z-index: 9999;
+      pointer-events: none;
+      animation: sparkle 1s forwards;
+    }
+    
+    @keyframes sparkle {
+      0% { 
+        opacity: 0;
+        transform: scale(0) rotate(0deg); 
+      }
+      50% { 
+        opacity: 1; 
+        transform: scale(1) rotate(180deg);
+      }
+      100% { 
+        opacity: 0; 
+        transform: scale(0) rotate(360deg);
+      }
+    }
+    
+    .magic-message {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #d4ac0d;
+      color: #111;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-family: 'Lobster Two', cursive;
+      font-size: 18px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      z-index: 10000;
+      text-align: center;
+    }
+    
+    .magic-message a {
+      color: #8b0000;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+  `
+  )
+  .appendTo("head");
