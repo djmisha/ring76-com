@@ -42,7 +42,7 @@ body {
     font-family: 'Lobster Two', cursive;
     font-size: 2.5rem;
     margin: 0;
-    color: #d4ac0d;
+    color: #8b0000;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     text-decoration: none;
 }
@@ -638,7 +638,7 @@ footer ul li {
 .magic-eyes {
     position: fixed;
     top: 50px;
-    left: 260px;
+    left: 210px;
     transform: translate(-50%, -50%);
     display: flex;
     z-index: 1000;

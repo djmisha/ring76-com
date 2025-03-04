@@ -12,7 +12,7 @@ $(document).ready(function () {
         {
           scrollTop: 0,
         },
-        800
+        2000
       );
       return;
     }
@@ -414,21 +414,11 @@ $(document).ready(function () {
     e.preventDefault();
 
     // Add magic sparkle effect
-    const sparkleDuration = 1000;
+    const sparkleDuration = 2000;
 
-    // Create sparkles
-    for (let i = 0; i < 50; i++) {
+    // Create more sparkles - increased from 50 to 150
+    for (let i = 0; i < 150; i++) {
       createSparkle();
-    }
-
-    // Play magic sound
-    const magicSound = new Audio("sounds/magic.mp3");
-    try {
-      magicSound.play().catch(function (error) {
-        console.log("Audio couldn't play: ", error);
-      });
-    } catch (err) {
-      console.log("Audio error: ", err);
     }
 
     // Wait for sparkles, then flip
@@ -462,12 +452,53 @@ $(document).ready(function () {
       const xPos = Math.random() * window.innerWidth;
       const yPos = Math.random() * window.innerHeight;
 
-      // Random size
-      const size = Math.random() * 10 + 5;
+      // More varied random size - increased max size and variability
+      const size = Math.random() * 15 + 3;
 
-      // Random color
-      const colors = ["#d4ac0d", "#8b0000", "#fff", "#ffc107"];
+      // Expanded color palette for more variety
+      const colors = [
+        "#d4ac0d",
+        "#8b0000",
+        "#fff",
+        "#ffc107",
+        "#ff9800",
+        "#e91e63",
+        "#9c27b0",
+        "#3f51b5",
+        "#2196f3",
+        "#4caf50",
+        "#ff5722",
+      ];
       const color = colors[Math.floor(Math.random() * colors.length)];
+
+      // Random sparkle shapes - create either circle, star or diamond shapes
+      let shape = "circle";
+      const shapeRandom = Math.random();
+      let rotation = Math.random() * 360;
+      let extraCSS = {};
+
+      if (shapeRandom > 0.7) {
+        // Star shape using clip-path
+        shape = "star";
+        extraCSS = {
+          clipPath:
+            "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)",
+          backgroundColor: "transparent",
+          border: `2px solid ${color}`,
+        };
+      } else if (shapeRandom > 0.4) {
+        // Diamond shape
+        shape = "diamond";
+        extraCSS = {
+          transform: `rotate(${rotation}deg)`,
+          backgroundColor: "transparent",
+          border: `2px solid ${color}`,
+        };
+      }
+
+      // Apply different animation based on shape
+      const animationDuration = Math.random() * 800 + 600;
+      const animationDelay = Math.random() * 300;
 
       sparkle.css({
         left: xPos + "px",
@@ -475,15 +506,24 @@ $(document).ready(function () {
         width: size + "px",
         height: size + "px",
         backgroundColor: color,
+        borderRadius:
+          shape === "circle" ? "50%" : shape === "diamond" ? "0%" : "",
+        opacity: 0,
+        position: "fixed",
+        zIndex: 9999,
+        pointerEvents: "none",
+        animation: `sparkle ${animationDuration}ms ${animationDelay}ms forwards`,
+        boxShadow: `0 0 ${size / 3}px ${color}`,
+        ...extraCSS,
       });
 
       // Add to body
       sparkle.appendTo("body");
 
-      // Animate and remove
+      // Animate and remove after a slightly random duration
       setTimeout(function () {
         sparkle.remove();
-      }, sparkleDuration);
+      }, animationDuration + animationDelay);
     }
   });
 });
@@ -500,10 +540,8 @@ $("<style>")
     
     .magic-sparkle {
       position: fixed;
-      border-radius: 50%;
       z-index: 9999;
       pointer-events: none;
-      animation: sparkle 1s forwards;
     }
     
     @keyframes sparkle {
@@ -511,9 +549,17 @@ $("<style>")
         opacity: 0;
         transform: scale(0) rotate(0deg); 
       }
+      20% {
+        opacity: 1;
+        transform: scale(1.2) rotate(80deg);
+      }
       50% { 
         opacity: 1; 
         transform: scale(1) rotate(180deg);
+      }
+      80% {
+        opacity: 0.8;
+        transform: scale(0.9) rotate(240deg);
       }
       100% { 
         opacity: 0; 
@@ -523,7 +569,7 @@ $("<style>")
     
     .magic-message {
       position: fixed;
-      top: 20px;
+      bottom: 10px;
       left: 50%;
       transform: translateX(-50%);
       background-color: #d4ac0d;
@@ -535,6 +581,11 @@ $("<style>")
       box-shadow: 0 5px 15px rgba(0,0,0,0.3);
       z-index: 10000;
       text-align: center;
+    }
+    
+    /* Add counter-rotation to make text readable when page is flipped */
+    body.magic-upside-down .magic-message {
+      transform: translateX(-50%) rotate(180deg);
     }
     
     .magic-message a {
