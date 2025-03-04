@@ -1347,6 +1347,10 @@ footer ul li {
     gap: 30px;
 }
 
+.tell-secret {
+  cursor: pointer;
+}
+
 /* Membership Types Section Styles */
 .membership-types-section {
     background-color: #171717;
@@ -1432,3 +1436,4 @@ footer ul li {
         grid-template-columns: 1fr;
     }
 }
+

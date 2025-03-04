@@ -526,6 +526,247 @@ $(document).ready(function () {
       }, animationDuration + animationDelay);
     }
   });
+
+  // Add event handler for the "Tell me the Secret!" link
+  $("#secret-trick").on("click", function (e) {
+    e.preventDefault();
+    showSecretOverlay();
+  });
+
+  // Function to show the secret overlay
+  function showSecretOverlay() {
+    // Create overlay if it doesn't exist
+    if ($("#secret-overlay").length === 0) {
+      const overlay = $("<div>", {
+        id: "secret-overlay",
+        class: "secret-overlay",
+        html: `
+          <div class="secret-content">
+            <h2 class="secret-heading">
+              The Magician is not keeping the secret <span class="emphasis">from</span> you.<br>
+              The Magician is keeping the secret <span class="emphasis">for</span> you.
+            </h2>
+            <p class="secret-explanation">
+              Magic is the art of wonder and astonishment. By preserving its mysteries,
+              magicians ensure that you can experience the genuine joy of being amazed—the very
+              feeling that makes magic special. When we safeguard these secrets, we're protecting
+              your opportunity to experience true wonder in a world that too rarely surprises us.
+            </p>
+            <button class="secret-close">I understand!</button>
+          </div>
+        `,
+      });
+
+      $("body").append(overlay);
+
+      // Add CSS for overlay
+      $("<style>")
+        .prop("type", "text/css")
+        .html(
+          `
+          .secret-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+          }
+          
+          .secret-overlay.visible {
+            opacity: 1;
+          }
+          
+          .secret-content {
+            max-width: 900px;
+            padding: 40px;
+            text-align: center;
+            color: #fff;
+            background-color: rgba(20, 20, 20, 0.85);
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(212, 172, 13, 0.5);
+            transform: scale(0.9);
+            transition: transform 0.5s ease;
+            margin: 20px;
+          }
+          
+          .secret-overlay.visible .secret-content {
+            transform: scale(1);
+          }
+          
+          .secret-heading {
+            font-family: 'Lobster Two', cursive;
+            font-size: 2.5rem;
+            line-height: 1.4;
+            margin-bottom: 30px;
+            color: #d4ac0d;
+          }
+          
+          .secret-heading .emphasis {
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 10px #d4ac0d;
+            padding: 0 5px;
+            display: inline-block;
+            transform: scale(1.2);
+          }
+          
+          .secret-explanation {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+          }
+          
+          .secret-close {
+            background: #8b0000;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Fredoka', sans-serif;
+            transition: all 0.3s ease;
+          }
+          
+          .secret-close:hover {
+            background: #d4ac0d;
+            transform: scale(1.05);
+          }
+          
+          @media (max-width: 768px) {
+            .secret-heading {
+              font-size: 1.8rem;
+            }
+            
+            .secret-heading .emphasis {
+              font-size: 2rem;
+            }
+            
+            .secret-explanation {
+              font-size: 1rem;
+            }
+          }
+        `
+        )
+        .appendTo("head");
+    }
+
+    // Show the overlay with animation
+    $("#secret-overlay").addClass("visible");
+
+    // Disable scrolling on body
+    $("body").css("overflow", "hidden");
+
+    // Add magical sparkles effect
+    for (let i = 0; i < 100; i++) {
+      createMagicParticle();
+    }
+
+    // Set up close button and click outside to close
+    $(".secret-close, #secret-overlay").on("click", function (event) {
+      if (
+        $(event.target).is("#secret-overlay") ||
+        $(event.target).is(".secret-close")
+      ) {
+        $("#secret-overlay").removeClass("visible");
+        setTimeout(() => {
+          $("body").css("overflow", "");
+          $("#secret-overlay").remove(); // Remove the element completely
+        }, 500);
+      }
+    });
+
+    // Also close on ESC key
+    $(document).on("keydown.secret", function (e) {
+      if (e.key === "Escape") {
+        $("#secret-overlay").removeClass("visible");
+        setTimeout(() => {
+          $("body").css("overflow", "");
+          $(document).off("keydown.secret");
+          $("#secret-overlay").remove(); // Remove the element completely
+        }, 500);
+      }
+    });
+  }
+
+  function createMagicParticle() {
+    const particle = $("<div>", { class: "magic-particle" });
+
+    // Random position near the emphasized words
+    const centerX = $(window).width() / 2;
+    const centerY = $(window).height() / 2;
+    const radius = Math.min($(window).width(), $(window).height()) * 0.4;
+    const angle = Math.random() * Math.PI * 2;
+    const distance = Math.random() * radius;
+
+    const xPos = centerX + Math.cos(angle) * distance;
+    const yPos = centerY + Math.sin(angle) * distance;
+
+    // Random size
+    const size = Math.random() * 8 + 2;
+
+    // Gold/red color palette
+    const colors = [
+      "#d4ac0d",
+      "#ffd700",
+      "#ffcc00",
+      "#8b0000",
+      "#ff9800",
+      "#fff",
+    ];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+
+    // Random duration for animation
+    const duration = Math.random() * 2000 + 1000;
+
+    // Set CSS
+    particle.css({
+      position: "fixed",
+      left: xPos + "px",
+      top: yPos + "px",
+      width: size + "px",
+      height: size + "px",
+      backgroundColor: color,
+      borderRadius: "50%",
+      boxShadow: `0 0 ${size}px ${color}`,
+      opacity: 0,
+      zIndex: 10001,
+      pointerEvents: "none",
+    });
+
+    // Append to body
+    $("body").append(particle);
+
+    // Add animation
+    particle.animate(
+      {
+        opacity: 1,
+        left: xPos + (Math.random() * 100 - 50) + "px",
+        top: yPos + (Math.random() * 100 - 50) + "px",
+      },
+      duration / 2,
+      function () {
+        $(this).animate(
+          {
+            opacity: 0,
+          },
+          duration / 2,
+          function () {
+            $(this).remove();
+          }
+        );
+      }
+    );
+  }
 });
 
 // Add CSS rules to the document

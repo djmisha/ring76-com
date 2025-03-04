@@ -34,7 +34,8 @@
                     <ul>
                         <li><a href="magic-in-san-diego.php">Magic in San Diego</a></li>
                         <li><a href="link.php">Link Directory</a></li>
-                        <li><a href="#" class="do-magic" id="flip-trick">Do a Magic Trick!</a></li>
+                        <li><a href="#" class="do-magic" id="flip-trick">Do a Magic Trick</a></li>
+                        <li><span class="tell-secret" id="secret-trick">Tell me the Secret</span></li>
                     </ul>
                 </div>
             </div>
