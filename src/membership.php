@@ -252,7 +252,7 @@ include_once('includes/header.php');
                             <h3>Membership Dues</h3>
                             <p><strong>Ring 76 Local Dues:</strong> $30 per year</p>
                             <p>Dues can be paid via PayPal or by check made out to "Ring 76 IBM"</p>
-                            <a href="#" class="content-btn content-mt-medium">Pay Dues</a>
+                            <a href="#" class="content-btn content-mt-medium">Pay Membership Dues</a>
                         </div>
                     </div>
                 </div>
