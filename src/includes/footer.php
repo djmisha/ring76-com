@@ -4,7 +4,7 @@
             <div class="footer-sections">
                 <div class="footer-info">
                     <h3>Ring 76</h3>
-                    <p>Honest Sid Gerhart</p>
+                    <p>The Honest Sid Gerhart Ring, San Diego</p>
                     <p>International Brotherhood of Magicians</p>
                     <p>503(c) Non-Profit Organization</p>
                 </div>

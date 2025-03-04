@@ -94,7 +94,7 @@ include_once('includes/header.php');
                         <h3>For Visitors</h3>
                         <p>We welcome visitors to attend up to three meetings before joining.</p>
                         <p>Please arrive 15 minutes early to sign in at the front desk.</p>
-                        <a href="/join" class="content-btn content-mt-medium">Become a Member</a>
+                        <a href="contact.php" class="content-btn content-mt-medium">Become a Member</a>
                     </div>
                   </div>
                 </div>

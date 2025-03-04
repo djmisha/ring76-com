@@ -48,9 +48,96 @@ include_once('includes/header.php');
                     <div class="content-details-card">
                         <h3>How to Join</h3>
                         <p><strong>Step 1:</strong> Attend up to three meetings as our guest</p>
-                        <p><strong>Step 2:</strong> Complete an application for the International Brotherhood of Magicians</p>
+                        <p><strong>Step 2:</strong> Complete the application on this website</p>
                         <p><strong>Step 3:</strong> Submit your Ring 76 membership dues</p>
-                        <p><a href="/join" class="content-btn">Apply for Membership</a></p>
+                        <p><a href="contact.php" class="content-btn">Apply for Membership</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Membership Types Section - NEW SECTION -->
+    <section class="membership-types-section">
+        <div class="content-container">
+            <h2>Ring 76 Membership Types</h2>
+            <p class="section-intro">Ring 76 offers several membership categories to accommodate various needs.</p>
+            
+            <div class="membership-types-grid">
+                <div class="membership-type-card">
+                    <div class="membership-type-header">
+                        <h3>Active</h3>
+                    </div>
+                    <div class="membership-type-content">
+                        <ul class="membership-features">
+                            <li>For individuals 18 years or older with an interest in magic</li>
+                            <li>Full voting rights and eligible to hold office</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="membership-type-card">
+                    <div class="membership-type-header">
+                        <h3>Associate</h3>
+                    </div>
+                    <div class="membership-type-content">
+                        <ul class="membership-features">
+                            <li>For spouses, designated drivers of junior members, or bona fide assistants of an Active Member</li>
+                            <li>Associate Members do not pay annual dues,</li>
+                            <li>Cannot vote or hold office but may serve on committees</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="membership-type-card">
+                    <div class="membership-type-header">
+                        <h3>Junior</h3>
+                    </div>
+                    <div class="membership-type-content">
+                        <ul class="membership-features">
+                            <li>For individuals aged 12-18 with at least two years of interest in magic</li>
+                            <li><strong>Pays half the dues of an Active Member</strong></li>
+                            <li>Automatically becomes an Active Member at age 18</li>
+                            <li>Cannot vote or hold office but can participate in club activities</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="membership-type-card">
+                    <div class="membership-type-header">
+                        <h3>Non-Resident</h3>
+                    </div>
+                    <div class="membership-type-content">
+                        <ul class="membership-features">
+                            <li>For individuals living 100+ miles from San Diego's Old Town Plaza</li>
+                            <li>Pays reduced dues and can vote if present at meetings but cannot hold office</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="membership-type-card">
+                    <div class="membership-type-header">
+                        <h3>Life</h3>
+                    </div>
+                    <div class="membership-type-content">
+                        <ul class="membership-features">
+                            <li>Granted to individuals who have shown exceptional dedication to Ring 76</li>
+                            <li>Requires a three-fourths vote of the membership</li>
+                            <li>Pays no dues and has full voting and office-holding rights</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="membership-type-card">
+                    <div class="membership-type-header">
+                        <h3>Honorary</h3>
+                    </div>
+                    <div class="membership-type-content">
+                        <ul class="membership-features">
+                            <li>Granted to individuals who have significantly contributed to the magical arts</li>
+                            <li>Requires a three-fourths vote of the Board of Directors</li>
+                            <li>Pays no dues, cannot vote, and cannot hold office</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -118,7 +205,6 @@ include_once('includes/header.php');
                                 <div>
                                     <h4>Arcanum</h4>
                                     <p>Arcanum is a private website exclusively for Ring 76 members. It contains resources, discussion forums, and member-only content. If you are new to Arcanum, please contact the WebMage for instructions on how to log in for the first time.</p>
-                                    <p><a href="https://arcanum.ring76.com" target="_blank">Access Arcanum</a> (members only)</p>
                                 </div>
                             </div>
                         </div>
@@ -136,7 +222,7 @@ include_once('includes/header.php');
                                 <span class="emoji-icon">📚</span>
                                 <div>
                                     <h4>Library</h4>
-                                    <p>Ring 76 has a large collection of books and DVDs that can be checked out to members. The library catalog and instructions about how to check out books can be found in Arcanum! Our library is one of the largest collections of magical literature and resources in Southern California.</p>
+                                    <p>Ring 76 has a large collection of books and DVDs that can be checked out to members. The library catalog and instructions about how to check out books can be found in Arcanum! Our library is one of the largest collections of magical literature and resources in Southern California, and one of the largest in the world! </p>
                                 </div>
                             </div>
                         </div>
@@ -164,9 +250,9 @@ include_once('includes/header.php');
                     <div class="attendance-info">
                         <div class="members">
                             <h3>Membership Dues</h3>
-                            <p><strong>International Brotherhood of Magicians:</strong> Annual dues vary based on membership type</p>
                             <p><strong>Ring 76 Local Dues:</strong> $30 per year</p>
-                            <p>Full membership requires joining both the IBM and our local Ring 76.</p>
+                            <p>Dues can be paid via PayPal or by check made out to "Ring 76 IBM"</p>
+                            <a href="#" class="content-btn content-mt-medium">Pay Dues</a>
                         </div>
                     </div>
                 </div>
@@ -176,7 +262,7 @@ include_once('includes/header.php');
                         <h3>Next Steps</h3>
                         <p>We invite you to attend a meeting as our guest to experience the magic first-hand.</p>
                         <p>After attending, speak with our membership officer who will guide you through the application process.</p>
-                        <a href="/join" class="content-btn content-mt-medium">Begin Your Magical Journey</a>
+                        <a href="contact.php" class="content-btn content-mt-medium">Begin Your Magical Journey</a>
                     </div>
                   </div>
                 </div>

@@ -54,7 +54,7 @@ include_once('includes/header.php');
                 <div class="content-col content-col-full">
                     <h2>Board Responsibilities</h2>
                     <div class="content-row">
-                        <div class="content-col content-col-two-thirds">
+                        <div class="content-col content-">
                             <div class="expectation-item">
                                 <span class="emoji-icon">📋</span>
                                 <div>
@@ -81,7 +81,7 @@ include_once('includes/header.php');
                                 </div>
                             </div>
                         </div>
-                        <div class="content-col content-col-two-thirds content-mt-medium">
+                        <div class="content-col content- content-mt-medium">
                             <div class="expectation-item">
                                 <span class="emoji-icon">🌐</span>
                                 <div>
@@ -107,14 +107,14 @@ include_once('includes/header.php');
                             <span class="emoji-icon">🗳️</span>
                             <div>
                                 <h4>Democratic Process</h4>
-                                <p>Each year, Ring 76 holds elections where all members in good standing can vote for the new board of directors. Elections typically take place in November with the new board taking office in January.</p>
+                                <p>Each year, Ring 76 holds elections where all members in good standing can vote for the new board of directors. Elections typically take place in June with the new board taking office in July.</p>
                             </div>
                         </div>
                         <div class="expectation-item">
                             <span class="emoji-icon">👥</span>
                             <div>
                                 <h4>Nomination Period</h4>
-                                <p>Members may nominate themselves or others for board positions. Nominations begin in September, giving candidates time to share their vision for the club's future.</p>
+                                <p>Members may nominate themselves or others for board positions. Nominations begin in April, giving candidates time to share their vision for the club's future.</p>
                             </div>
                         </div>
                         <div class="expectation-item">

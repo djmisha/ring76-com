@@ -55,7 +55,7 @@ include_once('includes/header.php');
                 <div class="content-col content-col-full">
                     <h2>Our Rich History</h2>
                     <div class="content-row">
-                        <div class="content-col content-col-two-thirds">
+                        <div class="content-col">
                             <div class="expectation-item">
                                 <span class="emoji-icon">📜</span>
                                 <div>
@@ -85,7 +85,7 @@ include_once('includes/header.php');
                                 </div>
                             </div>
                         </div>
-                        <div class="content-col content-col-two-thirds content-mt-medium">
+                        <div class="content-col mt-medium">
                             <div class="expectation-item">
                                 <span class="emoji-icon">👨‍💼</span>
                                 <div>
@@ -188,7 +188,7 @@ include_once('includes/header.php');
                         <h3>Ready to Join?</h3>
                         <p>We welcome anyone with an interest in magic to attend up to three meetings as a guest before joining.</p>
                         <p>Membership requires joining the International Brotherhood of Magicians and our local Ring 76.</p>
-                        <a href="/join" class="content-btn content-mt-medium">Become a Member</a>
+                        <a href="contact.php" class="content-btn content-mt-medium">Become a Member</a>
                     </div>
                   </div>
                 </div>
