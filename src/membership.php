@@ -50,6 +50,7 @@ include_once('includes/header.php');
                         <p><strong>Step 1:</strong> Attend up to three meetings as our guest</p>
                         <p><strong>Step 2:</strong> Complete the application on this website</p>
                         <p><strong>Step 3:</strong> Submit your Ring 76 membership dues</p>
+                        <p><strong>Step 4:</strong> Perform magic for the club to show your interest in magic (not skill level)</p>
                         <p><a href="contact.php" class="content-btn">Apply for Membership</a></p>
                     </div>
                 </div>

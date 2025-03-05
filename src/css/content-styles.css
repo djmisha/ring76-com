@@ -396,6 +396,10 @@
     padding-left: 15px;
 }
 
+.content-container p {
+  padding-top: 20px;
+}
+
 .content-row {
     display: flex;
     flex-wrap: wrap;

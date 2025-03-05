@@ -767,7 +767,8 @@ $(document).ready(function () {
       }
     );
   }
-});
+
+  
 
 // Add CSS rules to the document
 $("<style>")
