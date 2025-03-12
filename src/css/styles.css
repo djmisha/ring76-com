@@ -120,17 +120,59 @@ body {
     background-size: 150px 50px;
     pointer-events: none;
 }
+
+
 .hero-section {
-    background-image: url('../image/hero.jpg');
     background-size: cover;
     background-position: center;
-    height: 800px;
+    height: calc(100vh - 120px);
     display: flex;
     align-items: center;
     text-align: center;
-    color: #f0f0f0; /* Softer white */
+    color: #f0f0f0; 
     position: relative;
 }
+
+.hero-home {
+  background-image: url('../image/hero-home.jpg');
+}
+
+.content-hero-about {
+  background-image: url('../image/hero-about.jpg');
+}
+
+.content-hero-meetings {
+  background-image: url('../image/hero-meetings.jpg');
+}
+
+.content-hero-board {
+  background-image: url('../image/hero-board.jpg');
+}
+
+.content-hero-contact {
+  background-image: url('../image/hero-contact.jpg');
+}
+
+.content-hero-membership {
+  background-image: url('../image/hero-membership.jpg');
+}
+
+.content-hero-newsletter {
+  background-image: url('../image/hero-newsletter.jpg');
+}
+
+.content-hero-links {
+  background-image: url('../image/hero-links.jpg');
+}
+
+.content-hero-donate {
+  background-image: url('../image/hero-donate.jpg');
+}
+
+.content-hero-halloffame {
+  background-image: url('../image/hero-halloffame.jpg');
+}
+
 .hero-section:before {
     content: '';
     position: absolute;
@@ -401,6 +443,11 @@ footer ul li {
     background-color: #8b0000;
     border-radius: 1px;
 }
+
+.footer-ibm-logo {
+  margin-top: 30px;
+}
+
 .owl-chatbot {
     position: fixed;
     bottom: 20px;
@@ -643,7 +690,7 @@ footer ul li {
     100% { height: 18px; }
 }
 .magic-eyes {
-    position: fixed;
+    position: absolute;
     top: 50px;
     left: 210px;
     transform: translate(-50%, -50%);
@@ -1444,40 +1491,370 @@ footer ul li {
     }
 }
 
-/* JavaScript will apply this class to letters */
-.wave-letter {
-    display: inline-block;
-    transition: transform 0.2s ease;
+
+.award-navigation {
+    background-color: #1a1a1a;
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.award-navigation ul {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    list-style: none;
+    padding: 0;
+}
+
+.award-navigation a {
+    color: #d4ac0d;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-family: 'Lobster Two', cursive;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.award-navigation a:hover {
+    background-color: #8b0000;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.award-section {
+    padding: 60px 0;
+    border-bottom: 1px solid #333;
+}
+
+.award-section:last-child {
+    border-bottom: none;
+}
+
+.award-year {
+    color: #8b0000;
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+/* Award Card Styles */
+.award-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.award-card {
     position: relative;
+    width: 280px;
+    height: 160px;
+    perspective: 1000px;
+    cursor: pointer;
+    margin-bottom: 20px;
 }
 
-/* Add style for space characters in the wave animation */
-.wave-letter.wave-space {
-  display: inline-block;
-  width: 0.3em; /* Control the space width */
-  /* Don't apply animations to spaces */
-  animation: none !important;
+.award-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 1.5s;
+    transform-style: preserve-3d;
 }
 
-.wave-animation {
-    animation: letterWave 0.5s ease-in-out;
+.award-card:hover .award-card-inner {
+    transform: rotateY(720deg);
 }
 
-@keyframes letterWave {
+/* Sparkle effects when hovered */
+.award-card:hover .sparkle {
+    opacity: 1;
+}
+
+.award-front, .award-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.award-front {
+    background: linear-gradient(145deg, #e6c878, #d4a520);
+    color: #402e0b;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.award-back {
+    background: linear-gradient(145deg, #333, #222);
+    color: #e6c878;
+    transform: rotateY(180deg);
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.nameplate {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 8px solid transparent;
+    border-image: linear-gradient(to bottom right, #e9d9a2, #8f6b29) 1;
+    box-sizing: border-box;
+}
+
+.award-name {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 15px 0 5px 0;
+    text-transform: uppercase;
+    line-height: 1.2;
+    max-width: 100%;
+    word-wrap: break-word;
+    color: #000;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.award-years, .award-title {
+    font-size: 18px;
+    margin: 0 0 5px 0;
+    color: #000;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.corner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #402e0b;
+    border-radius: 50%;
+}
+
+.top-left {
+    top: -5px;
+    left: -5px;
+}
+
+.top-right {
+    top: -5px;
+    right: -5px;
+}
+
+.bottom-left {
+    bottom: -5px;
+    left: -5px;
+}
+
+.bottom-right {
+    bottom: -5px;
+    right: -5px;
+}
+
+/* Modern embellishments */
+.shine {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.2) 25%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    pointer-events: none;
+    border-radius: 12px;
+}
+
+/* Card Suits Styles */
+.suit {
+    font-size: 80px;
+    margin: 0;
+}
+
+.hearts, .diamonds {
+    color: #8b0000;
+}
+
+.spades, .clubs {
+    color: #111;
+}
+
+/* Sparkle Effects */
+.sparkle-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.sparkle {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
+
+.sparkle::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: white;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    animation: twinkle 1s infinite alternate;
+}
+
+@keyframes twinkle {
     0% {
-        transform: translateY(0);
-    }
-    25% {
-        transform: translateY(-5px);
-    }
-    50% {
-        transform: translateY(0);
-    }
-    75% {
-        transform: translateY(3px);
+        transform: scale(0.5);
+        opacity: 0.5;
     }
     100% {
-        transform: translateY(0);
+        transform: scale(1);
+        opacity: 1;
     }
 }
 
+.sparkle:nth-child(1) {
+    top: -20px;
+    left: 10%;
+    animation: float1 2s ease-in-out infinite;
+}
+
+.sparkle:nth-child(2) {
+    top: 20%;
+    left: -15px;
+    animation: float2 2.5s ease-in-out infinite;
+}
+
+.sparkle:nth-child(3) {
+    top: 20%;
+    right: -15px;
+    animation: float3 1.8s ease-in-out infinite;
+}
+
+.sparkle:nth-child(4) {
+    bottom: -20px;
+    left: 30%;
+    animation: float4 2.2s ease-in-out infinite;
+}
+
+.sparkle:nth-child(5) {
+    bottom: 30%;
+    right: -20px;
+    animation: float5 2.7s ease-in-out infinite;
+}
+
+.sparkle:nth-child(6) {
+    top: -15px;
+    right: 20%;
+    animation: float6 1.9s ease-in-out infinite;
+}
+
+.sparkle:nth-child(7) {
+    bottom: -15px;
+    right: 25%;
+    animation: float7 2.3s ease-in-out infinite;
+}
+
+.sparkle:nth-child(8) {
+    top: 40%;
+    left: -20px;
+    animation: float8 2.1s ease-in-out infinite;
+}
+
+@keyframes float1 {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(15px, 10px) rotate(90deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+@keyframes float2 {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(10px, 15px) rotate(120deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+@keyframes float3 {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-10px, 10px) rotate(60deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+@keyframes float4 {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(10px, -15px) rotate(180deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+@keyframes float5 {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-15px, -5px) rotate(90deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+@keyframes float6 {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-5px, 20px) rotate(45deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+@keyframes float7 {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-10px, -10px) rotate(135deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+@keyframes float8 {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(15px, -5px) rotate(225deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+@media (max-width: 768px) {
+    .award-container {
+        gap: 15px;
+    }
+    
+    .award-card {
+        width: 260px;
+    }
+}
+
+@media (max-width: 480px) {
+    .award-card {
+        width: 100%;
+        max-width: 300px;
+    }
+}

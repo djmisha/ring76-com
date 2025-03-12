@@ -24,7 +24,7 @@ include_once('includes/header.php');
 
 <main>
     <!-- Hero Section -->
-    <section class="hero-section content-hero">
+    <section class="hero-section content-hero content-hero-membership">
         <div class="content-container">
             <h1>Ring 76 Membership</h1>
             <p class="lead">Join our community of magical minds</p>

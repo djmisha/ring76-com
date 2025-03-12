@@ -24,7 +24,7 @@ include_once('includes/header.php');
 
 <main>
     <!-- Hero Section -->
-    <section class="hero-section content-hero">
+    <section class="hero-section content-hero content-hero-about">
         <div class="content-container">
             <h1>About Ring 76</h1>
             <p class="lead">The Honest Sid Gerhart Ring of the International Brotherhood of Magicians</p>

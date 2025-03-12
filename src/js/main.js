@@ -552,7 +552,7 @@ $(document).ready(function () {
               feeling that makes magic special. When we safeguard these secrets, we're protecting
               your opportunity to experience true wonder in a world that too rarely surprises us.
             </p>
-            <button class="secret-close">I understand!</button>
+            <button class="secret-close content-btn">I understand!</button>
           </div>
         `,
       });
@@ -767,8 +767,7 @@ $(document).ready(function () {
       }
     );
   }
-
-  
+});
 
 // Add CSS rules to the document
 $("<style>")

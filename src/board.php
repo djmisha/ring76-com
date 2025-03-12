@@ -24,7 +24,7 @@ include_once('includes/header.php');
 
 <main>
     <!-- Hero Section -->
-    <section class="hero-section content-hero">
+    <section class="hero-section content-hero content-hero-board">
         <div class="content-container">
             <h1>Board of Directors</h1>
             <p class="lead">The Leadership Team Behind Ring 76 Magic</p>
@@ -87,6 +87,15 @@ include_once('includes/header.php');
                                 <div>
                                     <h4>Community Outreach</h4>
                                     <p>Representing Ring 76 in the broader community, the board builds relationships with other magical organizations, coordinates public performances, and promotes the art of magic throughout San Diego County.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-col content- content-mt-medium">
+                            <div class="expectation-item">
+                                <span class="emoji-icon">💬</span>
+                                <div>
+                                    <h4>Contribute</h4>
+                                    <p>Any member is invited to attend board meetings and provide input and feedback, which we value greatly. However, only board members can vote on issues. We invite you to join and make your voice heard!</p>
                                 </div>
                             </div>
                         </div>

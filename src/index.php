@@ -23,7 +23,7 @@ include_once('includes/header.php');
 ?>
 
 <main>
-    <section id="hero" class="hero-section">
+    <section id="hero" class="hero-section hero-home">
         <div class="hero-content">
             <h2>Welcome to your Magical World</h2>
             <p>Discover the art of illusion with fellow enthusiasts</p>

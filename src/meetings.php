@@ -24,7 +24,7 @@ include_once('includes/header.php');
 
 <main>
     <!-- Hero Section -->
-    <section class="hero-section content-hero">
+    <section class="hero-section content-hero content-hero-meetings">
         <div class="content-container">
             <h1>Ring 76 Meetings</h1>
             <p class="lead">Join us for magic, learning, and community</p>
@@ -142,6 +142,13 @@ include_once('includes/header.php');
                             <div>
                                 <h4>Library Access</h4>
                                 <p>Browse a select collection of magic books, videos, and magic props for sale.</p>
+                            </div>
+                        </div>
+                        <div class="expectation-item">
+                            <span class="emoji-icon">🔄</span>
+                            <div>
+                                <h4>Swapmeet</h4>
+                                <p>Take the opportunity to buy or trade unique magic items with members, our library, and other magic vendors.</p>
                             </div>
                         </div>
                     </div>
