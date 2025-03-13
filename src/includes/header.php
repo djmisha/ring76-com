@@ -12,7 +12,7 @@
             </div>
 
             <div class="logo">
-              <a href="/">
+              <a href="index.php">
                 <h1>Ring 76</h1>
                 <p class="tagline">San Diego Magic Club</p>
               </a>
@@ -26,7 +26,7 @@
             
             <nav class="main-nav">
                 <ul>
-                    <li><a href="/">Home</a></li>
+                    <li><a href="index.php">Home</a></li>
                     <li><a href="about.php">About Us</a></li>
                     <li><a href="meetings.php">Meetings</a></li>
                     <li><a href="board.php">Board of Directors</a></li>

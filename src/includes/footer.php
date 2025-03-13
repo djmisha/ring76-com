@@ -13,7 +13,7 @@
                 <div class="footer-nav-section">
                     <h3>Master Illusions</h3>
                     <ul>
-                        <li><a href="/">Home</a></li>
+                        <li><a href="index.php">Home</a></li>
                         <li><a href="about.php">About Us</a></li>
                         <li><a href="meetings.php">Meetings & Events</a></li>
                         <li><a href="membership.php">Membership</a></li>
