@@ -22,7 +22,6 @@ RUN echo '<Directory /var/www/html/>\n\
 </Directory>' > /etc/apache2/conf-available/docker-php.conf
 
 # Make sure the PHP module is enabled
-RUN a2enmod php8.2
 RUN a2enconf docker-php
 
 # Expose port 80
