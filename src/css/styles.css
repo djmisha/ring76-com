@@ -1858,3 +1858,63 @@ footer ul li {
         max-width: 300px;
     }
 }
+
+/* Random Photo Styles */
+.random-photo-container {
+    max-width: 400px;
+    margin: 0 auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    background-color: #292929;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.random-photo-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.random-photo-image {
+    width: 100%;
+    overflow: hidden;
+}
+
+.random-photo-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.random-photo-container:hover .random-photo-image img {
+    transform: scale(1.03);
+}
+
+.random-photo-caption {
+    padding: 15px;
+    background-color: #1a1a1a;
+    border-top: 2px solid #8b0000;
+}
+
+.random-photo-caption p {
+    margin: 0;
+    color: #d4d4d4;
+    font-size: 1.05rem;
+    text-align: center;
+    font-style: italic;
+}
+
+@media (max-width: 480px) {
+    .random-photo-container {
+        width: 100%;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    
+    .random-photo-caption p {
+        font-size: 0.95rem;
+    }
+}

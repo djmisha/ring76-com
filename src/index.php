@@ -18,6 +18,11 @@
 <body>
 
 <?php
+include_once('utils/db-connect.php');
+// include_once('utils/randphoto.php');
+?>
+
+<?php
 // Include site header with navigation
 include_once('includes/header.php');
 ?>
@@ -48,6 +53,12 @@ include_once('includes/header.php');
 
     <!-- Add divider between Events and Magic Arts sections -->
     <div class="section-divider divider-peaks"></div>
+    
+    
+    <!-- Random Photo section -->
+    <?php
+    include_once('utils/randphoto.php');
+    ?>
 
     <!-- Add Magic Art Forms section -->
     <section id="magic-arts" class="magic-arts-section">

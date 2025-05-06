@@ -11,3 +11,30 @@ services:
     volumes:
       - ./src:/var/www/html
     restart: always
+    depends_on:
+      - mysql
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_DATABASE=ring76db
+      - MYSQL_USER=ring76user
+      - MYSQL_PASSWORD=ring76pass
+
+  mysql:
+    image: mysql:8.0
+    container_name: ring76-mysql
+    platform: linux/arm64
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./src/database/db.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: always
+    environment:
+      - MYSQL_DATABASE=ring76db
+      - MYSQL_USER=ring76user
+      - MYSQL_PASSWORD=ring76pass
+      - MYSQL_ROOT_PASSWORD=rootpassword
+    command: --default-authentication-plugin=mysql_native_password
+
+volumes:
+  mysql_data:

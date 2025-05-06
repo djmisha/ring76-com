@@ -10,6 +10,9 @@ RUN apt-get update && apt-get install -y \
     unzip \
     && docker-php-ext-install zip
 
+# Install PDO MySQL extension
+RUN docker-php-ext-install pdo pdo_mysql
+
 # Set working directory
 WORKDIR /var/www/html
 

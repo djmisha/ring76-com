@@ -51,3 +51,9 @@ docker-compose down
 ## Deployment
 
 For production deployment, configure your web server to serve the contents of the `src/` directory.
+
+To deploy, you can use the following command:
+
+```bash
+./upload.sh
+```
