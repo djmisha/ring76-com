@@ -1,0 +1,5 @@
+.credentials
+.DS_Store
+src/utils/db-connect.php
+database/
+upload.sh
