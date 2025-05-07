@@ -14,6 +14,32 @@
 
     <?php include_once('includes/styles.php'); ?>
     <link href="https://fonts.googleapis.com/css2?family=Lobster+Two:wght@400;700&family=Fredoka:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Additional styles for officer profiles */
+        .officer-profile {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .officer-info {
+            flex: 1;
+        }
+        .officer-image {
+            margin-left: 20px;
+            flex-shrink: 0;
+        }
+        @media (max-width: 768px) {
+            .officer-profile {
+                flex-direction: column-reverse;
+            }
+            .officer-image {
+                margin-left: 0;
+                margin-bottom: 15px;
+                align-self: center;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -143,63 +169,12 @@ include_once('includes/header.php');
     <section class="content-info">
         <div class="content-container">
             <h2>Meet Our Current Officers</h2>
-            <div class="content-row">
-                <div class="content-col content-col-full">
-                    <div class="content-details-card">
-                        <h4>President</h4>
-                        <p><strong>Josh Sherwin</strong></p>
-                    </div>
-                </div>
-                
-                <div class="content-col content-col-full content-mt-medium">
-                    <div class="content-details-card">
-                        <h4>1st VP (Entertainment)</h4>
-                        <p><strong>Mike Stilwell</strong> has over 30 years of entertainment and event planning in San Diego County. He has had the longest-running magic show in San Diego history at the Corvette Diner from 1987-2002. He was "Magician of the Year" in 2005 by the Fellowship of Honorable Magicians, with recognition from Governor Arnold Schwarzenegger. He has been a member of the SAM, a member of the IBM, and a member of the Magic Castle in Hollywood.</p>
-                    </div>
-                </div>
-                
-                <div class="content-col content-col-full content-mt-medium">
-                    <div class="content-details-card">
-                        <h4>2nd VP (Membership)</h4>
-                        <p><strong>James Thayer</strong> enjoys performing close-up magic. James has retired from a career as a software/systems engineer and has regressed 200 years to become captain of a topsail schooner.</p>
-                    </div>
-                </div>
-                
-                <div class="content-col content-col-full content-mt-medium">
-                    <div class="content-details-card">
-                        <h4>Treasurer</h4>
-                        <p><strong>Miguel Garcia</strong> has been practicing sleight of hand magic since he was about 8 years old. Fortuitously, he was in the right place at the right time to hear about the IBM and Ring 76. Joining the club opened doors of magical friendship, resources, and mentorship that he wouldn't have ever imagined. Aside from being an active magician, he is married to his wife Joyce and works in the technology / engineering industry as a Program Manager.</p>
-                    </div>
-                </div>
-                
-                <div class="content-col content-col-full content-mt-medium">
-                    <div class="content-details-card">
-                        <h4>Secretary</h4>
-                        <p><strong>Richard Ustick</strong> is a magician and entertainer since his high school days, he is a healthcare professional and has a degree in history and teaching from San Diego State History. Richard taught magic at the Grossmont College for Kids program and is a member of the Order of Merlin with the International Brotherhood of Magicians.</p>
-                    </div>
-                </div>
-                
-                <div class="content-col content-col-full content-mt-medium">
-                    <div class="content-details-card">
-                        <h4>Sergeant at Arms</h4>
-                        <p><strong>Mark Booth</strong> has had a passion for Magic since 1963. He loves all types of Magic, but particularly likes close-up and parlor effects. As a hobbyist, he mostly performs for friends and family, and is interested in the History of Magic.</p>
-                    </div>
-                </div>
-                
-                <div class="content-col content-col-half content-mt-medium">
-                    <div class="content-details-card">
-                        <h4>Member-at-Large & Librarian</h4>
-                        <p><strong>Gary Salisbury</strong> is the Ring 76 Librarian. He is/has been a member of the IBM, the SAM, and the Magic Castle. He started performing kid's shows and close-up but eventually turned to collecting and magic history. He loves magic prop building, restoration and repair, going to magic conventions, and meeting new people. He has used his acquired business skills to build the Ring 76 library into one of the largest in the IBM organization.</p>
-                    </div>
-                </div>
-                
-                <div class="content-col content-col-half content-mt-medium">
-                    <div class="content-details-card">
-                        <h4>Member-at-Large</h4>
-                        <p><strong>Misha Osinovskiy</strong> is a bewildering individual, a purveyor of traditional sleight of hand conjury and commissioner of perceivably fascinating enchantment. He has been known to put himself in peril for the prestidigitation of onlooking admirers. His actual whereabouts are unknowable, and seemingly his omnipresence is the eventuality of one's own woolgathering.</p>
-                    </div>
-                </div>
-            </div>
+            
+            <?php 
+            // Include the dynamically generated board members section
+            include_once('includes/sections/board-members.php'); 
+            ?>
+            
         </div>
     </section>
 
