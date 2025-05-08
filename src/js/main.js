@@ -1,13 +1,7 @@
-// Wrap all functionalities in named functions and attach to window object
-
 window.setupSmoothScrolling = function () {
-  // Fix the smooth scrolling code to handle empty "#" links
   $('a[href^="#"]')
     .off("click")
     .on("click", function (event) {
-      // Added .off("click") to prevent multiple bindings
-
-      // If the link is intended to open in a new tab, or is not a same-page anchor, let the browser handle it.
       if (
         this.getAttribute("target") === "_blank" ||
         !this.pathname.endsWith(
@@ -21,9 +15,7 @@ window.setupSmoothScrolling = function () {
 
       var href = this.getAttribute("href");
 
-      // Handle the case where href is just "#"
       if (href === "#") {
-        // Scroll to top of page
         $("html, body").animate(
           {
             scrollTop: 0,
@@ -33,7 +25,6 @@ window.setupSmoothScrolling = function () {
         return;
       }
 
-      // Otherwise proceed with normal anchor link behavior
       var target = $(href);
 
       if (target.length) {
@@ -51,7 +42,6 @@ window.setupEventCardHover = function () {
   $(".event-card")
     .off("mouseenter mouseleave")
     .hover(
-      // Added .off()
       function () {
         $(this).find("h3").css("color", "#c41212");
       },
@@ -65,7 +55,6 @@ window.setupMembershipAnimations = function () {
   $(window)
     .off("scroll.membership")
     .on("scroll.membership", function () {
-      // Added .off() and namespaced event
       var scrollPosition = $(this).scrollTop();
 
       if ($(".membership-section").length) {
@@ -85,16 +74,15 @@ window.setupMembershipAnimations = function () {
       }
     });
 
-  $(".benefit").addClass("benefit-animation"); // This might only need to run once, or be re-applied if elements are new
+  $(".benefit").addClass("benefit-animation");
 };
 
 window.setupContactForm = function () {
   if ($("#contact-form").length > 0) {
     const contactForm = $("#contact-form");
 
-    // Add error styling for form validation (ensure this isn't duplicated)
     if ($("style#contactFormStyles").length === 0) {
-      $("<style id='contactFormStyles'>") // Added ID to prevent duplication
+      $("<style id='contactFormStyles'>")
         .prop("type", "text/css")
         .html(
           `
@@ -137,18 +125,15 @@ window.setupContactForm = function () {
     }
 
     contactForm.off("submit").on("submit", function (e) {
-      // Added .off()
       e.preventDefault();
 
       if (validateForm()) {
-        // Check honeypot field - if it's filled, it's likely a bot
         if ($("#website").val().length > 0) {
           console.log("Bot submission detected");
-          showFormResponse("success", "Thank you for your message!"); // Show success to bot but don't actually submit
+          showFormResponse("success", "Thank you for your message!");
           return false;
         }
 
-        // Submit the form via AJAX
         const formData = $(this).serialize();
 
         $.ajax({
@@ -180,11 +165,9 @@ window.setupContactForm = function () {
       return false;
     });
 
-    // Live validation as user types
     $("#name, #email, #message")
       .off("blur")
       .on("blur", function () {
-        // Added .off()
         validateField($(this));
       });
 
@@ -284,7 +267,6 @@ window.setupOwlChatbot = function () {
   $(".owl-avatar")
     .off("click")
     .on("click", function () {
-      // Added .off()
       $(".chat-window").fadeToggle(300);
       pulseOwl();
       $(".suggestion-tags").show();
@@ -293,7 +275,6 @@ window.setupOwlChatbot = function () {
   $(".close-chat")
     .off("click")
     .on("click", function () {
-      // Added .off()
       $(".chat-window").fadeOut(300);
       setTimeout(function () {
         $(".chat-messages .message:not(:first-child)").remove();
@@ -301,11 +282,10 @@ window.setupOwlChatbot = function () {
       }, 300);
     });
 
-  $(".send-btn").off("click").on("click", sendMessage); // Added .off()
+  $(".send-btn").off("click").on("click", sendMessage);
   $(".chat-input input")
     .off("keypress")
     .on("keypress", function (e) {
-      // Added .off()
       if (e.which === 13) {
         sendMessage();
       }
@@ -355,11 +335,10 @@ window.setupOwlChatbot = function () {
     }, 200);
   }
 
-  // Clear existing intervals before setting new ones to prevent multiple timers
   if (window.owlPulseInterval) clearInterval(window.owlPulseInterval);
   if (window.owlShakeTimeout) clearTimeout(window.owlShakeTimeout);
 
-  pulseOwl(); // Initial pulse
+  pulseOwl();
 
   window.owlPulseInterval = setInterval(function () {
     if (Math.random() < 0.2) {
@@ -408,7 +387,6 @@ window.setupOwlChatbot = function () {
       const randomDelay =
         Math.floor(Math.random() * (maxDelay - minDelay)) + minDelay;
       window.owlShakeTimeout = setTimeout(function () {
-        // Store timeout ID
         shakeOwl();
         scheduleNextShake();
       }, randomDelay);
@@ -417,14 +395,13 @@ window.setupOwlChatbot = function () {
       $(".owl-chatbot").length > 0 &&
       !$(".owl-chatbot").data("randomMovementsSetup")
     ) {
-      // Check if already setup
       $(".owl-chatbot")
         .css({
           bottom: "20px",
           right: "20px",
           opacity: 1,
         })
-        .data("randomMovementsSetup", true); // Mark as setup
+        .data("randomMovementsSetup", true);
       scheduleNextShake();
     }
   }
@@ -433,7 +410,6 @@ window.setupOwlChatbot = function () {
   $(".owl-chatbot")
     .off("mouseenter mouseleave")
     .hover(
-      // Added .off()
       function () {
         $(this).addClass("owl-hover");
       },
@@ -442,11 +418,9 @@ window.setupOwlChatbot = function () {
       }
     );
 
-  // This re-binding of .owl-avatar click was specific, ensure it's correctly managed
   $(".owl-avatar")
     .off("click.owlSpecific")
     .on("click.owlSpecific", function () {
-      // Namespaced and .off()
       $(".owl-chatbot").stop(true, true).css({
         opacity: 1,
         right: "20px",
@@ -458,7 +432,6 @@ window.setupOwlChatbot = function () {
   $(".tag")
     .off("click")
     .on("click", function () {
-      // Added .off()
       const query = $(this).data("query");
       const tagText = $(this).text();
       $(".chat-input input").val(tagText);
@@ -468,10 +441,7 @@ window.setupOwlChatbot = function () {
 };
 
 window.setupHeaderEyes = function () {
-  // Initial animation, might not need to re-run if eyes are part of static header
-  // If they are re-added to DOM, then this is needed.
   if (!$(".magic-eyes").data("initialAnimationDone")) {
-    // Run once
     setTimeout(function () {
       $(".magic-eyes").css("transform", "translate(-50%, -50%) scale(1.2)");
       setTimeout(function () {
@@ -484,7 +454,6 @@ window.setupHeaderEyes = function () {
   $(document)
     .off("mousemove.headerEyes")
     .on("mousemove.headerEyes", function (e) {
-      // Added .off() and namespaced
       $(".magic-eyes .pupil").each(function () {
         const pupil = $(this);
         const eye = pupil.parent();
@@ -509,7 +478,7 @@ window.setupHeaderEyes = function () {
       });
     });
 
-  if (window.blinkInterval) clearInterval(window.blinkInterval); // Clear existing interval
+  if (window.blinkInterval) clearInterval(window.blinkInterval);
 
   function randomBlink() {
     const minDelay = 2000;
@@ -517,25 +486,22 @@ window.setupHeaderEyes = function () {
     const randomDelay =
       Math.floor(Math.random() * (maxDelay - minDelay)) + minDelay;
     window.blinkInterval = setTimeout(function () {
-      // Store interval ID
       $(".magic-eyes .eye").addClass("blinking");
       setTimeout(function () {
         $(".magic-eyes .eye").removeClass("blinking");
       }, 500);
-      randomBlink(); // Re-schedule
+      randomBlink();
     }, randomDelay);
   }
 
-  // Initial blink, also might not need re-run unless eyes are re-added
   if (!$(".magic-eyes").data("initialBlinkDone")) {
-    // Run once
     setTimeout(function () {
       $(".magic-eyes .eye").addClass("blinking");
       setTimeout(function () {
         $(".magic-eyes .eye").removeClass("blinking");
       }, 500);
     }, 1000);
-    randomBlink(); // Start the random blinking cycle
+    randomBlink();
     $(".magic-eyes").data("initialBlinkDone", true);
   }
 };
@@ -544,7 +510,6 @@ window.setupArtFormHover = function () {
   $(".art-form")
     .off("mouseenter mouseleave")
     .hover(
-      // Added .off()
       function () {
         $(this).find(".art-icon").addClass("active");
       },
@@ -553,18 +518,12 @@ window.setupArtFormHover = function () {
       }
     );
 
-  // Scroll-based animation for #magic-arts
   $(window)
     .off("scroll.artform")
     .on("scroll.artform", function () {
-      // Added .off() and namespaced
       var scrollPosition = $(this).scrollTop();
       if ($("#magic-arts").length) {
         var sectionPosition = $("#magic-arts").offset().top;
-        // Original code had an empty .each(), assuming it was placeholder or handled by CSS
-        // if (scrollPosition > sectionPosition - 500) {
-        //   $(".art-form").each(function (i) {});
-        // }
       }
     });
 };
@@ -573,7 +532,6 @@ window.setupHamburgerMenu = function () {
   $(".hamburger-menu")
     .off("click")
     .on("click", function () {
-      // Added .off()
       $(this).toggleClass("active");
       $(".main-nav").toggleClass("open");
     });
@@ -581,7 +539,6 @@ window.setupHamburgerMenu = function () {
   $(".main-nav a")
     .off("click.hamburger")
     .on("click.hamburger", function () {
-      // Added .off() and namespaced
       $(".hamburger-menu").removeClass("active");
       $(".main-nav").removeClass("open");
     });
@@ -589,7 +546,6 @@ window.setupHamburgerMenu = function () {
   $(document)
     .off("click.hamburgerClose")
     .on("click.hamburgerClose", function (event) {
-      // Added .off() and namespaced
       if (
         !$(event.target).closest(".hamburger-menu").length &&
         !$(event.target).closest(".main-nav").length &&
@@ -601,9 +557,7 @@ window.setupHamburgerMenu = function () {
     });
 };
 
-// Moved createSparkle outside to be a global helper if needed, or keep it scoped if only for magic tricks
 window.createSparkle = function () {
-  // Made global for transitions.js if needed, or could be passed
   const sparkle = $("<div>", { class: "magic-sparkle" });
   const xPos = Math.random() * window.innerWidth;
   const yPos = Math.random() * window.innerHeight;
@@ -667,7 +621,6 @@ window.createSparkle = function () {
 };
 
 window.createMagicParticle = function () {
-  // Made global
   const particle = $("<div>", { class: "magic-particle" });
   const xPos = Math.random() * window.innerWidth;
   const yPos = Math.random() * window.innerHeight;
@@ -712,56 +665,219 @@ window.createMagicParticle = function () {
 };
 
 window.setupMagicTricks = function () {
+  if (
+    $("#magic-area").length > 0 &&
+    !$("#magic-area").closest("#magic-trick-overlay").length
+  ) {
+    $("#magic-area").remove();
+  }
+
+  if ($("#magicTrickStyles").length === 0) {
+    $("<style id='magicTrickStyles'>")
+      .prop("type", "text/css")
+      .html(
+        `
+        #magic-trick-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.95);
+          z-index: 10000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.5s ease;
+        }
+        #magic-trick-overlay.visible {
+          opacity: 1;
+          pointer-events: auto;
+        }
+        #magic-area {
+          max-width: 800px;
+          width: 90%;
+          padding: 40px;
+          font-size: 1.5rem;
+          text-align: center;
+          color: #fff;
+          background-color: rgba(20, 20, 20, 0.85);
+          border-radius: 10px;
+          box-shadow: 0 0 30px rgba(212, 172, 13, 0.5);
+          transition: all 0.5s ease;
+          margin: 20px;
+        }
+        .cards-container {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          margin: 30px 0;
+        }
+        .card {
+          font-size: 6rem;
+          margin: 10px;
+          transition: all 0.5s ease;
+          cursor: default;
+          text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+        }
+        .card:hover {
+          transform: scale(1.1);
+        }
+        .mind-reading-animation {
+          font-size: 3rem;
+          margin: 20px;
+        }
+        .crystal-ball {
+          display: inline-block;
+          font-size: 5rem;
+          animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+          0% { transform: scale(1); opacity: 0.7; }
+          50% { transform: scale(1.1); opacity: 1; }
+          100% { transform: scale(1); opacity: 0.7; }
+        }
+        .magic-button {
+          background: #8b0000;
+          color: #fff;
+          border: none;
+          padding: 10px 20px;
+          font-size: 1.1rem;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          margin-top: 20px;
+        }
+        .magic-button:hover {
+          background: #d4ac0d;
+          transform: scale(1.05);
+        }
+      `
+      )
+      .appendTo("head");
+  }
+
+  if (
+    $("#magic-trick-overlay").length === 0 ||
+    $("#magic-trick-overlay").children().length === 0
+  ) {
+    if ($("#magic-trick-overlay").length > 0) {
+      $("#magic-trick-overlay").remove();
+    }
+
+    $("<div>", {
+      id: "magic-trick-overlay",
+      html: `<div id="magic-area"></div>`,
+    }).appendTo("body");
+  }
+
   $("#flip-trick")
     .off("click")
     .on("click", function (e) {
-      // Added .off()
       e.preventDefault();
-      const sparkleDuration = 2000;
-      for (let i = 0; i < 150; i++) {
-        window.createSparkle();
-      } // Use window.createSparkle
-      setTimeout(function () {
-        $("body").toggleClass("magic-upside-down");
-        if ($("body").hasClass("magic-upside-down")) {
-          if ($(".magic-message").length === 0) {
-            // Prevent multiple messages
-            $("<div>", {
-              class: "magic-message",
-              html: "You've been magically flipped! <a href='#' id='restore-magic'>Restore</a>",
-            }).appendTo("body");
-          }
-          $("#restore-magic")
-            .off("click")
-            .on("click", function (ev) {
-              // Added .off()
-              ev.preventDefault();
-              $("body").removeClass("magic-upside-down");
-              $(".magic-message").remove();
-            });
-        } else {
-          $(".magic-message").remove();
-        }
-      }, sparkleDuration);
+      startMagicTrick();
     });
 
   $(".magic-eyes")
     .off("click.sparkle")
     .on("click.sparkle", function (e) {
-      // Added .off() and namespaced
       e.preventDefault();
       for (let i = 0; i < 300; i++) {
         window.createSparkle();
-      } // Use window.createSparkle
+      }
     });
 
   $("#secret-trick")
     .off("click")
     .on("click", function (e) {
-      // Added .off()
       e.preventDefault();
       showSecretOverlay();
     });
+
+  function startMagicTrick() {
+    $("#magic-trick-overlay").addClass("visible");
+    $("body").css("overflow", "hidden");
+
+    // First set - only number cards, mixed non-sequentially from different suits
+    const firstSetOfCards = ["🂢", "🃄", "🃙", "🂦", "🃓"]; // 2♠, 4♦, 9♦, 6♠, 3♣
+
+    $("#magic-trick-overlay #magic-area").html(`
+      <h2>Mind Reading Magic Trick</h2>
+      <p>Think of ONE card below. Don't click it—just remember it clearly.</p>
+      <div class="cards-container">
+        ${firstSetOfCards
+          .map((card) => `<span class="card">${card}</span>`)
+          .join("")}
+      </div>
+      <p>Got your card in mind? Let me read your thoughts...</p>
+      <button class="magic-button" id="start-mind-reading">I've chosen my card</button>
+    `);
+
+    $("#start-mind-reading")
+      .off("click")
+      .on("click", function () {
+        for (let i = 0; i < 100; i++) {
+          window.createSparkle();
+        }
+
+        $("#magic-trick-overlay #magic-area").html(`
+        <h2>Reading your mind...</h2>
+        <div class="mind-reading-animation">
+          <span class="crystal-ball">🔮</span>
+          <div id="reading-text">Focusing...</div>
+        </div>
+      `);
+
+        const readingMessages = [
+          "Focusing...",
+          "I sense your choice...",
+          "Ah, I can see it clearly now...",
+          "Getting the image...",
+        ];
+
+        let messageIndex = 0;
+        const messageInterval = setInterval(() => {
+          messageIndex = (messageIndex + 1) % readingMessages.length;
+          $("#reading-text").fadeOut(300, function () {
+            $(this).text(readingMessages[messageIndex]).fadeIn(300);
+          });
+        }, 1500);
+
+        setTimeout(() => {
+          clearInterval(messageInterval);
+
+          // Second set - also mixed number cards from different suits, but completely different from first set
+          const secondSetOfCards = ["🂨", "🃕", "🂤", "🃂", "🃔"]; // 8♠, 5♦, 4♠, 2♣, 4♣
+
+          $("#magic-trick-overlay #magic-area").html(`
+          <h2>Voilà! Your card has vanished!</h2>
+          <p>Look at the cards now.</p>
+          <div class="cards-container">
+            ${secondSetOfCards
+              .map((card) => `<span class="card">${card}</span>`)
+              .join("")}
+          </div>
+          <p>Your card is missing!</p>
+          <button class="magic-button" id="close-magic-trick">Amazing!</button>
+        `);
+
+          for (let i = 0; i < 150; i++) {
+            window.createSparkle();
+          }
+
+          $("#close-magic-trick")
+            .off("click")
+            .on("click", function () {
+              $("#magic-trick-overlay").removeClass("visible");
+              setTimeout(() => {
+                $("body").css("overflow", "");
+              }, 500);
+            });
+        }, 6000);
+      });
+  }
 
   function showSecretOverlay() {
     if ($("#secret-overlay").length === 0) {
@@ -785,9 +901,8 @@ window.setupMagicTricks = function () {
         `,
       });
       $("body").append(overlay);
-      // Add CSS for overlay (ensure this isn't duplicated)
       if ($("style#secretOverlayStyles").length === 0) {
-        $("<style id='secretOverlayStyles'>") // Added ID
+        $("<style id='secretOverlayStyles'>")
           .prop("type", "text/css")
           .html(
             `
@@ -810,12 +925,11 @@ window.setupMagicTricks = function () {
     $("body").css("overflow", "hidden");
     for (let i = 0; i < 200; i++) {
       window.createMagicParticle();
-    } // Use window.createMagicParticle
+    }
 
     $(".secret-close, #secret-overlay")
       .off("click.secretClose")
       .on("click.secretClose", function (event) {
-        // Added .off() and namespaced
         if (
           $(event.target).is("#secret-overlay") ||
           $(event.target).is(".secret-close")
@@ -830,7 +944,6 @@ window.setupMagicTricks = function () {
     $(document)
       .off("keydown.secret")
       .on("keydown.secret", function (e) {
-        // Added .off()
         if (e.key === "Escape") {
           $("#secret-overlay").removeClass("visible");
           setTimeout(() => {
@@ -845,12 +958,11 @@ window.setupMagicTricks = function () {
 
 window.setupBackToTopButton = function () {
   var backToTopBtn = $("#back-to-top-btn");
-  if (!backToTopBtn.length) return; // Exit if button not present
+  if (!backToTopBtn.length) return;
 
   $(window)
     .off("scroll.backToTop")
     .on("scroll.backToTop", function () {
-      // Added .off() and namespaced
       if ($(this).scrollTop() > 300) {
         backToTopBtn.fadeIn(300);
       } else {
@@ -859,11 +971,10 @@ window.setupBackToTopButton = function () {
     });
 
   backToTopBtn.off("click").on("click", function (e) {
-    // Added .off()
     e.preventDefault();
     $(this).addClass("levitating");
     var textElements = $("p, h1, h2, h3, h4, h5, h6, a").filter(function () {
-      return !$(this).closest("").length; // Original filter was empty, assuming all text elements
+      return !$(this).closest("").length;
     });
     textElements.each(function () {
       var element = $(this);
@@ -886,7 +997,6 @@ window.setupBackToTopButton = function () {
   });
 };
 
-// Call all setup functions on document ready
 $(document).ready(function () {
   window.setupSmoothScrolling();
   window.setupEventCardHover();

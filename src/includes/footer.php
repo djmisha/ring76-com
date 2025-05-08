@@ -46,7 +46,7 @@
         <div class="footer-bottom">
             <p>&copy; Ring 76 - All rights reserved</p>
             <div class="back-to-top">
-                <a href="#" id="back-to-top-btn"><i class="fa fa-magic"></i> Rewind the Spell</a>
+                <a href="#" id="back-to-top-btn">🪄 Rewind the Spell</a>
             </div>
         </div>
     </div>

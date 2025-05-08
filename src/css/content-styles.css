@@ -104,7 +104,8 @@
 
 /* Custom button styles extending nav-btn */
 .content-btn {
-  background-color: #8b0000;
+  /* background-color: #8b0000; */
+  background: linear-gradient(135deg, #8b0000, #d4ac0d);
   padding: 8px 18px;
   border-radius: 20px;
   font-weight: 600;
