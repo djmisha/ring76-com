@@ -20,13 +20,76 @@
 <?php
 // Include site header with navigation
 include_once('includes/header.php');
+
+// Include database connection
+include_once('utils/db-connect.php');
+
+// Get type of links to display, if specified in URL
+$type = isset($_GET['type']) ? $_GET['type'] : "";
+
+// Helper function equivalent to the original mysqlJ_result function but for PDO
+function pdoJ_result($stmt, $row, $field=0) {
+    $stmt->execute();
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if (isset($data[$row])) {
+        if (is_string($field)) {
+            return isset($data[$row][$field]) ? $data[$row][$field] : null;
+        } else {
+            $keys = array_keys($data[$row]);
+            return isset($data[$row][$keys[$field]]) ? $data[$row][$keys[$field]] : null;
+        }
+    }
+    return null;
+}
+
+// Function to get all link types from database
+function getLinkTypes($pdo) {
+    $query = "SELECT DISTINCT Type FROM Links ORDER BY Type";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// Function to get all links or links of specific type
+function getLinks($pdo, $type = "") {
+    if (!empty($type)) {
+        $query = "SELECT * FROM Links WHERE Type = :type ORDER BY Name";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':type', $type);
+    } else {
+        $query = "SELECT * FROM Links ORDER BY Name";
+        $stmt = $pdo->prepare($query);
+    }
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// Function to get friendly name for link type
+function getTypeFriendlyName($type) {
+    $names = [
+        'Mfg' => 'Manufacturers',
+        'Vendor' => 'Vendors',
+        'Magician' => 'Magicians',
+        'Resource' => 'Resources',
+        'Org' => 'Organizations',
+        'Other' => 'Other Links'
+    ];
+    
+    return isset($names[$type]) ? $names[$type] : $type;
+}
+
+// Get all link types for navigation
+$linkTypes = getLinkTypes($pdo);
+
+// Get all links for JavaScript to filter
+$allLinks = getLinks($pdo);
 ?>
 
 <main>
     <!-- Hero Section -->
     <section class="hero-section content-hero content-hero-links">
         <div class="content-container">
-            <h1>Magic Links Directory</h1>
+            <h1 class="links-page-title">Magic Links Directory</h1>
             <p class="lead">Useful Resources for the Magical Community</p>
         </div>
     </section>
@@ -34,11 +97,12 @@ include_once('includes/header.php');
     <!-- Introduction Section -->
     <section class="content-info">
         <div class="content-container">
-            <h2>Explore the World of Magic</h2>
+            <h2 class="links-page-title">Explore the World of Magic</h2>
             <div class="content-row">
                 <div class="content-col content-col-full">
                     <div class="content-details-card">
                         <p>Welcome to our curated collection of magic-related websites and resources. We've compiled this list to help magicians of all skill levels find valuable information, products, and communities. Please note that Ring 76 is not affiliated with these external sites and does not endorse any specific products or services.</p>
+                        <p>If you have a magic link you would like added or notice a link that is no longer working, please <a href="mailto:librarian@ring76.com,webmage@ring76.com?subject=Magic Links">click here</a> to send us an email.</p>
                         <p><em>Links open in a new tab for your convenience.</em></p>
                     </div>
                 </div>
@@ -46,210 +110,34 @@ include_once('includes/header.php');
         </div>
     </section>
 
-    <!-- Magic Organizations Section -->
-    <section class="content-info">
+    <!-- Links Navigation -->
+    <nav id="link-filter-nav" class="award-navigation">
         <div class="content-container">
-            <h2>Magic Organizations</h2>
-            <div class="content-row">
-                <div class="content-col content-col-full">
-                    <div class="content-details-card links-card">
-                        <ul class="links-list">
-                            <li>
-                                <a href="https://www.magician.org/" target="_blank" rel="noopener noreferrer">
-                                    <span class="link-title">International Brotherhood of Magicians (IBM)</span>
-                                    <span class="link-description">The world's largest organization for magicians, with nearly 13,000 members worldwide.</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.magicsam.com/" target="_blank" rel="noopener noreferrer">
-                                    <span class="link-title">Society of American Magicians (SAM)</span>
-                                    <span class="link-description">America's oldest magic organization, founded in 1902, dedicated to elevating the art of magic.</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.magiccastle.com/" target="_blank" rel="noopener noreferrer">
-                                    <span class="link-title">The Magic Castle</span>
-                                    <span class="link-description">The world-famous private club for magicians in Hollywood, home to the Academy of Magical Arts.</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.fismmagic.org/" target="_blank" rel="noopener noreferrer">
-                                    <span class="link-title">FISM - International Federation of Magic Societies</span>
-                                    <span class="link-description">The international body coordinating magic societies worldwide and organizing the World Championship of Magic.</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            <ul id="link-filter">
+                <li><a href="#" data-type="all" class="active">All Links</a></li>
+                <?php
+                foreach ($linkTypes as $typeRow) {
+                    $linkType = $typeRow['Type'];
+                    $typeName = getTypeFriendlyName($linkType);
+                    echo '<li><a href="#links-heading" data-type="' . $linkType . '">' . $typeName . '</a></li>';
+                }
+                ?>
+            </ul>
         </div>
-    </section>
+    </nav>
 
-    <!-- Magic Shops and Dealers Section -->
-    <section class="content-info">
+    <!-- Links Section -->
+    <section id="links-container" class="content-info">
         <div class="content-container">
-            <h2>Magic Shops and Dealers</h2>
+            <h2 id="links-heading" class="links-page-title">All Links</h2>
             <div class="content-row">
                 <div class="content-col content-col-full">
                     <div class="content-details-card links-card">
-                        <ul class="links-list">
-                            <li>
-                                <a href="https://www.vanishingincmagic.com/" target="_blank" rel="noopener noreferrer">
-                                    <span class="link-title">Vanishing Inc.</span>
-                                    <span class="link-description">A modern magic shop founded by professional magicians, offering high-quality products and educational resources.</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.penguinmagic.com/" target="_blank" rel="noopener noreferrer">
-                                    <span class="link-title">Penguin Magic</span>
-                                    <span class="link-description">One of the largest online magic retailers, offering thousands of tricks, props, and instructional videos.</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.ellusionist.com/" target="_blank" rel="noopener noreferrer">
-                                    <span class="link-title">Ellusionist</span>
-                                    <span class="link-description">A popular retailer specializing in modern street magic, playing cards, and magic tutorials.</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.theory11.com/" target="_blank" rel="noopener noreferrer">
-                                    <span class="link-title">Theory11</span>
-                                    <span class="link-description">Known for their premium playing cards and sleek, modern magic products.</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Magic Publications Section -->
-    <section class="content-info">
-        <div class="content-container">
-            <h2>Magic Publications</h2>
-            <div class="content-row">
-                <div class="content-col content-col-full">
-                    <div class="content-details-card links-card">
-                        <ul class="links-list">
-                            <li>
-                                <a href="https://www.magicmagazine.com/" target="_blank" rel="noopener noreferrer">
-                                    <span class="link-title">MAGIC Magazine</span>
-                                    <span class="link-description">Extensive magic magazine archives from "The Magazine for Magicians".</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.geniimagazine.com/" target="_blank" rel="noopener noreferrer">
-                                    <span class="link-title">Genii Magazine</span>
-                                    <span class="link-description">The longest-running independent magic magazine, covering news and developments in the world of magic.</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.magicseen.com/" target="_blank" rel="noopener noreferrer">
-                                    <span class="link-title">Magicseen Magazine</span>
-                                    <span class="link-description">A contemporary magic magazine covering the UK and international magic scenes.</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Magic Forums & Communities Section -->
-    <section class="content-info">
-        <div class="content-container">
-            <h2>Magic Forums & Communities</h2>
-            <div class="content-row">
-                <div class="content-col content-col-full">
-                    <div class="content-details-card links-card">
-                        <ul class="links-list">
-                            <li>
-                                <a href="https://www.themagiccafe.com/" target="_blank" rel="noopener noreferrer">
-                                    <span class="link-title">The Magic Café</span>
-                                    <span class="link-description">A popular forum where magicians of all levels discuss tricks, techniques, and the business of magic.</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.reddit.com/r/Magic/" target="_blank" rel="noopener noreferrer">
-                                    <span class="link-title">r/Magic on Reddit</span>
-                                    <span class="link-description">Reddit's community for magicians, illusionists, and enthusiasts.</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.magicflix.com/" target="_blank" rel="noopener noreferrer">
-                                    <span class="link-title">MagicFlix</span>
-                                    <span class="link-description">A streaming platform dedicated to magic instruction and performances.</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Other Magic Clubs Section -->
-    <section class="content-info">
-        <div class="content-container">
-            <h2>Other Magic Clubs</h2>
-            <div class="content-row">
-                <div class="content-col content-col-full">
-                    <div class="content-details-card links-card">
-                        <ul class="links-list">
-                            <li>
-                                <a href="https://www.themagiccircle.co.uk/" target="_blank" rel="noopener noreferrer">
-                                    <span class="link-title">The Magic Circle (UK)</span>
-                                    <span class="link-description">One of the world's premier magical societies, based in London.</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://sam21.com/" target="_blank" rel="noopener noreferrer">
-                                    <span class="link-title">SAM Assembly 21 (Los Angeles)</span>
-                                    <span class="link-description">The Los Angeles chapter of the Society of American Magicians.</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.ring60.com/" target="_blank" rel="noopener noreferrer">
-                                    <span class="link-title">IBM Ring 60 (Los Angeles)</span>
-                                    <span class="link-description">The Los Angeles chapter of the International Brotherhood of Magicians.</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Magic Learning Resources Section -->
-    <section class="content-info">
-        <div class="content-container">
-            <h2>Magic Learning Resources</h2>
-            <div class="content-row">
-                <div class="content-col content-col-full">
-                    <div class="content-details-card links-card">
-                        <ul class="links-list">
-                            <li>
-                                <a href="https://www.conjuringarchive.com/" target="_blank" rel="noopener noreferrer">
-                                    <span class="link-title">Conjuring Archive</span>
-                                    <span class="link-description">A searchable database of magic books and publications for research purposes.</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.libraryofmagic.org/" target="_blank" rel="noopener noreferrer">
-                                    <span class="link-title">Library of Magic</span>
-                                    <span class="link-description">Digital archive of historical magic books and publications.</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.scribd.com/collections/3470848/Magic" target="_blank" rel="noopener noreferrer">
-                                    <span class="link-title">Scribd Magic Collection</span>
-                                    <span class="link-description">Collection of magic-related documents and books available via subscription.</span>
-                                </a>
-                            </li>
-                        </ul>
+                        <div id="links-display">
+                            <?php
+                            // This section will be dynamically populated by JavaScript
+                            ?>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -271,53 +159,144 @@ include_once('includes/chatbot.php');
 include_once('includes/scripts.php');
 ?>
 
-<style>
-    .links-card {
-        padding: 2rem;
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Store all links as a JavaScript object
+    const allLinks = <?php echo json_encode($allLinks); ?>;
+    
+    // Cache DOM elements
+    const linksDisplay = document.getElementById('links-display');
+    const linksHeading = document.getElementById('links-heading');
+    const linkFilters = document.querySelectorAll('#link-filter a');
+    const linkFilterNav = document.getElementById('link-filter-nav');
+    
+    // Function to format links by first letter
+    function formatLinks(links) {
+        if (links.length === 0) {
+            return '<div class="no-results"><p>No links found in this category.</p></div>';
+        }
+        
+        // Group links by first letter
+        const groupedLinks = {};
+        
+        links.forEach(link => {
+            const name = link.Name;
+            let firstLetter = name.charAt(0).toUpperCase();
+            
+            // Group numbers under #
+            if (!isNaN(parseInt(firstLetter))) {
+                firstLetter = '#';
+            }
+            
+            if (!groupedLinks[firstLetter]) {
+                groupedLinks[firstLetter] = [];
+            }
+            
+            groupedLinks[firstLetter].push(link);
+        });
+        
+        // Sort keys alphabetically
+        const sortedKeys = Object.keys(groupedLinks).sort();
+        
+        // Generate HTML for grouped links
+        let html = '';
+        
+        sortedKeys.forEach(letter => {
+            html += `<div class="alpha-group">`;
+            html += `<h3 class="alpha-header">${letter}</h3>`;
+            html += `<ul class="links-list">`;
+            
+            groupedLinks[letter].forEach(link => {
+                const name = link.Name;
+                const url = link.LinkURL;
+                
+                if (url) {
+                    html += `<li>
+                        <a href="${url}" target="_blank" rel="noopener noreferrer">
+                            <span class="link-title">${name}</span>
+                            <span class="link-description">${url}</span>
+                        </a>
+                    </li>`;
+                }
+            });
+            
+            html += `</ul>`;
+            html += `</div>`;
+        });
+        
+        return html;
     }
     
-    .links-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
+    // Function to filter links
+    function filterLinks(type) {
+        // Show loading indicator
+        linksDisplay.innerHTML = '<div class="loading"></div>';
+        
+        // Get navigation bar position for scrolling reference
+        const navPosition = linkFilterNav.getBoundingClientRect();
+        
+        setTimeout(() => {
+            let filteredLinks;
+            let headingText;
+            
+            if (type === 'all') {
+                filteredLinks = allLinks;
+                headingText = 'All Links';
+            } else {
+                filteredLinks = allLinks.filter(link => link.Type === type);
+                
+                // Get friendly name for the type
+                const typeNames = {
+                    'Mfg': 'Manufacturers',
+                    'Vendor': 'Vendors',
+                    'Magician': 'Magicians',
+                    'Resource': 'Resources',
+                    'Org': 'Organizations',
+                    'Other': 'Other Links'
+                };
+                
+                headingText = typeNames[type] || type;
+            }
+            
+            // Update heading
+            linksHeading.textContent = headingText;
+            
+            // Update display with formatted links
+            linksDisplay.innerHTML = formatLinks(filteredLinks);
+            
+            // Scroll to the navigation bar (not the top of the page)
+            if (navPosition) {
+                const scrollTarget = window.scrollY + navPosition.top;
+                window.scrollTo({
+                    top: scrollTarget,
+                    behavior: 'smooth'
+                });
+            }
+        }, 300); // Short delay to show loading animation
     }
     
-    .links-list li {
-        margin-bottom: 1.5rem;
-        border-bottom: 1px solid #eaeaea;
-        padding-bottom: 1.5rem;
-    }
+    // Set up event listeners for filters
+    linkFilters.forEach(filter => {
+        filter.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Remove active class from all filters
+            linkFilters.forEach(f => f.classList.remove('active'));
+            
+            // Add active class to clicked filter
+            this.classList.add('active');
+            
+            // Get filter type
+            const type = this.getAttribute('data-type');
+            
+            // Filter links
+            filterLinks(type);
+        });
+    });
     
-    .links-list li:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
-        padding-bottom: 0;
-    }
-    
-    .links-list a {
-        display: block;
-        color: #333;
-        text-decoration: none;
-        transition: all 0.3s ease;
-    }
-    
-    .links-list a:hover {
-        transform: translateX(5px);
-    }
-    
-    .link-title {
-        display: block;
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #2b76c2;
-        margin-bottom: 0.3rem;
-    }
-    
-    .link-description {
-        display: block;
-        font-size: 0.95rem;
-        color: #666;
-    }
-</style>
+    // Initialize with all links
+    filterLinks('all');
+});
+</script>
 </body>
 </html>

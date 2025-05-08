@@ -61,6 +61,183 @@ $(document).ready(function () {
 
   $(".benefit").addClass("benefit-animation");
 
+  // Contact form validation
+  if ($("#contact-form").length > 0) {
+    const contactForm = $("#contact-form");
+
+    // Add error styling for form validation
+    $("<style>")
+      .prop("type", "text/css")
+      .html(
+        `
+        .form-group.has-error input,
+        .form-group.has-error textarea {
+          border-color: #d9534f;
+          box-shadow: 0 0 0 0.2rem rgba(217, 83, 79, 0.25);
+        }
+        
+        .error-message {
+          color: #d9534f;
+          font-size: 0.85em;
+          margin-top: 5px;
+          display: block;
+          height: 20px;
+          transition: all 0.3s;
+        }
+        
+        .form-response {
+          padding: 15px;
+          margin-top: 20px;
+          border-radius: 4px;
+          transition: all 0.3s;
+        }
+        
+        .form-response.success {
+          background-color: #dff0d8;
+          border: 1px solid #d6e9c6;
+          color: #3c763d;
+        }
+        
+        .form-response.error {
+          background-color: #f2dede;
+          border: 1px solid #ebccd1;
+          color: #a94442;
+        }
+      `
+      )
+      .appendTo("head");
+
+    contactForm.on("submit", function (e) {
+      e.preventDefault();
+
+      if (validateForm()) {
+        // Check honeypot field - if it's filled, it's likely a bot
+        if ($("#website").val().length > 0) {
+          console.log("Bot submission detected");
+          showFormResponse("success", "Thank you for your message!"); // Show success to bot but don't actually submit
+          return false;
+        }
+
+        // Submit the form via AJAX
+        const formData = $(this).serialize();
+
+        $.ajax({
+          url: $(this).attr("action"),
+          method: "POST",
+          data: formData,
+          dataType: "json",
+          success: function (response) {
+            if (response.success) {
+              contactForm[0].reset();
+              showFormResponse("success", response.message);
+            } else {
+              showFormResponse(
+                "error",
+                response.message ||
+                  "There was an error sending your message. Please try again."
+              );
+            }
+          },
+          error: function () {
+            showFormResponse(
+              "error",
+              "There was an error sending your message. Please try again."
+            );
+          },
+        });
+      }
+
+      return false;
+    });
+
+    // Live validation as user types
+    $("#name, #email, #message").on("blur", function () {
+      validateField($(this));
+    });
+
+    function validateForm() {
+      let isValid = true;
+
+      // Validate name field
+      if (!validateField($("#name"))) {
+        isValid = false;
+      }
+
+      // Validate email field
+      if (!validateField($("#email"))) {
+        isValid = false;
+      }
+
+      // Validate message field
+      if (!validateField($("#message"))) {
+        isValid = false;
+      }
+
+      return isValid;
+    }
+
+    function validateField($field) {
+      const fieldId = $field.attr("id");
+      const value = $field.val().trim();
+      const $errorElement = $("#" + fieldId + "-error");
+      const $formGroup = $field.closest(".form-group");
+
+      $formGroup.removeClass("has-error");
+      $errorElement.text("");
+
+      // Different validation rules based on field type
+      switch (fieldId) {
+        case "name":
+          if (value === "") {
+            $errorElement.text("Please enter your name");
+            $formGroup.addClass("has-error");
+            return false;
+          }
+          break;
+
+        case "email":
+          if (value === "") {
+            $errorElement.text("Please enter your email address");
+            $formGroup.addClass("has-error");
+            return false;
+          } else if (!isValidEmail(value)) {
+            $errorElement.text("Please enter a valid email address");
+            $formGroup.addClass("has-error");
+            return false;
+          }
+          break;
+
+        case "message":
+          if (value === "") {
+            $errorElement.text("Please enter your message");
+            $formGroup.addClass("has-error");
+            return false;
+          }
+          break;
+      }
+
+      return true;
+    }
+
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    function showFormResponse(type, message) {
+      const $formResponse = $("#form-response");
+      $formResponse.removeClass("success error").addClass(type);
+      $formResponse.html("<p>" + message + "</p>").slideDown();
+
+      // Hide the response after 5 seconds for success messages
+      if (type === "success") {
+        setTimeout(function () {
+          $formResponse.slideUp();
+        }, 5000);
+      }
+    }
+  }
+
   const owlResponses = {
     hello: "Hello! How can I help you with magic today?",
     hi: "Hi there! How can I assist you with your magical interests?",
@@ -356,34 +533,6 @@ $(document).ready(function () {
       }
     }
   });
-
-  // Revert magic eyes to random movement on hover
-  // const magicEyes = $(".magic-eyes");
-  // if (magicEyes.length) {
-  //   // Add hover event listener for random movement, but don't remove the mousemove handler
-  //   magicEyes.on("mouseenter", function () {
-  //     // Generate random position
-  //     const randomTop = Math.floor(Math.random() * 80) + 10; // Between 10% and 90% of viewport height
-  //     const randomLeft = Math.floor(Math.random() * 80) + 10; // Between 10% and 90% of viewport width
-
-  //     // Add moving class for smoother animation
-  //     $(this).addClass("moving");
-
-  //     // Move the eyes to new random position
-  //     $(this).css({
-  //       top: randomTop + "vh",
-  //       left: randomLeft + "vw",
-  //     });
-
-  //     // Make eyes blink when they move
-  //     $(".magic-eyes .eye").addClass("blinking");
-
-  //     setTimeout(function () {
-  //       $(".magic-eyes .eye").removeClass("blinking");
-  //       magicEyes.removeClass("moving");
-  //     }, 200);
-  //   });
-  // }
 
   // Hamburger menu functionality
   $(".hamburger-menu").on("click", function () {

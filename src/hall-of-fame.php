@@ -21,6 +21,25 @@
 <?php
 // Include site header with navigation
 include_once('includes/header.php');
+
+// Include database connection
+include_once('utils/db-connect.php');
+
+// Helper function equivalent to the original mysqlJ_result function but for PDO
+function pdoJ_result($stmt, $row, $field=0) {
+    $stmt->execute();
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if (isset($data[$row])) {
+        if (is_string($field)) {
+            return isset($data[$row][$field]) ? $data[$row][$field] : null;
+        } else {
+            $keys = array_keys($data[$row]);
+            return isset($data[$row][$keys[$field]]) ? $data[$row][$keys[$field]] : null;
+        }
+    }
+    return null;
+}
+
 ?>
 
 <main>
@@ -71,7 +90,37 @@ include_once('includes/header.php');
                         <p>Throughout our history, these dedicated leaders have guided Ring 76 with their vision, passion, and commitment to the magical arts. We honor their service and the lasting impact they've made on our community.</p>
                         
                         <div class="award-container">
-                            <!-- Josh Sherwin -->
+                            <?php
+                            // Query for President data
+                            $query = "SELECT * FROM `HallOfFame` WHERE `President` = 1 ORDER BY `Year` DESC";
+                            $stmt = $pdo->prepare($query);
+                            $stmt->execute();
+                            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            $num = count($data);
+                            
+                            if ($num > 0) {
+                                $suitCounter = 0;
+                                $suits = ["hearts", "diamonds", "clubs", "spades"];
+                                $suitSymbols = ["♥", "♦", "♣", "♠"];
+                                
+                                // Loop through results and create award cards
+                                for ($i = 0; $i < $num; $i++) {
+                                    $name = pdoJ_result($stmt, $i, "Name");
+                                    $year = pdoJ_result($stmt, $i, "Year");
+                                    $endyear = pdoJ_result($stmt, $i, "EndYear");
+                                    
+                                    // Format years display
+                                    $yearDisplay = $year;
+                                    if ($endyear != "0000") {
+                                        $yearDisplay .= " - " . $endyear;
+                                    }
+                                    
+                                    // Cycle through suits
+                                    $currentSuitIndex = $suitCounter % 4;
+                                    $currentSuit = $suits[$currentSuitIndex];
+                                    $currentSuitSymbol = $suitSymbols[$currentSuitIndex];
+                                    $suitCounter++;
+                            ?>
                             <div class="award-card">
                                 <div class="award-card-inner">
                                     <div class="award-front">
@@ -80,14 +129,14 @@ include_once('includes/header.php');
                                             <div class="corner top-right"></div>
                                             <div class="corner bottom-left"></div>
                                             <div class="corner bottom-right"></div>
-                                            <div class="award-name">Josh Sherwin</div>
-                                            <div class="award-years">2023 - 2025</div>
+                                            <div class="award-name"><?php echo $name; ?></div>
+                                            <div class="award-years"><?php echo $yearDisplay; ?></div>
                                             <div class="award-title">President</div>
                                         </div>
                                         <div class="shine"></div>
                                     </div>
                                     <div class="award-back">
-                                        <div class="suit hearts">♥</div>
+                                        <div class="suit <?php echo $currentSuit; ?>"><?php echo $currentSuitSymbol; ?></div>
                                     </div>
                                 </div>
                                 <div class="sparkle-container">
@@ -101,1278 +150,10 @@ include_once('includes/header.php');
                                     <div class="sparkle"></div>
                                 </div>
                             </div>
-                            
-                            <!-- Mike Stilwell -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Mike Stilwell</div>
-                                            <div class="award-years">2021 - 2023</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit diamonds">♦</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Richard Ustick -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Richard Ustick</div>
-                                            <div class="award-years">2019 - 2021</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit clubs">♣</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Robert Vinson -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Robert Vinson</div>
-                                            <div class="award-years">2018 - 2019</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit spades">♠</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Joe Mystic -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Joe Mystic</div>
-                                            <div class="award-years">2016 - 2018</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit hearts">♥</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Kenny Shelton (2015-2016) -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Kenny Shelton</div>
-                                            <div class="award-years">2015 - 2016</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit diamonds">♦</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Salomon Barajas -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Salomon Barajas</div>
-                                            <div class="award-years">2014 - 2015</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit clubs">♣</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Derek Ostovani -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Derek Ostovani</div>
-                                            <div class="award-years">2012 - 2014</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit spades">♠</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Kenny Shelton (2010-2012) -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Kenny Shelton</div>
-                                            <div class="award-years">2010 - 2012</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit hearts">♥</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Michael E. Johnson -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Michael E. Johnson</div>
-                                            <div class="award-years">2009 - 2010</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit diamonds">♦</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Terry Lunceford -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Terry Lunceford</div>
-                                            <div class="award-years">2007 - 2009</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit clubs">♣</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Bob Ingalls -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Bob Ingalls</div>
-                                            <div class="award-years">2005 - 2007</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit spades">♠</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Diane Lane -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Diane Lane</div>
-                                            <div class="award-years">2003 - 2005</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit hearts">♥</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Don Soul -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Don Soul</div>
-                                            <div class="award-years">2001 - 2003</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit diamonds">♦</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Julie Dale -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Julie Dale</div>
-                                            <div class="award-years">1999 - 2001</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit clubs">♣</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Gary Schwartzwald -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Gary Schwartzwald</div>
-                                            <div class="award-years">1997 - 1999</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit spades">♠</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Greg Wauson -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Greg Wauson</div>
-                                            <div class="award-years">1996 - 1997</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit hearts">♥</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Rick Waterhouse -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Rick Waterhouse</div>
-                                            <div class="award-years">1994 - 1996</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit diamonds">♦</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Sherry Luft -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Sherry Luft</div>
-                                            <div class="award-years">1993 - 1994</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit clubs">♣</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Jeff Marcus -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Jeff Marcus</div>
-                                            <div class="award-years">1992 - 1993</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit spades">♠</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Brad Burt -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Brad Burt</div>
-                                            <div class="award-years">1991 - 1992</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit hearts">♥</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- J.P. Jackson -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">J.P. Jackson</div>
-                                            <div class="award-years">1990 - 1991</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit diamonds">♦</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Dick Dale -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Dick Dale</div>
-                                            <div class="award-years">1988 - 1990</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit clubs">♣</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Mark Dimenstein -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Mark Dimenstein</div>
-                                            <div class="award-years">1987 - 1988</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit spades">♠</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Al Knox -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Al Knox</div>
-                                            <div class="award-years">1986 - 1987</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit hearts">♥</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Frederick A. Rohrer -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Frederick A. Rohrer</div>
-                                            <div class="award-years">1985 - 1986</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit diamonds">♦</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Ursula Rohrer -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Ursula Rohrer</div>
-                                            <div class="award-years">1984 - 1985</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit clubs">♣</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- George Edwards -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">George Edwards</div>
-                                            <div class="award-years">1983 - 1984</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit spades">♠</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Albert Knox -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Albert Knox</div>
-                                            <div class="award-years">1982 - 1983</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit hearts">♥</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Rich Robertson -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Rich Robertson</div>
-                                            <div class="award-years">1981 - 1982</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit diamonds">♦</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Mike Coit -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Mike Coit</div>
-                                            <div class="award-years">1980 - 1981</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit clubs">♣</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Nick Brown -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Nick Brown</div>
-                                            <div class="award-years">1979 - 1980</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit spades">♠</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Harry Eng -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Harry Eng</div>
-                                            <div class="award-years">1978 - 1979</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit hearts">♥</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Dave Ciambrone -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Dave Ciambrone</div>
-                                            <div class="award-years">1977 - 1978</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit diamonds">♦</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Jim Beamon -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Jim Beamon</div>
-                                            <div class="award-years">1976 - 1977</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit clubs">♣</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Bob Pozner -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Bob Pozner</div>
-                                            <div class="award-years">1975 - 1976</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit spades">♠</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Jim Riley -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Jim Riley</div>
-                                            <div class="award-years">1974 - 1975</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit hearts">♥</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- John Wagner -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">John Wagner</div>
-                                            <div class="award-years">1973 - 1974</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit diamonds">♦</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Jack White -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Jack White</div>
-                                            <div class="award-years">1972 - 1973</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit clubs">♣</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- George Edwards -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">George Edwards</div>
-                                            <div class="award-years">1970 - 1972</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit spades">♠</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Danny Martin -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Danny Martin</div>
-                                            <div class="award-years">1969 - 1970</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit hearts">♥</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Jim Riley -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Jim Riley</div>
-                                            <div class="award-years">1968 - 1969</div>
-                                            <div class="award-title">President</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit diamonds">♦</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
+                            <?php
+                                }
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
@@ -1388,39 +169,32 @@ include_once('includes/header.php');
                 <div class="content-col content-col-full">
                     <div class="content-details-card">
                         <p>Each year, Ring 76 recognizes one outstanding member who has gone above and beyond in their contributions to our club. This prestigious award celebrates dedication, service, and commitment to advancing our magical community.</p>
+                        
                         <div class="award-container">
-                            <!-- Member Award Card 1 -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">David Thompson</div>
-                                            <div class="award-years">2023</div>
-                                            <div class="award-title">Member of the Year</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit hearts">♥</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
+                            <?php
+                            // Query for Member of the Year data
+                            $query = "SELECT * FROM `HallOfFame` WHERE `MemberOfYear` = 1 ORDER BY `Year` DESC";
+                            $stmt = $pdo->prepare($query);
+                            $stmt->execute();
+                            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            $num = count($data);
                             
-                            <!-- Member Award Card 2 -->
+                            if ($num > 0) {
+                                $suitCounter = 0;
+                                $suits = ["hearts", "diamonds", "clubs", "spades"];
+                                $suitSymbols = ["♥", "♦", "♣", "♠"];
+                                
+                                // Loop through results and create award cards
+                                for ($i = 0; $i < $num; $i++) {
+                                    $name = pdoJ_result($stmt, $i, "Name");
+                                    $year = pdoJ_result($stmt, $i, "Year");
+                                    
+                                    // Cycle through suits
+                                    $currentSuitIndex = $suitCounter % 4;
+                                    $currentSuit = $suits[$currentSuitIndex];
+                                    $currentSuitSymbol = $suitSymbols[$currentSuitIndex];
+                                    $suitCounter++;
+                            ?>
                             <div class="award-card">
                                 <div class="award-card-inner">
                                     <div class="award-front">
@@ -1429,14 +203,14 @@ include_once('includes/header.php');
                                             <div class="corner top-right"></div>
                                             <div class="corner bottom-left"></div>
                                             <div class="corner bottom-right"></div>
-                                            <div class="award-name">Sarah Davis</div>
-                                            <div class="award-years">2022</div>
+                                            <div class="award-name"><?php echo $name; ?></div>
+                                            <div class="award-years"><?php echo $year; ?></div>
                                             <div class="award-title">Member of the Year</div>
                                         </div>
                                         <div class="shine"></div>
                                     </div>
                                     <div class="award-back">
-                                        <div class="suit diamonds">♦</div>
+                                        <div class="suit <?php echo $currentSuit; ?>"><?php echo $currentSuitSymbol; ?></div>
                                     </div>
                                 </div>
                                 <div class="sparkle-container">
@@ -1450,68 +224,10 @@ include_once('includes/header.php');
                                     <div class="sparkle"></div>
                                 </div>
                             </div>
-                            
-                            <!-- Member Award Card 3 -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Michael Brown</div>
-                                            <div class="award-years">2021</div>
-                                            <div class="award-title">Member of the Year</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit clubs">♣</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Member Award Card 4 -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Jennifer Miller</div>
-                                            <div class="award-years">2020</div>
-                                            <div class="award-title">Member of the Year</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit spades">♠</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
+                            <?php
+                                }
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
@@ -1529,38 +245,30 @@ include_once('includes/header.php');
                         <p>The Performer of the Year award recognizes exceptional magical talent, consistent excellence in performance, and artistic growth. These recipients have demonstrated outstanding skill, creativity, and showmanship in their magical presentations.</p>
                         
                         <div class="award-container">
-                            <!-- Performer Award Card 1 -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Alex Wilson</div>
-                                            <div class="award-years">2023</div>
-                                            <div class="award-title">Performer of the Year</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit hearts">♥</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
+                            <?php
+                            // Query for Performer of the Year data
+                            $query = "SELECT * FROM `HallOfFame` WHERE `PerformerOfYear` = 1 ORDER BY `Year` DESC";
+                            $stmt = $pdo->prepare($query);
+                            $stmt->execute();
+                            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            $num = count($data);
                             
-                            <!-- Performer Award Card 2 -->
+                            if ($num > 0) {
+                                $suitCounter = 0;
+                                $suits = ["hearts", "diamonds", "clubs", "spades"];
+                                $suitSymbols = ["♥", "♦", "♣", "♠"];
+                                
+                                // Loop through results and create award cards
+                                for ($i = 0; $i < $num; $i++) {
+                                    $name = pdoJ_result($stmt, $i, "Name");
+                                    $year = pdoJ_result($stmt, $i, "Year");
+                                    
+                                    // Cycle through suits
+                                    $currentSuitIndex = $suitCounter % 4;
+                                    $currentSuit = $suits[$currentSuitIndex];
+                                    $currentSuitSymbol = $suitSymbols[$currentSuitIndex];
+                                    $suitCounter++;
+                            ?>
                             <div class="award-card">
                                 <div class="award-card-inner">
                                     <div class="award-front">
@@ -1569,14 +277,14 @@ include_once('includes/header.php');
                                             <div class="corner top-right"></div>
                                             <div class="corner bottom-left"></div>
                                             <div class="corner bottom-right"></div>
-                                            <div class="award-name">Emily Garcia</div>
-                                            <div class="award-years">2022</div>
+                                            <div class="award-name"><?php echo $name; ?></div>
+                                            <div class="award-years"><?php echo $year; ?></div>
                                             <div class="award-title">Performer of the Year</div>
                                         </div>
                                         <div class="shine"></div>
                                     </div>
                                     <div class="award-back">
-                                        <div class="suit diamonds">♦</div>
+                                        <div class="suit <?php echo $currentSuit; ?>"><?php echo $currentSuitSymbol; ?></div>
                                     </div>
                                 </div>
                                 <div class="sparkle-container">
@@ -1590,68 +298,10 @@ include_once('includes/header.php');
                                     <div class="sparkle"></div>
                                 </div>
                             </div>
-                            
-                            <!-- Performer Award Card 3 -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Chris Martinez</div>
-                                            <div class="award-years">2021</div>
-                                            <div class="award-title">Performer of the Year</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit clubs">♣</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Performer Award Card 4 -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Jessica Lee</div>
-                                            <div class="award-years">2020</div>
-                                            <div class="award-title">Performer of the Year</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit spades">♠</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
+                            <?php
+                                }
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
@@ -1669,38 +319,30 @@ include_once('includes/header.php');
                         <p>Our annual Stage Contest showcases the best in theatrical magic, from grand illusions to captivating manipulation acts. These winners have demonstrated exceptional skill in entertaining audiences with their magical performances on stage.</p>
                         
                         <div class="award-container">
-                            <!-- Stage Contest Award Card 1 -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Daniel White</div>
-                                            <div class="award-years">2023</div>
-                                            <div class="award-title">Stage Contest Winner</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit hearts">♥</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
+                            <?php
+                            // Query for Stage Contest data
+                            $query = "SELECT * FROM `HallOfFame` WHERE `Stage` = 1 ORDER BY `Year` DESC";
+                            $stmt = $pdo->prepare($query);
+                            $stmt->execute();
+                            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            $num = count($data);
                             
-                            <!-- Stage Contest Award Card 2 -->
+                            if ($num > 0) {
+                                $suitCounter = 0;
+                                $suits = ["hearts", "diamonds", "clubs", "spades"];
+                                $suitSymbols = ["♥", "♦", "♣", "♠"];
+                                
+                                // Loop through results and create award cards
+                                for ($i = 0; $i < $num; $i++) {
+                                    $name = pdoJ_result($stmt, $i, "Name");
+                                    $year = pdoJ_result($stmt, $i, "Year");
+                                    
+                                    // Cycle through suits
+                                    $currentSuitIndex = $suitCounter % 4;
+                                    $currentSuit = $suits[$currentSuitIndex];
+                                    $currentSuitSymbol = $suitSymbols[$currentSuitIndex];
+                                    $suitCounter++;
+                            ?>
                             <div class="award-card">
                                 <div class="award-card-inner">
                                     <div class="award-front">
@@ -1709,14 +351,14 @@ include_once('includes/header.php');
                                             <div class="corner top-right"></div>
                                             <div class="corner bottom-left"></div>
                                             <div class="corner bottom-right"></div>
-                                            <div class="award-name">Laura Green</div>
-                                            <div class="award-years">2022</div>
+                                            <div class="award-name"><?php echo $name; ?></div>
+                                            <div class="award-years"><?php echo $year; ?></div>
                                             <div class="award-title">Stage Contest Winner</div>
                                         </div>
                                         <div class="shine"></div>
                                     </div>
                                     <div class="award-back">
-                                        <div class="suit diamonds">♦</div>
+                                        <div class="suit <?php echo $currentSuit; ?>"><?php echo $currentSuitSymbol; ?></div>
                                     </div>
                                 </div>
                                 <div class="sparkle-container">
@@ -1730,68 +372,10 @@ include_once('includes/header.php');
                                     <div class="sparkle"></div>
                                 </div>
                             </div>
-                            
-                            <!-- Stage Contest Award Card 3 -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Kevin Brown</div>
-                                            <div class="award-years">2021</div>
-                                            <div class="award-title">Stage Contest Winner</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit clubs">♣</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Stage Contest Award Card 4 -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Sophia Martinez</div>
-                                            <div class="award-years">2020</div>
-                                            <div class="award-title">Stage Contest Winner</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit spades">♠</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
+                            <?php
+                                }
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
@@ -1809,33 +393,30 @@ include_once('includes/header.php');
                         <p>The Close-up Contest celebrates the intimate art of magic performed right before your eyes. These winners have mastered the delicate skills of sleight of hand, misdirection, and audience engagement in the challenging realm of close-up magic.</p>
                         
                         <div class="award-container">
-                            <!-- Close-up Contest Award Card 1 -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">James Anderson</div>
-                                            <div class="award-years">2023</div>
-                                            <div class="award-title">Close-up Contest Winner</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
+                            <?php
+                            // Query for Close-up Contest data
+                            $query = "SELECT * FROM `HallOfFame` WHERE `CloseUp` = 1 ORDER BY `Year` DESC";
+                            $stmt = $pdo->prepare($query);
+                            $stmt->execute();
+                            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            $num = count($data);
                             
-                            <!-- Close-up Contest Award Card 2 -->
+                            if ($num > 0) {
+                                $suitCounter = 0;
+                                $suits = ["hearts", "diamonds", "clubs", "spades"];
+                                $suitSymbols = ["♥", "♦", "♣", "♠"];
+                                
+                                // Loop through results and create award cards
+                                for ($i = 0; $i < $num; $i++) {
+                                    $name = pdoJ_result($stmt, $i, "Name");
+                                    $year = pdoJ_result($stmt, $i, "Year");
+                                    
+                                    // Cycle through suits
+                                    $currentSuitIndex = $suitCounter % 4;
+                                    $currentSuit = $suits[$currentSuitIndex];
+                                    $currentSuitSymbol = $suitSymbols[$currentSuitIndex];
+                                    $suitCounter++;
+                            ?>
                             <div class="award-card">
                                 <div class="award-card-inner">
                                     <div class="award-front">
@@ -1844,14 +425,14 @@ include_once('includes/header.php');
                                             <div class="corner top-right"></div>
                                             <div class="corner bottom-left"></div>
                                             <div class="corner bottom-right"></div>
-                                            <div class="award-name">Olivia Harris</div>
-                                            <div class="award-years">2022</div>
+                                            <div class="award-name"><?php echo $name; ?></div>
+                                            <div class="award-years"><?php echo $year; ?></div>
                                             <div class="award-title">Close-up Contest Winner</div>
                                         </div>
                                         <div class="shine"></div>
                                     </div>
                                     <div class="award-back">
-                                        <div class="suit diamonds">♦</div>
+                                        <div class="suit <?php echo $currentSuit; ?>"><?php echo $currentSuitSymbol; ?></div>
                                     </div>
                                 </div>
                                 <div class="sparkle-container">
@@ -1865,68 +446,10 @@ include_once('includes/header.php');
                                     <div class="sparkle"></div>
                                 </div>
                             </div>
-                            
-                            <!-- Close-up Contest Award Card 3 -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">William Clark</div>
-                                            <div class="award-years">2021</div>
-                                            <div class="award-title">Close-up Contest Winner</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit clubs">♣</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Close-up Contest Award Card 4 -->
-                            <div class="award-card">
-                                <div class="award-card-inner">
-                                    <div class="award-front">
-                                        <div class="nameplate">
-                                            <div class="corner top-left"></div>
-                                            <div class="corner top-right"></div>
-                                            <div class="corner bottom-left"></div>
-                                            <div class="corner bottom-right"></div>
-                                            <div class="award-name">Emma Walker</div>
-                                            <div class="award-years">2020</div>
-                                            <div class="award-title">Close-up Contest Winner</div>
-                                        </div>
-                                        <div class="shine"></div>
-                                    </div>
-                                    <div class="award-back">
-                                        <div class="suit spades">♠</div>
-                                    </div>
-                                </div>
-                                <div class="sparkle-container">
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                    <div class="sparkle"></div>
-                                </div>
-                            </div>
+                            <?php
+                                }
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>

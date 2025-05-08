@@ -1,32 +1,36 @@
+<?php
+// Include the database connection
+require_once __DIR__ . '/../../utils/db-connect.php';
+
+// Fetch upcoming events for display cards (limit to 5 most recent)
+try {
+    $stmt = $pdo->prepare("SELECT * FROM Events WHERE Date >= CURRENT_DATE-1 AND Type='Ring' ORDER BY Date LIMIT 5");
+    $stmt->execute();
+    $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    error_log("Database error in events.php: " . $e->getMessage());
+    $events = []; // Empty array if query fails
+}
+?>
+
 <section id="events" class="events-section">
     <div class="container">
         <h2>Upcoming Meetings and Events</h2>
         <div class="event-cards">
-            <div class="event-card">
-                <h3>Mini-Lectures</h3>
-                <p class="event-date">March 10, 2025</p>
-                <p>Join us for insightful mini-lectures on magical techniques.</p>
-            </div>
-            <div class="event-card">
-                <h3>You Fooled Us!</h3>
-                <p class="event-date">April 14, 2025</p>
-                <p>Showcase your most deceptive illusions to fool fellow magicians.</p>
-            </div>
-            <div class="event-card">
-                <h3>Stage Contest</h3>
-                <p class="event-date">May 12, 2025</p>
-                <p>Compete in our annual stage magic competition.</p>
-            </div>
-            <div class="event-card">
-                <h3>TBD</h3>
-                <p class="event-date">June 9, 2025</p>
-                <p>Event details coming soon.</p>
-            </div>
-            <div class="event-card">
-                <h3>Installation Banquet</h3>
-                <p class="event-date">July 14, 2025</p>
-                <p>Annual celebration and officer installation. Time and Date Subject to Change.</p>
-            </div>
+            <?php if (count($events) > 0): ?>
+                <?php foreach($events as $event): ?>
+                    <div class="event-card">
+                        <h3><?= htmlspecialchars($event['Name']) ?></h3>
+                        <p class="event-date"><?= date('F j, Y', strtotime($event['Date'])) ?></p>
+                        <p class="event-place">
+                          <?= htmlspecialchars($event['Place']) ?>
+                        </p>
+                        <p><?= !empty($event['Comment']) ? htmlspecialchars($event['Comment']) : 'Join us for this magical event.' ?></p>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No upcoming events at this time. Please check back later.</p>
+            <?php endif; ?>
         </div>
     </div>
 </section>
