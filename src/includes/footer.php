@@ -34,7 +34,6 @@
                     <div class="footer-nav-section">
                       <h3>Parlour Tricks</h3>
                       <ul>
-                        <!-- <li><a href="magic-in-san-diego.php">Magic in San Diego</a></li> -->
                         <li><a href="https://arcanum.ring76.com/">Arcanum</a></li>
                         <li><a href="links.php">Link Directory</a></li>
                         <li><a href="#" class="do-magic" id="flip-trick">Do a Magic Trick</a></li>
@@ -44,10 +43,25 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; Ring 76 - All rights reserved</p>
+            <p>&copy; <?php echo getCopyrightYears(1948); ?> All rights reserved - Ring 76 - San Diego Magic Club</p>
             <div class="back-to-top">
-                <a href="#" id="back-to-top-btn">🪄 Rewind the Spell</a>
+                <a href="#" id="back-to-top-btn">🪄 Turn Back Time</a>
             </div>
         </div>
     </div>
 </footer>
+
+<?php
+/**
+ * Function to display copyright years from start year to current year
+ * @param int $startYear Starting year for copyright
+ * @return string Formatted copyright year string
+ */
+function getCopyrightYears($startYear) {
+    $currentYear = date('Y');
+    if ($startYear == $currentYear || $startYear > $currentYear) {
+        return $currentYear;
+    }
+    return $startYear . ' - ' . $currentYear . ' ';
+}
+?>

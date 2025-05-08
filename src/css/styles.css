@@ -1230,6 +1230,15 @@ footer ul li {
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     width: 100%;
 }
+
+/* Add error styling for form inputs */
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error {
+    border: 2px solid #c62828;
+    box-shadow: 0 0 5px rgba(198, 40, 40, 0.3);
+}
+
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
@@ -1237,6 +1246,7 @@ footer ul li {
     border-color: #d4ac0d;
     box-shadow: 0 0 0 2px rgba(212, 172, 13, 0.3);
 }
+
 .form-group input::placeholder,
 .form-group textarea::placeholder {
     color: #888;
@@ -1951,9 +1961,9 @@ footer ul li {
 }
 
 .links-list li {
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid #666;
-    padding-bottom: 1.5rem;
+    margin-bottom: .5rem;
+    border-bottom: 1px solid #474747;
+    padding-bottom: .5rem;
 }
 
 .links-list li:last-child {
@@ -1964,7 +1974,7 @@ footer ul li {
 
 .links-list a {
     display: block;
-    color: #333;
+    color: #d4d4d4;
     text-decoration: none;
     transition: all 0.3s ease;
 }
@@ -2094,26 +2104,14 @@ footer ul li {
 }
 
 .back-to-top a {
-    display: inline-flex;
-    align-items: center;
-    background: linear-gradient(135deg, #8b0000, #d4ac0d);
-    color: white;
-    padding: 8px 16px;
-    border-radius: 25px;
+    color:#888888;
     text-decoration: none;
-    font-size: 0.9rem;
-    box-shadow: 0 3px 10px rgba(139, 0, 0, 0.3);
-    transition: all 0.3s ease;
 }
 
-.back-to-top a:hover {
-    background: linear-gradient(135deg, #d4ac0d, #8b0000);
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(139, 0, 0, 0.5);
-}
+
 
 .back-to-top i {
-    margin-right: 6px;
+    margin-right: 10px;
 }
 
 /* Levitation animation for back to top button */

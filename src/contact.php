@@ -113,7 +113,14 @@ include_once('includes/header.php');
                         <h3>Complete Your Membership</h3>
                         <p>After contacting us regarding membership, be sure to submit your dues to expedite the process. Payment confirms your commitment to joining our magical community.</p>
                         <div class="content-mt-medium">
-                            <a href="#paypal" class="content-btn">Submit Payment on PayPal</a>
+                            <?php 
+                            // Set parameters for the payment button
+                            $button_text = 'Conjure the Payment';
+                            $button_class = 'content-btn';
+                            
+                            // Include the payment button component
+                            include_once('includes/components/paypal-button.php');
+                            ?>
                         </div>
                     </div>
                 </div>

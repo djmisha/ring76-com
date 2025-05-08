@@ -848,6 +848,12 @@ table.events a:hover {
     display: block;
 }
 
+/* Add styles for input fields with error */
+input.error, textarea.error {
+    border: 2px solid #c62828;
+    box-shadow: 0 0 5px rgba(198, 40, 40, 0.3);
+}
+
 /* Section Divider */
 .section-divider {
     height: 50px;

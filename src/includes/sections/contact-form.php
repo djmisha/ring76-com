@@ -118,11 +118,23 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Clear previous errors
             document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+            document.querySelectorAll('input, textarea').forEach(el => el.classList.remove('error'));
+            
+            // Validate required fields
+            const name = document.getElementById('name');
+            const message = document.getElementById('message');
+            let hasError = false;
+            
+            // Check name
+            if (!name.value.trim()) {
+                document.getElementById('name-error').textContent = "Name is required";
+                name.classList.add('error');
+                hasError = true;
+            }
             
             // Validate email
             const email = emailInput.value;
             const emailErrorMsg = validateEmail(email);
-            let hasError = false;
             
             if (emailErrorMsg) {
                 emailError.textContent = emailErrorMsg;
@@ -137,6 +149,13 @@ document.addEventListener('DOMContentLoaded', function() {
             if (phoneErrorMsg) {
                 phoneError.textContent = phoneErrorMsg;
                 phoneInput.classList.add('error');
+                hasError = true;
+            }
+            
+            // Check message
+            if (!message.value.trim()) {
+                document.getElementById('message-error').textContent = "Message is required";
+                message.classList.add('error');
                 hasError = true;
             }
             

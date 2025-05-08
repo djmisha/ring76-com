@@ -859,7 +859,6 @@ window.setupMagicTricks = function () {
               .map((card) => `<span class="card">${card}</span>`)
               .join("")}
           </div>
-          <p>Your card is missing!</p>
           <button class="magic-button" id="close-magic-trick">Amazing!</button>
         `);
 

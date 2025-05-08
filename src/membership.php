@@ -253,7 +253,14 @@ include_once('includes/header.php');
                             <h3>Membership Dues</h3>
                             <p><strong>Ring 76 Local Dues:</strong> $30 per year</p>
                             <p>Dues can be paid via PayPal or by check made out to "Ring 76 IBM"</p>
-                            <a href="#" class="content-btn content-mt-medium">Pay Membership Dues</a>
+                            <?php 
+                            // Set parameters for the payment button
+                            $button_text = 'Conjure the Payment';
+                            $button_class = 'content-btn content-mt-medium';
+                            
+                            // Include the payment button component
+                            include_once('includes/components/paypal-button.php');
+                            ?>
                         </div>
                     </div>
                 </div>
