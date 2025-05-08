@@ -81,49 +81,6 @@ window.setupContactForm = function () {
   if ($("#contact-form").length > 0) {
     const contactForm = $("#contact-form");
 
-    if ($("style#contactFormStyles").length === 0) {
-      $("<style id='contactFormStyles'>")
-        .prop("type", "text/css")
-        .html(
-          `
-        .form-group.has-error input,
-        .form-group.has-error textarea {
-          border-color: #d9534f;
-          box-shadow: 0 0 0 0.2rem rgba(217, 83, 79, 0.25);
-        }
-        
-        .error-message {
-          color: #d9534f;
-          font-size: 0.85em;
-          margin-top: 5px;
-          display: block;
-          height: 20px;
-          transition: all 0.3s;
-        }
-        
-        .form-response {
-          padding: 15px;
-          margin-top: 20px;
-          border-radius: 4px;
-          transition: all 0.3s;
-        }
-        
-        .form-response.success {
-          background-color: #dff0d8;
-          border: 1px solid #d6e9c6;
-          color: #3c763d;
-        }
-        
-        .form-response.error {
-          background-color: #f2dede;
-          border: 1px solid #ebccd1;
-          color: #a94442;
-        }
-      `
-        )
-        .appendTo("head");
-    }
-
     contactForm.off("submit").on("submit", function (e) {
       e.preventDefault();
 
@@ -533,14 +490,33 @@ window.setupHamburgerMenu = function () {
     .off("click")
     .on("click", function () {
       $(this).toggleClass("active");
-      $(".main-nav").toggleClass("open");
+      
+      // Toggle the main-nav open class directly
+      if ($(".main-nav").hasClass("open")) {
+        // If menu is open, close it with animation
+        $(".main-nav").css("right", "-100%");
+        setTimeout(function() {
+          $(".main-nav").removeClass("open");
+          $(".main-nav").css("right", "");
+        }, 300);
+      } else {
+        // If menu is closed, open it
+        $(".main-nav").addClass("open");
+        $(".main-nav").css("right", "0");
+      }
     });
 
   $(".main-nav a")
     .off("click.hamburger")
     .on("click.hamburger", function () {
       $(".hamburger-menu").removeClass("active");
-      $(".main-nav").removeClass("open");
+      
+      // Close the menu
+      $(".main-nav").css("right", "-100%");
+      setTimeout(function() {
+        $(".main-nav").removeClass("open");
+        $(".main-nav").css("right", "");
+      }, 300);
     });
 
   $(document)
@@ -552,7 +528,13 @@ window.setupHamburgerMenu = function () {
         $(".main-nav").hasClass("open")
       ) {
         $(".hamburger-menu").removeClass("active");
-        $(".main-nav").removeClass("open");
+        
+        // Close the menu when clicking outside
+        $(".main-nav").css("right", "-100%");
+        setTimeout(function() {
+          $(".main-nav").removeClass("open");
+          $(".main-nav").css("right", "");
+        }, 300);
       }
     });
 };
@@ -672,93 +654,6 @@ window.setupMagicTricks = function () {
     $("#magic-area").remove();
   }
 
-  if ($("#magicTrickStyles").length === 0) {
-    $("<style id='magicTrickStyles'>")
-      .prop("type", "text/css")
-      .html(
-        `
-        #magic-trick-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background-color: rgba(0, 0, 0, 0.95);
-          z-index: 10000;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          opacity: 0;
-          pointer-events: none;
-          transition: opacity 0.5s ease;
-        }
-        #magic-trick-overlay.visible {
-          opacity: 1;
-          pointer-events: auto;
-        }
-        #magic-area {
-          max-width: 800px;
-          width: 90%;
-          padding: 40px;
-          font-size: 1.5rem;
-          text-align: center;
-          color: #fff;
-          background-color: rgba(20, 20, 20, 0.85);
-          border-radius: 10px;
-          box-shadow: 0 0 30px rgba(212, 172, 13, 0.5);
-          transition: all 0.5s ease;
-          margin: 20px;
-        }
-        .cards-container {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          margin: 30px 0;
-        }
-        .card {
-          font-size: 6rem;
-          margin: 10px;
-          transition: all 0.5s ease;
-          cursor: default;
-          text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
-        }
-        .card:hover {
-          transform: scale(1.1);
-        }
-        .mind-reading-animation {
-          font-size: 3rem;
-          margin: 20px;
-        }
-        .crystal-ball {
-          display: inline-block;
-          font-size: 5rem;
-          animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-          0% { transform: scale(1); opacity: 0.7; }
-          50% { transform: scale(1.1); opacity: 1; }
-          100% { transform: scale(1); opacity: 0.7; }
-        }
-        .magic-button {
-          background: #8b0000;
-          color: #fff;
-          border: none;
-          padding: 10px 20px;
-          font-size: 1.1rem;
-          border-radius: 5px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          margin-top: 20px;
-        }
-        .magic-button:hover {
-          background: #d4ac0d;
-          transform: scale(1.05);
-        }
-      `
-      )
-      .appendTo("head");
-  }
-
   if (
     $("#magic-trick-overlay").length === 0 ||
     $("#magic-trick-overlay").children().length === 0
@@ -802,6 +697,8 @@ window.setupMagicTricks = function () {
 
     // First set - only number cards, mixed non-sequentially from different suits
     const firstSetOfCards = ["🂢", "🃄", "🃙", "🂦", "🃓"]; // 2♠, 4♦, 9♦, 6♠, 3♣
+    // Define the second set of cards here (missing definition was causing the error)
+    const secondSetOfCards = ["🂢", "🃄", "🃙", "🂤", "🃓"]; // Same cards but with one changed
 
     $("#magic-trick-overlay #magic-area").html(`
       <h2>Mind Reading Magic Trick</h2>
@@ -812,7 +709,7 @@ window.setupMagicTricks = function () {
           .join("")}
       </div>
       <p>Got your card in mind? Let me read your thoughts...</p>
-      <button class="magic-button" id="start-mind-reading">I've chosen my card</button>
+      <button class="content-btn" id="start-mind-reading">I've chosen my card</button>
     `);
 
     $("#start-mind-reading")
@@ -838,29 +735,27 @@ window.setupMagicTricks = function () {
         ];
 
         let messageIndex = 0;
-        const messageInterval = setInterval(() => {
+        
+        // Set up interval for changing reading messages
+        const readingInterval = setInterval(function() {
           messageIndex = (messageIndex + 1) % readingMessages.length;
-          $("#reading-text").fadeOut(300, function () {
-            $(this).text(readingMessages[messageIndex]).fadeIn(300);
-          });
-        }, 1500);
+          $("#reading-text").text(readingMessages[messageIndex]);
+        }, 1000);
 
-        setTimeout(() => {
-          clearInterval(messageInterval);
-
-          // Second set - also mixed number cards from different suits, but completely different from first set
-          const secondSetOfCards = ["🂨", "🃕", "🂤", "🃂", "🃔"]; // 8♠, 5♦, 4♠, 2♣, 4♣
-
+        // Clear the interval after 5 seconds and show the final screen
+        setTimeout(function() {
+          clearInterval(readingInterval);
+          
           $("#magic-trick-overlay #magic-area").html(`
-          <h2>Voilà! Your card has vanished!</h2>
-          <p>Look at the cards now.</p>
-          <div class="cards-container">
-            ${secondSetOfCards
-              .map((card) => `<span class="card">${card}</span>`)
-              .join("")}
-          </div>
-          <button class="magic-button" id="close-magic-trick">Amazing!</button>
-        `);
+            <h2>Voilà! Your card has vanished!</h2>
+            <p>Look at the cards now.</p>
+            <div class="cards-container">
+              ${secondSetOfCards
+                .map((card) => `<span class="card">${card}</span>`)
+                .join("")}
+            </div>
+            <button class="content-btn" id="close-magic-trick">Amazing!</button>
+          `);
 
           for (let i = 0; i < 150; i++) {
             window.createSparkle();
@@ -895,30 +790,11 @@ window.setupMagicTricks = function () {
               feeling that makes magic special. When we safeguard these secrets, we're protecting
               your opportunity to experience true wonder in a world that too rarely surprises us.
             </p>
-            <button class="secret-close content-btn">Enchanted & Ready!</button>
+            <button class="content-btn">Enchanted & Ready!</button>
           </div>
         `,
       });
       $("body").append(overlay);
-      if ($("style#secretOverlayStyles").length === 0) {
-        $("<style id='secretOverlayStyles'>")
-          .prop("type", "text/css")
-          .html(
-            `
-            .secret-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.95); z-index: 10000; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.5s ease; }
-            .secret-overlay.visible { opacity: 1; }
-            .secret-content { max-width: 900px; padding: 40px; text-align: center; color: #fff; background-color: rgba(20, 20, 20, 0.85); border-radius: 10px; box-shadow: 0 0 30px rgba(212, 172, 13, 0.5); transform: scale(0.9); transition: transform 0.5s ease; margin: 20px; }
-            .secret-overlay.visible .secret-content { transform: scale(1); }
-            .secret-heading { font-family: 'Lobster Two', cursive; font-size: 2.5rem; line-height: 1.4; margin-bottom: 30px; color: #d4ac0d; }
-            .secret-heading .emphasis { font-size: 2.8rem; font-weight: bold; color: #fff; text-shadow: 0 0 10px #d4ac0d; padding: 0 5px; display: inline-block; transform: scale(1.2); }
-            .secret-explanation { font-family: 'Fredoka', sans-serif; font-size: 1.2rem; line-height: 1.6; margin-bottom: 30px; }
-            .secret-close { background: #8b0000; color: #fff; border: none; padding: 10px 20px; font-size: 1.1rem; border-radius: 5px; cursor: pointer; font-family: 'Fredoka', sans-serif; transition: all 0.3s ease; }
-            .secret-close:hover { background: #d4ac0d; transform: scale(1.05); }
-            @media (max-width: 768px) { .secret-heading { font-size: 1.8rem; } .secret-heading .emphasis { font-size: 2rem; } .secret-explanation { font-size: 1rem; } }
-          `
-          )
-          .appendTo("head");
-      }
     }
     $("#secret-overlay").addClass("visible");
     $("body").css("overflow", "hidden");
@@ -926,12 +802,13 @@ window.setupMagicTricks = function () {
       window.createMagicParticle();
     }
 
-    $(".secret-close, #secret-overlay")
+    $(".secret-close, .content-btn, #secret-overlay")
       .off("click.secretClose")
       .on("click.secretClose", function (event) {
         if (
           $(event.target).is("#secret-overlay") ||
-          $(event.target).is(".secret-close")
+          $(event.target).is(".secret-close") ||
+          $(event.target).is(".content-btn")
         ) {
           $("#secret-overlay").removeClass("visible");
           setTimeout(() => {

@@ -45,7 +45,7 @@
         <div class="footer-bottom">
             <p>&copy; <?php echo getCopyrightYears(1948); ?> All rights reserved - Ring 76 - San Diego Magic Club</p>
             <div class="back-to-top">
-                <a href="#" id="back-to-top-btn">🪄 Turn Back Time</a>
+                <a href="#" id="back-to-top-btn">⌛ Turn Back Time</a>
             </div>
         </div>
     </div>

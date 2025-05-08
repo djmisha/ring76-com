@@ -1,5 +1,5 @@
 /* Mobile Navigation Styles */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1119px) {
     .hamburger-menu {
         display: block;
         position: absolute;
@@ -8,6 +8,7 @@
         height: 24px;
         z-index: 1000;
         right: 20px;
+        top: 46px;
     }
 
     .hamburger-menu span {
@@ -60,11 +61,21 @@
         z-index: 999;
         transition: right 0.3s ease-in-out;
         margin-top: 0;
-      }
+        overflow-y: auto; /* Add scrolling if menu is tall */
+    }
       
-      .main-nav.open {
+    .main-nav.open {
         right: 0;
+    }
+
+    .nav-inner {
         padding-top: 60px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
     }
 
     .main-nav ul {
@@ -84,7 +95,7 @@
     }
 }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: 1120px) {
     .hamburger-menu {
         display: none;
     }

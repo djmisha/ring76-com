@@ -621,7 +621,7 @@ footer ul li {
     border-color: #d4ac0d;
     transform: translateY(-2px);
 }
-@media (max-width: 768px) {
+@media (max-width: 1119px) {
     .header-container {
         flex-direction: column;
         text-align: center;
@@ -697,6 +697,12 @@ footer ul li {
     .footer-nav-section h3:after {
         left: 50%;
         transform: translateX(-50%);
+    }
+    
+    .magic-eyes {
+        top: 20px;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
 }
 @keyframes blinkEyes {

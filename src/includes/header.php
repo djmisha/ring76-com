@@ -25,14 +25,16 @@
             </div>
             
             <nav class="main-nav">
-                <ul>
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="about.php">About Us</a></li>
-                    <li><a href="meetings.php">Meetings</a></li>
-                    <li><a href="board.php">Board of Directors</a></li>
-                    <li><a href="membership.php">Membership</a></li>
-                    <li><a href="contact.php" class="nav-btn">Enter the Circle</a></li>
-                </ul>
+                <div class="nav-inner">
+                    <ul>
+                        <li><a href="index.php">Home</a></li>
+                        <li><a href="about.php">About Us</a></li>
+                        <li><a href="meetings.php">Meetings</a></li>
+                        <li><a href="board.php">Board of Directors</a></li>
+                        <li><a href="membership.php">Membership</a></li>
+                        <li><a href="contact.php" class="nav-btn">Join Our Club</a></li>
+                    </ul>
+                </div>
             </nav>
         </div>
         <!-- Add a unique divider at the bottom of the header -->

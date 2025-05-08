@@ -5,3 +5,4 @@
 <link rel="stylesheet" href="css/responsive.css">
 <link rel="stylesheet" href="css/content-styles.css">
 <link rel="stylesheet" href="css/transitions.css">
+<link rel="stylesheet" href="css/js-styles/dynamic-styles.css">
