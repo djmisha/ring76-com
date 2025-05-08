@@ -204,7 +204,7 @@ include_once('includes/header.php');
                             <h3>Ready to Serve?</h3>
                             <p>The strength of our club depends on members who are willing to share their time and talents. By serving on the board, you help ensure that Ring 76 continues to be a vibrant community for magicians of all levels.</p>
                             <p>Express your interest to any current board member to learn more about available positions and the election process.</p>
-                            <a href="/contact" class="content-btn content-mt-medium">Express Interest</a>
+                            <a href="/contact.php" class="content-btn content-mt-medium">Summon Me</a>
                         </div>
                     </div>
                 </div>

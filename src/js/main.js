@@ -558,6 +558,88 @@ $(document).ready(function () {
     }
   });
 
+  // Function to create a single sparkle - moved outside event handlers to be accessible by both
+  function createSparkle() {
+    const sparkle = $("<div>", { class: "magic-sparkle" });
+
+    // Random position across the screen
+    const xPos = Math.random() * window.innerWidth;
+    const yPos = Math.random() * window.innerHeight;
+
+    // More varied random size - increased max size and variability
+    const size = Math.random() * 15 + 3;
+
+    // Expanded color palette for more variety
+    const colors = [
+      "#d4ac0d",
+      "#8b0000",
+      "#fff",
+      "#ffc107",
+      "#ff9800",
+      "#e91e63",
+      "#9c27b0",
+      "#3f51b5",
+      "#2196f3",
+      "#4caf50",
+      "#ff5722",
+    ];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+
+    // Random sparkle shapes - create either circle, star or diamond shapes
+    let shape = "circle";
+    const shapeRandom = Math.random();
+    let rotation = Math.random() * 360;
+    let extraCSS = {};
+
+    if (shapeRandom > 0.7) {
+      // Star shape using clip-path
+      shape = "star";
+      extraCSS = {
+        clipPath:
+          "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)",
+        backgroundColor: "transparent",
+        border: `2px solid ${color}`,
+      };
+    } else if (shapeRandom > 0.4) {
+      // Diamond shape
+      shape = "diamond";
+      extraCSS = {
+        transform: `rotate(${rotation}deg)`,
+        backgroundColor: "transparent",
+        border: `2px solid ${color}`,
+      };
+    }
+
+    // Apply different animation based on shape
+    const animationDuration = Math.random() * 800 + 600;
+    const animationDelay = Math.random() * 300;
+
+    sparkle.css({
+      left: xPos + "px",
+      top: yPos + "px",
+      width: size + "px",
+      height: size + "px",
+      backgroundColor: color,
+      borderRadius:
+        shape === "circle" ? "50%" : shape === "diamond" ? "0%" : "",
+      opacity: 0,
+      position: "fixed",
+      zIndex: 9999,
+      pointerEvents: "none",
+      animation: `sparkle ${animationDuration}ms ${animationDelay}ms forwards`,
+      boxShadow: `0 0 ${size / 3}px ${color}`,
+      ...extraCSS,
+    });
+
+    // Add to body
+    sparkle.appendTo("body");
+
+    // Animate and remove after a slightly random duration
+    setTimeout(function () {
+      sparkle.remove();
+    }, animationDuration + animationDelay);
+  }
+
   // Magic trick - flip the entire site upside down
   $("#flip-trick").on("click", function (e) {
     e.preventDefault();
@@ -592,87 +674,18 @@ $(document).ready(function () {
         $(".magic-message").remove();
       }
     }, sparkleDuration);
+  });
 
-    // Function to create a single sparkle
-    function createSparkle() {
-      const sparkle = $("<div>", { class: "magic-sparkle" });
+  // Add magic sparkle effect to the .magic-eyes element when clicked
+  $(".magic-eyes").on("click", function (e) {
+    e.preventDefault();
 
-      // Random position across the screen
-      const xPos = Math.random() * window.innerWidth;
-      const yPos = Math.random() * window.innerHeight;
+    // Create sparkles all over the page
+    const sparkleDuration = 1500;
 
-      // More varied random size - increased max size and variability
-      const size = Math.random() * 15 + 3;
-
-      // Expanded color palette for more variety
-      const colors = [
-        "#d4ac0d",
-        "#8b0000",
-        "#fff",
-        "#ffc107",
-        "#ff9800",
-        "#e91e63",
-        "#9c27b0",
-        "#3f51b5",
-        "#2196f3",
-        "#4caf50",
-        "#ff5722",
-      ];
-      const color = colors[Math.floor(Math.random() * colors.length)];
-
-      // Random sparkle shapes - create either circle, star or diamond shapes
-      let shape = "circle";
-      const shapeRandom = Math.random();
-      let rotation = Math.random() * 360;
-      let extraCSS = {};
-
-      if (shapeRandom > 0.7) {
-        // Star shape using clip-path
-        shape = "star";
-        extraCSS = {
-          clipPath:
-            "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)",
-          backgroundColor: "transparent",
-          border: `2px solid ${color}`,
-        };
-      } else if (shapeRandom > 0.4) {
-        // Diamond shape
-        shape = "diamond";
-        extraCSS = {
-          transform: `rotate(${rotation}deg)`,
-          backgroundColor: "transparent",
-          border: `2px solid ${color}`,
-        };
-      }
-
-      // Apply different animation based on shape
-      const animationDuration = Math.random() * 800 + 600;
-      const animationDelay = Math.random() * 300;
-
-      sparkle.css({
-        left: xPos + "px",
-        top: yPos + "px",
-        width: size + "px",
-        height: size + "px",
-        backgroundColor: color,
-        borderRadius:
-          shape === "circle" ? "50%" : shape === "diamond" ? "0%" : "",
-        opacity: 0,
-        position: "fixed",
-        zIndex: 9999,
-        pointerEvents: "none",
-        animation: `sparkle ${animationDuration}ms ${animationDelay}ms forwards`,
-        boxShadow: `0 0 ${size / 3}px ${color}`,
-        ...extraCSS,
-      });
-
-      // Add to body
-      sparkle.appendTo("body");
-
-      // Animate and remove after a slightly random duration
-      setTimeout(function () {
-        sparkle.remove();
-      }, animationDuration + animationDelay);
+    // Create a good number of sparkles - similar to flip trick
+    for (let i = 0; i < 300; i++) {
+      createSparkle(); // Use the same function as flip-trick to create sparkles all over the page
     }
   });
 
@@ -701,7 +714,7 @@ $(document).ready(function () {
               feeling that makes magic special. When we safeguard these secrets, we're protecting
               your opportunity to experience true wonder in a world that too rarely surprises us.
             </p>
-            <button class="secret-close content-btn">I understand!</button>
+            <button class="secret-close content-btn">Enchanted & Ready!</button>
           </div>
         `,
       });
@@ -815,8 +828,8 @@ $(document).ready(function () {
     // Disable scrolling on body
     $("body").css("overflow", "hidden");
 
-    // Add magical sparkles effect
-    for (let i = 0; i < 100; i++) {
+    // Add magical sparkles effect - doubled from 100 to 200
+    for (let i = 0; i < 200; i++) {
       createMagicParticle();
     }
 
@@ -850,15 +863,9 @@ $(document).ready(function () {
   function createMagicParticle() {
     const particle = $("<div>", { class: "magic-particle" });
 
-    // Random position near the emphasized words
-    const centerX = $(window).width() / 2;
-    const centerY = $(window).height() / 2;
-    const radius = Math.min($(window).width(), $(window).height()) * 0.4;
-    const angle = Math.random() * Math.PI * 2;
-    const distance = Math.random() * radius;
-
-    const xPos = centerX + Math.cos(angle) * distance;
-    const yPos = centerY + Math.sin(angle) * distance;
+    // Random position anywhere on the screen (not just center focused)
+    const xPos = Math.random() * window.innerWidth;
+    const yPos = Math.random() * window.innerHeight;
 
     // Random size
     const size = Math.random() * 8 + 2;
@@ -895,94 +902,112 @@ $(document).ready(function () {
     // Append to body
     $("body").append(particle);
 
-    // Add animation
+    // Create more dynamic animation with particles flying across the screen
+    // Generate random destination points
+    const destX = Math.random() * window.innerWidth;
+    const destY = Math.random() * window.innerHeight;
+
+    // Add animation with a more dynamic path
     particle.animate(
       {
         opacity: 1,
-        left: xPos + (Math.random() * 100 - 50) + "px",
-        top: yPos + (Math.random() * 100 - 50) + "px",
       },
-      duration / 2,
+      200,
       function () {
         $(this).animate(
           {
-            opacity: 0,
+            left: destX + "px",
+            top: destY + "px",
+            opacity: 0.7,
           },
-          duration / 2,
+          duration,
           function () {
-            $(this).remove();
+            $(this).animate(
+              {
+                opacity: 0,
+              },
+              300,
+              function () {
+                $(this).remove();
+              }
+            );
           }
         );
       }
     );
   }
-});
 
-// Add CSS rules to the document
-$("<style>")
-  .prop("type", "text/css")
-  .html(
-    `
-    .magic-upside-down {
-      transform: rotate(180deg);
-      transition: transform 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  // Back to top button functionality with spinning text animation
+  var backToTopBtn = $("#back-to-top-btn");
+
+  // Show back-to-top button when user scrolls down 300px
+  $(window).scroll(function () {
+    if ($(this).scrollTop() > 300) {
+      backToTopBtn.fadeIn(300);
+    } else {
+      backToTopBtn.fadeOut(300);
     }
-    
-    .magic-sparkle {
-      position: fixed;
-      z-index: 9999;
-      pointer-events: none;
-    }
-    
-    @keyframes sparkle {
-      0% { 
-        opacity: 0;
-        transform: scale(0) rotate(0deg); 
+  });
+
+  // Smooth scroll to top with text spin animation when button is clicked
+  backToTopBtn.on("click", function (e) {
+    e.preventDefault();
+
+    // Add magical animation class to button
+    $(this).addClass("levitating");
+
+    // Select all text elements to animate (excluding navigation and fixed elements)
+    var textElements = $(
+      // "p:visible, h1:visible, h2:visible, h3:visible, h4:visible, h5:visible, h6:visible"
+      "p, h1, h2, h3, h4, h5, h6, a"
+    ).filter(function () {
+      // Exclude elements in areas that shouldn't spin
+      return !$(this).closest(
+        // ".main-nav, .footer-bottom, .chat-window, .owl-chatbot, .secret-overlay"
+        ""
+      ).length;
+    });
+
+    // Apply animation to each text element
+    textElements.each(function () {
+      var element = $(this);
+
+      // Random rotation direction (clockwise or counter-clockwise)
+      var direction = Math.random() > 0.5 ? 1 : -1;
+
+      // Random delay for cascade effect
+      var delay = Math.random() * 0.8;
+
+      // Apply inline styles for the spin animation
+      element.css({
+        transition: "transform 1s ease " + delay + "s",
+        "transform-origin": "center center",
+      });
+
+      // Start the rotation
+      setTimeout(function () {
+        element.css("transform", "rotate(" + 360 * direction + "deg)");
+
+        // Reset after animation completes
+        setTimeout(function () {
+          element.css({
+            transition: "",
+            transform: "",
+          });
+        }, 4000); // 1 second animation duration
+      }, 1000);
+    });
+
+    // Smooth scroll to top
+    $("html, body").animate(
+      {
+        scrollTop: 0,
+      },
+      1000,
+      function () {
+        // Remove animation class from button after scrolling completes
+        backToTopBtn.removeClass("levitating");
       }
-      20% {
-        opacity: 1;
-        transform: scale(1.2) rotate(80deg);
-      }
-      50% { 
-        opacity: 1; 
-        transform: scale(1) rotate(180deg);
-      }
-      80% {
-        opacity: 0.8;
-        transform: scale(0.9) rotate(240deg);
-      }
-      100% { 
-        opacity: 0; 
-        transform: scale(0) rotate(360deg);
-      }
-    }
-    
-    .magic-message {
-      position: fixed;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #d4ac0d;
-      color: #111;
-      padding: 10px 20px;
-      border-radius: 20px;
-      font-family: 'Lobster Two', cursive;
-      font-size: 18px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      z-index: 10000;
-      text-align: center;
-    }
-    
-    /* Add counter-rotation to make text readable when page is flipped */
-    body.magic-upside-down .magic-message {
-      transform: translateX(-50%) rotate(180deg);
-    }
-    
-    .magic-message a {
-      color: #8b0000;
-      text-decoration: underline;
-      font-weight: bold;
-    }
-  `
-  )
-  .appendTo("head");
+    );
+  });
+});

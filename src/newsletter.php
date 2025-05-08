@@ -47,34 +47,99 @@ include_once('includes/header.php');
         </div>
     </section>
 
-    <!-- Current Year Newsletters -->
-    <section class="content-info">
+    <!-- Newsletter Archive Navigation and Content -->
+    <section class="content-info newsletter-archive">
         <div class="content-container">
-            <h2>Current Year Newsletters</h2>
+            <h2>Newsletter Archive</h2>
             <div class="content-row">
                 <div class="content-col content-col-full">
                     <div class="content-details-card">
-                        <h3>2023 Editions</h3>
+                        <?php
+                        define("NUMBUTTON", "6");    // Number of year buttons to display
+                        define("NUMPERROW", "3");    // Number of year buttons per row
+                        define("FIRSTYEAR", "1988"); // The first possible newsletter year.
+                        
+                        // Get the parameters passed in with the page.
+                        $year = isset($_GET['year']) ? $_GET["year"] : 0;
+                        
+                        // Validate Input
+                        $thisyear = getdate()["year"];
+                        if ($year < FIRSTYEAR || $year > $thisyear) {
+                            $year = $thisyear;
+                        }
+                        
+                        // Figure out which band of years to show on the page.
+                        $startyear = $thisyear;
+                        while ($startyear >= $year) {
+                            $startyear = $startyear - NUMBUTTON;
+                        }
+                        $startyear += 1;
+                        ?>
+                        
+                        <!-- Year Navigation -->
+                        <div class="year-navigation">
+                            <div class="year-buttons">
+                                <?php
+                                if ($startyear < (FIRSTYEAR)) $startyear = FIRSTYEAR;
+                                
+                                if ($startyear > (FIRSTYEAR)) {
+                                    $temp = $startyear - 1;
+                                    echo '<a href="newsletter.php?year=' . $temp . '" class="nav-btn prev-btn">Previous</a>';
+                                }
+                                
+                                for ($i = 0; $i < NUMBUTTON; $i++) {
+                                    $cur_year = $startyear + $i;
+                                    if ($cur_year <= $thisyear) {
+                                        $activeClass = ($cur_year == $year) ? ' active' : '';
+                                        echo '<a href="newsletter.php?year=' . $cur_year . '" class="year-button' . $activeClass . '">' . $cur_year . '</a>';
+                                        
+                                        if (($i % NUMPERROW) == (NUMPERROW - 1)) {
+                                            if ($i < NUMBUTTON - 1) echo '<br>';  // New line
+                                        }
+                                    }
+                                }
+                                
+                                if ($startyear + NUMBUTTON < $thisyear) {
+                                    $temp = $startyear + NUMBUTTON;
+                                    echo '<a href="newsletter.php?year=' . $temp . '" class="nav-btn next-btn">Next</a>';
+                                }
+                                ?>
+                            </div>
+                        </div>
+                        
+                        <!-- Current Year Newsletters Display -->
+                        <h3><?php echo $year; ?> Newsletters</h3>
+                        
                         <div class="newsletter-grid">
-                            <a href="#" class="newsletter-item">December 2023</a>
-                            <a href="#" class="newsletter-item">November 2023</a>
-                            <a href="#" class="newsletter-item">October 2023</a>
-                            <a href="#" class="newsletter-item">September 2023</a>
-                            <a href="#" class="newsletter-item">August 2023</a>
-                            <a href="#" class="newsletter-item">July 2023</a>
-                            <a href="#" class="newsletter-item">June 2023</a>
-                            <a href="#" class="newsletter-item">May 2023</a>
-                            <a href="#" class="newsletter-item">April 2023</a>
-                            <a href="#" class="newsletter-item">March 2023</a>
-                            <a href="#" class="newsletter-item">February 2023</a>
-                            <a href="#" class="newsletter-item">January 2023</a>
+                            <?php
+                            $i = 1;
+                            $foundNewsletters = false;
+                            
+                            while ($i <= 12) {
+                                // Check if newsletters exist for each month
+                                $monthstr = sprintf('%02d', $i);
+                                $yearstr = sprintf('%04d', $year);
+                                
+                                $filename = '../newsletters/magicurrents_' . $yearstr . '-' . $monthstr . '.pdf';
+                                if (file_exists($filename)) {
+                                    $foundNewsletters = true;
+                                    $ts = mktime(0, 0, 0, $i, 15);
+                                    $monthname = date('F', $ts);
+                                    echo '<a href="' . $filename . '" target="_blank" class="newsletter-item">' . $monthname . ' ' . $year . '</a>';
+                                }
+                                $i++;
+                            }
+                            
+                            if (!$foundNewsletters) {
+                                echo '<div class="no-newsletters-message">No newsletters are available for ' . $year . '.</div>';
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
 
     <!-- Historical Note Section -->
     <section class="what-to-expect">
@@ -127,10 +192,10 @@ include_once('includes/header.php');
                 <div class="content-col content-col-half">
                     <div class="attendance-info">
                         <div>
-                            <h3>Members-Only Access</h3>
-                            <p>While some newsletter content is publicly available, full access to our newsletter archive is an exclusive benefit of Ring 76 membership.</p>
-                            <p>Join Ring 76 today to gain complete access to our entire newsletter collection, including tutorials, member spotlights, and magical history.</p>
-                            <a href="/join" class="content-btn content-mt-medium">Become a Member</a>
+                            <h3>Available to All</h3>
+                            <p>We're happy to share our newsletter archive with everyone who has an interest in magic and our club's activities.</p>
+                            <p>We hope these resources inspire you to become a member of Ring 76 and join our community of magicians, where you can experience the magic in person!</p>
+                            <a href="/contact.php" class="content-btn content-mt-medium">Become a Member</a>
                         </div>
                     </div>
                 </div>
@@ -138,163 +203,6 @@ include_once('includes/header.php');
         </div>
     </section>
 
-    <!-- Archive Navigation -->
-    <section class="location-details">
-        <div class="content-container">
-            <h2>Archive Navigation</h2>
-            <div class="content-row">
-                <div class="content-col content-col-full">
-                    <p>Use the year links below to navigate through our newsletter history:</p>
-                    <div class="archive-navigation">
-                        <div class="archive-decades">
-                            <h3>2020s</h3>
-                            <div class="year-links">
-                                <a href="#2022">2022</a>
-                                <a href="#2021">2021</a>
-                                <a href="#2020">2020</a>
-                            </div>
-                        </div>
-                        <div class="archive-decades">
-                            <h3>2010s</h3>
-                            <div class="year-links">
-                                <a href="#2019">2019</a>
-                                <a href="#2018">2018</a>
-                                <a href="#2017">2017</a>
-                                <a href="#2016">2016</a>
-                                <a href="#2015">2015</a>
-                                <a href="#2014">2014</a>
-                                <a href="#2013">2013</a>
-                                <a href="#2012">2012</a>
-                                <a href="#2011">2011</a>
-                                <a href="#2010">2010</a>
-                            </div>
-                        </div>
-                        <div class="archive-decades">
-                            <h3>2000s</h3>
-                            <div class="year-links">
-                                <a href="#2009">2009</a>
-                                <a href="#2008">2008</a>
-                                <a href="#2007">2007</a>
-                                <a href="#2006">2006</a>
-                                <a href="#2005">2005</a>
-                                <a href="#2004">2004</a>
-                                <a href="#2003">2003</a>
-                                <a href="#2002">2002</a>
-                                <a href="#2001">2001</a>
-                                <a href="#2000">2000</a>
-                            </div>
-                        </div>
-                        <div class="archive-decades">
-                            <h3>1990s</h3>
-                            <div class="year-links">
-                                <a href="#1999">1999</a>
-                                <a href="#1998">1998</a>
-                                <a href="#1997">1997</a>
-                                <a href="#1996">1996</a>
-                                <a href="#1995">1995</a>
-                                <a href="#1994">1994</a>
-                                <a href="#1993">1993</a>
-                                <a href="#1992">1992</a>
-                                <a href="#1991">1991</a>
-                                <a href="#1990">1990</a>
-                            </div>
-                        </div>
-                        <div class="archive-decades">
-                            <h3>1980s</h3>
-                            <div class="year-links">
-                                <a href="#1989">1989</a>
-                                <a href="#1988">1988</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Archive Sections (One per year) -->
-    <!-- 2022 Archive -->
-    <section id="2022" class="content-info archive-year">
-        <div class="content-container">
-            <h2>2022 Archives</h2>
-            <div class="content-row">
-                <div class="content-col content-col-full">
-                    <div class="content-details-card">
-                        <div class="newsletter-grid">
-                            <a href="#" class="newsletter-item">December 2022</a>
-                            <a href="#" class="newsletter-item">November 2022</a>
-                            <a href="#" class="newsletter-item">October 2022</a>
-                            <a href="#" class="newsletter-item">September 2022</a>
-                            <a href="#" class="newsletter-item">August 2022</a>
-                            <a href="#" class="newsletter-item">July 2022</a>
-                            <a href="#" class="newsletter-item">June 2022</a>
-                            <a href="#" class="newsletter-item">May 2022</a>
-                            <a href="#" class="newsletter-item">April 2022</a>
-                            <a href="#" class="newsletter-item">March 2022</a>
-                            <a href="#" class="newsletter-item">February 2022</a>
-                            <a href="#" class="newsletter-item">January 2022</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 2021 Archive -->
-    <section id="2021" class="content-info archive-year">
-        <div class="content-container">
-            <h2>2021 Archives</h2>
-            <div class="content-row">
-                <div class="content-col content-col-full">
-                    <div class="content-details-card">
-                        <div class="newsletter-grid">
-                            <a href="#" class="newsletter-item">December 2021</a>
-                            <a href="#" class="newsletter-item">November 2021</a>
-                            <a href="#" class="newsletter-item">October 2021</a>
-                            <a href="#" class="newsletter-item">September 2021</a>
-                            <a href="#" class="newsletter-item">August 2021</a>
-                            <a href="#" class="newsletter-item">July 2021</a>
-                            <a href="#" class="newsletter-item">June 2021</a>
-                            <a href="#" class="newsletter-item">May 2021</a>
-                            <a href="#" class="newsletter-item">April 2021</a>
-                            <a href="#" class="newsletter-item">March 2021</a>
-                            <a href="#" class="newsletter-item">February 2021</a>
-                            <a href="#" class="newsletter-item">January 2021</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 2020 Archive -->
-    <section id="2020" class="content-info archive-year">
-        <div class="content-container">
-            <h2>2020 Archives</h2>
-            <div class="content-row">
-                <div class="content-col content-col-full">
-                    <div class="content-details-card">
-                        <div class="newsletter-grid">
-                            <a href="#" class="newsletter-item">December 2020</a>
-                            <a href="#" class="newsletter-item">November 2020</a>
-                            <a href="#" class="newsletter-item">October 2020</a>
-                            <a href="#" class="newsletter-item">September 2020</a>
-                            <a href="#" class="newsletter-item">August 2020</a>
-                            <a href="#" class="newsletter-item">July 2020</a>
-                            <a href="#" class="newsletter-item">June 2020</a>
-                            <a href="#" class="newsletter-item">May 2020</a>
-                            <a href="#" class="newsletter-item">April 2020</a>
-                            <a href="#" class="newsletter-item">March 2020</a>
-                            <a href="#" class="newsletter-item">February 2020</a>
-                            <a href="#" class="newsletter-item">January 2020</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-   
     <!-- Add divider between Content and Footer -->
     <div class="section-divider divider-wave"></div>
 </main>
@@ -310,80 +218,5 @@ include_once('includes/chatbot.php');
 include_once('includes/scripts.php');
 ?>
 
-<style>
-    /* Newsletter-specific styles */
-    .newsletter-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 15px;
-    }
-    
-    .newsletter-item {
-        background: #f8f8f8;
-        padding: 10px 15px;
-        border-radius: 5px;
-        text-align: center;
-        transition: all 0.3s ease;
-        border: 1px solid #ddd;
-        color: #444;
-        text-decoration: none;
-    }
-    
-    .newsletter-item:hover {
-        background: #e0e0e0;
-        transform: translateY(-3px);
-        box-shadow: 0 3px 5px rgba(0,0,0,0.1);
-    }
-    
-    .archive-navigation {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        margin: 20px 0;
-    }
-    
-    .archive-decades {
-        flex: 1;
-        min-width: 150px;
-        margin: 10px;
-    }
-    
-    .year-links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-    
-    .year-links a {
-        display: inline-block;
-        padding: 5px 10px;
-        background: #2b76c2;
-        color: white;
-        border-radius: 4px;
-        text-decoration: none;
-        transition: all 0.3s ease;
-    }
-    
-    .year-links a:hover {
-        background: #1f5891;
-    }
-    
-    .archive-year {
-        padding-top: 30px;
-    }
-    
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        .newsletter-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-    
-    @media (max-width: 480px) {
-        .newsletter-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-</style>
 </body>
 </html>

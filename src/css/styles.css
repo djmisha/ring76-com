@@ -95,7 +95,6 @@ a {
 .nav-btn:hover {
     background-color: #d4ac0d;
     color: #111 !important;
-    transform: translateY(-3px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 .header-divider {
@@ -405,11 +404,22 @@ footer ul li {
     color: #d4ac0d; /* Gold color on hover */
 }
 .footer-bottom {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding-top: 20px;
-    border-top: 1px solid #8b0000;
+    margin-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     color: #888888; /* Added even softer color for copyright text */
 }
+
+.back-to-top {
+    display: inline-block;
+    margin-left: 0;
+    margin-top: 15px;
+}
+
 .footer-info h3 {
     font-family: 'Lobster Two', cursive;
     font-size: 1.9rem;
@@ -2073,4 +2083,118 @@ footer ul li {
     text-align: center;
     padding: 3rem 0;
     color: #d4d4d4;
+}
+
+/* Back to top button */
+.back-to-top {
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.back-to-top a {
+    display: inline-flex;
+    align-items: center;
+    background: linear-gradient(135deg, #8b0000, #d4ac0d);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    box-shadow: 0 3px 10px rgba(139, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.back-to-top a:hover {
+    background: linear-gradient(135deg, #d4ac0d, #8b0000);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(139, 0, 0, 0.5);
+}
+
+.back-to-top i {
+    margin-right: 6px;
+}
+
+/* Levitation animation for back to top button */
+@keyframes levitate {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px) scale(1.05); }
+    100% { transform: translateY(0); }
+}
+
+.back-to-top a.levitating {
+    animation: levitate 1s ease-in-out;
+}
+
+/* Improve button appearance on small screens */
+@media (max-width: 768px) {
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .back-to-top {
+        margin-left: 0;
+        margin-top: 15px;
+    }
+}
+
+/* Magic Sparkles Animation */
+@keyframes sparkle {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0);
+    }
+}
+
+.magic-sparkle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    border-radius: 50%;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+/* Magic Particle styles */
+.magic-particle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 10001;
+    border-radius: 50%;
+}
+
+/* Magic upside down effect */
+.magic-upside-down {
+    transform: rotate(180deg);
+    transition: transform 1s ease;
+}
+
+.magic-message {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #8b0000;
+    color: #fff;
+    padding: 15px 25px;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    z-index: 10002;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.magic-message a {
+    color: #d4ac0d;
+    text-decoration: underline;
+    margin-left: 10px;
+    font-weight: bold;
 }

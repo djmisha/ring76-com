@@ -29,14 +29,13 @@
                         <span class="error-message" id="message-error"></span>
                     </div>
                     
-                    <!-- Honeypot field for bot protection - hidden from real users -->
                     <div class="form-group" style="display:none;">
                         <label for="website">Website</label>
                         <input type="text" id="website" name="website" autocomplete="off">
                     </div>
                     
                     <div class="form-submit">
-                        <button type="submit" class="btn" id="submit-button">Submit Application</button>
+                        <button type="submit" class="btn" id="submit-button">Open Sesame</button>
                     </div>
                 </form>
                 <div id="form-response" class="form-response" style="display:none;">
