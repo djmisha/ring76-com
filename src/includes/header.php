@@ -38,4 +38,8 @@
         <!-- Add a unique divider at the bottom of the header -->
         <div class="header-divider"></div>
     </header>
+    <div class="curtain-container">
+        <div class="curtain left"></div>
+        <div class="curtain right"></div>
+    </div>
 

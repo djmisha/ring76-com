@@ -159,144 +159,93 @@ include_once('includes/chatbot.php');
 include_once('includes/scripts.php');
 ?>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Store all links as a JavaScript object
-    const allLinks = <?php echo json_encode($allLinks); ?>;
+<script id="linksPageScript"> // Added id="linksPageScript"
+window.initializeLinksPageLogic = function() {
+    const allLinksData = <?php echo json_encode($allLinks); ?>;
     
-    // Cache DOM elements
     const linksDisplay = document.getElementById('links-display');
     const linksHeading = document.getElementById('links-heading');
     const linkFilters = document.querySelectorAll('#link-filter a');
     const linkFilterNav = document.getElementById('link-filter-nav');
+
+    if (!linksDisplay || !linksHeading || !linkFilters.length || !linkFilterNav) {
+        return;
+    }
     
-    // Function to format links by first letter
-    function formatLinks(links) {
-        if (links.length === 0) {
-            return '<div class="no-results"><p>No links found in this category.</p></div>';
-        }
-        
-        // Group links by first letter
-        const groupedLinks = {};
-        
-        links.forEach(link => {
-            const name = link.Name;
-            let firstLetter = name.charAt(0).toUpperCase();
-            
-            // Group numbers under #
-            if (!isNaN(parseInt(firstLetter))) {
-                firstLetter = '#';
+    linksDisplay.innerHTML = ''; // Clear display area for idempotency
+
+    function formatLinksByFirstLetter(links) {
+        const grouped = links.reduce((acc, link) => {
+            if (!link.Name || typeof link.Name !== 'string' || link.Name.length === 0) {
+                return acc; // Skip if Name is invalid
             }
-            
-            if (!groupedLinks[firstLetter]) {
-                groupedLinks[firstLetter] = [];
-            }
-            
-            groupedLinks[firstLetter].push(link);
-        });
-        
-        // Sort keys alphabetically
-        const sortedKeys = Object.keys(groupedLinks).sort();
-        
-        // Generate HTML for grouped links
+            const letter = link.Name[0].toUpperCase();
+            if (!acc[letter]) acc[letter] = [];
+            acc[letter].push(link);
+            return acc;
+        }, {});
+
         let html = '';
-        
-        sortedKeys.forEach(letter => {
-            html += `<div class="alpha-group">`;
-            html += `<h3 class="alpha-header">${letter}</h3>`;
-            html += `<ul class="links-list">`;
-            
-            groupedLinks[letter].forEach(link => {
-                const name = link.Name;
-                const url = link.LinkURL;
+        Object.keys(grouped).sort().forEach(letter => {
+            html += `<h3 class="links-letter-group">${letter}</h3><ul class="links-list">`;
+            grouped[letter].forEach(link => {
+                let url = link.LinkURL && link.LinkURL.trim() !== '' ? link.LinkURL.trim() : '#';
                 
-                if (url) {
-                    html += `<li>
-                        <a href="${url}" target="_blank" rel="noopener noreferrer">
-                            <span class="link-title">${name}</span>
-                            <span class="link-description">${url}</span>
-                        </a>
-                    </li>`;
-                }
+                const nameText = link.Name ? link.Name : 'Unnamed Link';
+                const descriptionText = link.Description ? link.Description : '';
+                
+                html += `<li><a href="${url}" class="external-link" target="_blank" rel="noopener noreferrer" onclick="window.open('${url}', '_blank'); return false;">${nameText}</a>${descriptionText ? ' - ' + descriptionText : ''}</li>`;
             });
-            
             html += `</ul>`;
-            html += `</div>`;
         });
-        
         return html;
     }
-    
-    // Function to filter links
+
     function filterLinks(type) {
-        // Show loading indicator
-        linksDisplay.innerHTML = '<div class="loading"></div>';
+        linksDisplay.innerHTML = ''; // Clear display for new filter
+
+        const activeFilterLink = document.querySelector(`#link-filter a[data-type="${type}"]`);
+        linksHeading.textContent = type === 'all' ? 'All Links' : (activeFilterLink ? activeFilterLink.textContent : 'Links');
+
+        const filteredLinks = type === 'all' ? allLinksData : allLinksData.filter(link => link.Type === type);
         
-        // Get navigation bar position for scrolling reference
-        const navPosition = linkFilterNav.getBoundingClientRect();
-        
-        setTimeout(() => {
-            let filteredLinks;
-            let headingText;
-            
-            if (type === 'all') {
-                filteredLinks = allLinks;
-                headingText = 'All Links';
-            } else {
-                filteredLinks = allLinks.filter(link => link.Type === type);
-                
-                // Get friendly name for the type
-                const typeNames = {
-                    'Mfg': 'Manufacturers',
-                    'Vendor': 'Vendors',
-                    'Magician': 'Magicians',
-                    'Resource': 'Resources',
-                    'Org': 'Organizations',
-                    'Other': 'Other Links'
-                };
-                
-                headingText = typeNames[type] || type;
-            }
-            
-            // Update heading
-            linksHeading.textContent = headingText;
-            
-            // Update display with formatted links
-            linksDisplay.innerHTML = formatLinks(filteredLinks);
-            
-            // Scroll to the navigation bar (not the top of the page)
-            if (navPosition) {
-                const scrollTarget = window.scrollY + navPosition.top;
-                window.scrollTo({
-                    top: scrollTarget,
-                    behavior: 'smooth'
-                });
-            }
-        }, 300); // Short delay to show loading animation
+        if (filteredLinks.length === 0) {
+            linksDisplay.innerHTML = '<p>No links found for this category.</p>';
+            return;
+        }
+        linksDisplay.innerHTML = formatLinksByFirstLetter(filteredLinks);
     }
-    
-    // Set up event listeners for filters
-    linkFilters.forEach(filter => {
-        filter.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Remove active class from all filters
-            linkFilters.forEach(f => f.classList.remove('active'));
-            
-            // Add active class to clicked filter
+
+    linkFilters.forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            linkFilters.forEach(l => l.classList.remove('active'));
             this.classList.add('active');
-            
-            // Get filter type
-            const type = this.getAttribute('data-type');
-            
-            // Filter links
-            filterLinks(type);
+            filterLinks(this.dataset.type);
         });
     });
     
-    // Initialize with all links
-    filterLinks('all');
-});
+    const initialActiveFilter = document.querySelector('#link-filter a[data-type="all"]');
+    if (initialActiveFilter) {
+        initialActiveFilter.classList.add('active');
+    }
+    filterLinks('all'); // Initialize with all links
+};
+
+// This auto-execution block should only run on a direct, non-AJAX load.
+if (typeof window.isTransitioning === 'undefined' || !window.isTransitioning) {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof window.initializeLinksPageLogic === 'function') {
+                window.initializeLinksPageLogic();
+            }
+        });
+    } else {
+        if (typeof window.initializeLinksPageLogic === 'function') {
+             window.initializeLinksPageLogic();
+        }
+    }
+}
 </script>
 </body>
 </html>

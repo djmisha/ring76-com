@@ -861,3 +861,27 @@ table.events a:hover {
     background-position: center;
     height: 50px;
 }
+
+/* Officer Profile Styles */
+.officer-profile {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.officer-info {
+    flex: 1;
+}
+.officer-image {
+    margin-left: 20px;
+    flex-shrink: 0;
+}
+@media (max-width: 768px) {
+    .officer-profile {
+        flex-direction: column-reverse;
+    }
+    .officer-image {
+        margin-left: 0;
+        margin-bottom: 15px;
+        align-self: center;
+    }
+}

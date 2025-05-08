@@ -1,0 +1,77 @@
+/* /Users/mosinovs/workspace/ring76-com/src/css/transitions.css */
+body.transitioning {
+    overflow: hidden; /* Prevent scrolling during transition */
+}
+
+.curtain-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 9999;
+    pointer-events: none; /* Allow clicks to pass through when hidden */
+    display: flex;
+    overflow: hidden; /* Hide parts of curtains that are outside */
+}
+
+.curtain {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 52%; /* Increased width to hide edges */
+    background-color: #800000; /* Slightly darker red */
+
+    /* Enhanced texture with more defined vertical lines and subtle fabric pattern */
+    background-image:
+        /* Vertical lines */
+        repeating-linear-gradient(to right, 
+            rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 1px, 
+            transparent 1px, transparent 10px
+        ),
+        /* Base color and subtle waves/folds */
+        linear-gradient(to right, 
+            #800000 0%, #9A1111 15%, #700000 30%, 
+            #9A1111 45%, #800000 60%, #9A1111 75%, #700000 90%, #800000 100%
+        ),
+        /* Overall subtle noise/texture */
+        url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.03' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+
+    background-size: auto, 250px 100%, auto; /* Adjust wave size */
+    box-shadow:
+        inset -12px 0 18px rgba(0,0,0,0.5), /* Inner shadow on the opening edge for more depth */
+        inset 8px 0 12px rgba(0,0,0,0.15),  /* Softer inner shadow on the hinge edge */
+        7px 0 18px rgba(0,0,0,0.35);         /* Outer shadow for detachment */
+    /* Changed transition timing function to ease-out for no bounce */
+    transition: transform 1.2s ease-out;
+    overflow: hidden; /* Ensure pseudo-elements or complex backgrounds don't spill */
+}
+
+.curtain.left {
+    left: 0;
+    transform: translateX(-102%); /* Adjusted for increased width */
+    border-right: 2px solid #610101; /* Darker edge for separation */
+}
+
+.curtain.right {
+    right: 0;
+    transform: translateX(102%); /* Adjusted for increased width */
+    border-left: 2px solid #610101; /* Darker edge for separation */
+}
+
+/* Animation states */
+body.curtains-closed .curtain.left {
+    transform: translateX(0%);
+}
+
+body.curtains-closed .curtain.right {
+    transform: translateX(0%);
+}
+
+body.curtains-open .curtain.left {
+    transform: translateX(-102%);
+}
+
+body.curtains-open .curtain.right {
+    transform: translateX(102%);
+}

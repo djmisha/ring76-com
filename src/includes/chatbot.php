@@ -1,5 +1,5 @@
 <!-- Owl Chatbot -->
-<div class="owl-chatbot owl-entrance">
+<!-- <div class="owl-chatbot owl-entrance">
     <div class="owl-avatar">
         <span class="owl-emoji">🦉</span>
     </div>
@@ -23,4 +23,4 @@
             <button class="send-btn">Cast My Words</button>
         </div>
     </div>
-</div>
+</div> -->

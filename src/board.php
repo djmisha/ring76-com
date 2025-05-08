@@ -14,32 +14,6 @@
 
     <?php include_once('includes/styles.php'); ?>
     <link href="https://fonts.googleapis.com/css2?family=Lobster+Two:wght@400;700&family=Fredoka:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
-    <style>
-        /* Additional styles for officer profiles */
-        .officer-profile {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-        .officer-info {
-            flex: 1;
-        }
-        .officer-image {
-            margin-left: 20px;
-            flex-shrink: 0;
-        }
-        @media (max-width: 768px) {
-            .officer-profile {
-                flex-direction: column-reverse;
-            }
-            .officer-image {
-                margin-left: 0;
-                margin-bottom: 15px;
-                align-self: center;
-            }
-        }
-    </style>
 </head>
 <body>
 
