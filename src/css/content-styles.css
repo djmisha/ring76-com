@@ -2,7 +2,7 @@
 .content-hero {
     background-size: cover;
     background-position: center;
-    height: 400px;
+    height: calc(100vh - 121px);
     position: relative;
     display: flex;
     align-items: center;
@@ -31,7 +31,7 @@
 }
 
 .content-hero-newsletter {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../image/library.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../image/hero-newsletter.jpg');
 }
 
 .content-info {

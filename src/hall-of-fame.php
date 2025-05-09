@@ -14,8 +14,7 @@
 
     <?php include_once('includes/styles.php'); ?>
     <link href="https://fonts.googleapis.com/css2?family=Lobster+Two:wght@400;700&family=Fredoka:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-  </head>
+</head>
 <body>
 
 <?php
@@ -461,6 +460,9 @@ function pdoJ_result($stmt, $row, $field=0) {
     <div class="section-divider divider-wave"></div>
 </main>
 
+<!-- Back to top button -->
+<a href="#" id="back-to-top-btn" class="back-to-top-button" title="Back to Top">↑</a>
+
 <?php
 // Include site footer
 include_once('includes/footer.php');
@@ -471,5 +473,30 @@ include_once('includes/chatbot.php');
 // Include scripts
 include_once('includes/scripts.php');
 ?>
+
+<script>
+    // Back to top button functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const backToTopBtn = document.getElementById('back-to-top-btn');
+        
+        // Show button when user scrolls down 300px
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+        
+        // Smooth scroll to top when button is clicked
+        backToTopBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
 </body>
 </html>
