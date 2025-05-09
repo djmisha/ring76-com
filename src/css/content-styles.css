@@ -30,10 +30,6 @@
     margin: 0 auto;
 }
 
-.content-hero-newsletter {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../image/hero-newsletter.jpg');
-}
-
 .content-info {
     padding: 60px 0;
     background-color: #1a1a1a;

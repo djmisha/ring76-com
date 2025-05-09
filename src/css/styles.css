@@ -173,7 +173,7 @@ a {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.5);
 }
 .hero-content {
     position: relative;
@@ -1313,6 +1313,76 @@ footer ul li {
     transform: translateY(-3px);
     box-shadow: 0 4px 12px rgba(212, 172, 13, 0.3);
 }
+
+/* Form Styling Improvements */
+.error-message {
+    color: #c62828;
+    display: block;
+    font-size: 0.9rem;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+.form-group.honeypot {
+    display: none;
+}
+
+.form-response {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 6px;
+    display: none;
+    text-align: center;
+}
+
+.form-response.success {
+    background-color: rgba(46, 125, 50, 0.2);
+    color: #4caf50;
+    border: 1px solid rgba(46, 125, 50, 0.3);
+}
+
+.form-response.error {
+    background-color: rgba(198, 40, 40, 0.2);
+    color: #f44336;
+    border: 1px solid rgba(198, 40, 40, 0.3);
+}
+
+/* Ensure error inputs have consistent styling */
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error {
+    border: 2px solid #c62828;
+    box-shadow: 0 0 5px rgba(198, 40, 40, 0.3);
+}
+
+/* Add animation to form submit button when submitted */
+.btn.submitting {
+    opacity: 0.7;
+    position: relative;
+}
+
+.btn.submitting:after {
+    content: '';
+    position: absolute;
+    border: 2px solid transparent;
+    border-top-color: #fff;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    right: 10px;
+    top: calc(50% - 8px);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 @media (max-width: 768px) {
     .form-row {
         flex-direction: column;
@@ -1619,7 +1689,7 @@ footer ul li {
 .award-card {
     position: relative;
     width: 280px;
-    height: 160px;
+    height: 140px; /* Keeping the reduced height for better mobile viewing */
     perspective: 1000px;
     cursor: pointer;
     margin-bottom: 20px;
@@ -1658,7 +1728,7 @@ footer ul li {
 .award-front {
     background: linear-gradient(145deg, #e6c878, #d4a520);
     color: #402e0b;
-    padding: 20px;
+    padding: 15px; /* Reduced padding */
     box-sizing: border-box;
     text-align: center;
     display: flex;
@@ -1687,15 +1757,23 @@ footer ul li {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 8px solid transparent;
+    border: 6px solid transparent; /* Reduced from 8px */
     border-image: linear-gradient(to bottom right, #e9d9a2, #8f6b29) 1;
     box-sizing: border-box;
+    /* Add wood-like texture */
+    background-image: 
+        linear-gradient(90deg, rgba(139, 69, 19, 0.05) 50%, transparent 50%),
+        linear-gradient(90deg, rgba(160, 82, 45, 0.1) 50%, transparent 50%),
+        linear-gradient(0deg, rgba(139, 69, 19, 0.05) 50%, transparent 50%),
+        linear-gradient(0deg, rgba(160, 82, 45, 0.1) 50%, transparent 50%);
+    background-size: 10px 10px;
+    background-position: 0 0, 5px 0, 0 5px, 0 0;
 }
 
 .award-name {
-    font-size: 20px;
+    font-size: 18px; /* Reduced from 20px */
     font-weight: 700;
-    margin: 15px 0 5px 0;
+    margin: 10px 0 3px 0; /* Reduced margins */
     text-transform: uppercase;
     line-height: 1.2;
     max-width: 100%;
@@ -1705,18 +1783,19 @@ footer ul li {
 }
 
 .award-years, .award-title {
-    font-size: 18px;
-    margin: 0 0 5px 0;
+    font-size: 16px; /* Reduced from 18px */
+    margin: 0 0 3px 0; /* Reduced margins */
     color: #000;
     text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .corner {
     position: absolute;
-    width: 20px;
-    height: 20px;
+    width: 12px; /* Reduced from 20px to make pins smaller */
+    height: 12px; /* Reduced from 20px to make pins smaller */
     background-color: #402e0b;
     border-radius: 50%;
+    box-shadow: inset 0 0 3px rgba(0,0,0,0.5);
 }
 
 .top-left {
@@ -1755,6 +1834,17 @@ footer ul li {
     );
     pointer-events: none;
     border-radius: 12px;
+}
+
+/* Add realistic engraved effect to text */
+.award-name, .award-years, .award-title {
+    text-shadow: 
+        -1px -1px 0 rgba(0,0,0,0.1),
+        1px -1px 0 rgba(0,0,0,0.1),
+        -1px 1px 0 rgba(0,0,0,0.1),
+        1px 1px 0 rgba(0,0,0,0.1),
+        0 1px 2px rgba(255,255,255,0.8);
+    letter-spacing: 0.5px;
 }
 
 /* Card Suits Styles */
@@ -1915,13 +2005,23 @@ footer ul li {
     
     .award-card {
         width: 260px;
+        height: 130px; /* Further reduce height on mobile */
+    }
+    
+    .award-name {
+        font-size: 16px;
+    }
+    
+    .award-years, .award-title {
+        font-size: 14px;
     }
 }
 
 @media (max-width: 480px) {
     .award-card {
         width: 100%;
-        max-width: 300px;
+        max-width: 240px;
+        height: 120px; /* Even smaller on very small screens */
     }
 }
 

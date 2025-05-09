@@ -29,7 +29,7 @@
                         <span class="error-message" id="message-error"></span>
                     </div>
                     
-                    <div class="form-group" style="display:none;">
+                    <div class="form-group honeypot">
                         <label for="website">Website</label>
                         <input type="text" id="website" name="website" autocomplete="off">
                     </div>
@@ -38,182 +38,11 @@
                         <button type="submit" class="btn" id="submit-button">Open Sesame</button>
                     </div>
                 </form>
-                <div id="form-response" class="form-response" style="display:none;">
+                <div id="form-response" class="form-response">
                     <p></p>
                 </div>
             </div>
         </div>
     </section>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const contactForm = document.getElementById('contact-form');
-    const formResponse = document.getElementById('form-response');
-    const submitButton = document.getElementById('submit-button');
-    const emailInput = document.getElementById('email');
-    const emailError = document.getElementById('email-error');
-    const phoneInput = document.getElementById('phone');
-    const phoneError = document.getElementById('phone-error');
-    
-    // Function to validate email
-    function validateEmail(email) {
-        // Basic email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            return "Please enter a valid email address";
-        }
-        
-        // Block .ru email addresses
-        if (email.toLowerCase().endsWith('.ru')) {
-            return "Sorry, emails from this domain are not accepted for security reasons";
-        }
-        
-        return ""; // Empty string means no error
-    }
-    
-    // Function to validate phone
-    function validatePhone(phone) {
-        if (!phone.trim()) {
-            return "Phone number is required";
-        }
-        
-        // Basic phone validation (allows various formats)
-        const phoneRegex = /^[0-9\-\(\)\s\+\.]+$/;
-        if (!phoneRegex.test(phone)) {
-            return "Please enter a valid phone number";
-        }
-        
-        return "";
-    }
-    
-    // Validate email on input
-    if (emailInput) {
-        emailInput.addEventListener('blur', function() {
-            const error = validateEmail(emailInput.value);
-            emailError.textContent = error;
-            if (error) {
-                emailInput.classList.add('error');
-            } else {
-                emailInput.classList.remove('error');
-            }
-        });
-    }
-    
-    // Validate phone on input
-    if (phoneInput) {
-        phoneInput.addEventListener('blur', function() {
-            const error = validatePhone(phoneInput.value);
-            phoneError.textContent = error;
-            if (error) {
-                phoneInput.classList.add('error');
-            } else {
-                phoneInput.classList.remove('error');
-            }
-        });
-    }
-    
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Clear previous errors
-            document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
-            document.querySelectorAll('input, textarea').forEach(el => el.classList.remove('error'));
-            
-            // Validate required fields
-            const name = document.getElementById('name');
-            const message = document.getElementById('message');
-            let hasError = false;
-            
-            // Check name
-            if (!name.value.trim()) {
-                document.getElementById('name-error').textContent = "Name is required";
-                name.classList.add('error');
-                hasError = true;
-            }
-            
-            // Validate email
-            const email = emailInput.value;
-            const emailErrorMsg = validateEmail(email);
-            
-            if (emailErrorMsg) {
-                emailError.textContent = emailErrorMsg;
-                emailInput.classList.add('error');
-                hasError = true;
-            }
-            
-            // Validate phone
-            const phone = phoneInput.value;
-            const phoneErrorMsg = validatePhone(phone);
-            
-            if (phoneErrorMsg) {
-                phoneError.textContent = phoneErrorMsg;
-                phoneInput.classList.add('error');
-                hasError = true;
-            }
-            
-            // Check message
-            if (!message.value.trim()) {
-                document.getElementById('message-error').textContent = "Message is required";
-                message.classList.add('error');
-                hasError = true;
-            }
-            
-            if (hasError) {
-                return;
-            }
-            
-            // Disable submit button during submission
-            submitButton.disabled = true;
-            submitButton.textContent = 'Sending...';
-            
-            // Collect form data
-            const formData = new FormData(contactForm);
-            
-            // Send AJAX request to the secure handler instead of directly to send-mail.php
-            fetch('utils/mailer/form-handler.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Re-enable submit button
-                submitButton.disabled = false;
-                submitButton.textContent = 'Submit Application';
-                
-                // Show response message
-                formResponse.style.display = 'block';
-                const responseParagraph = formResponse.querySelector('p');
-                
-                if (data.success) {
-                    // Success message
-                    formResponse.classList.add('success');
-                    formResponse.classList.remove('error');
-                    responseParagraph.textContent = data.message;
-                    
-                    // Reset form on success
-                    contactForm.reset();
-                } else {
-                    // Error message
-                    formResponse.classList.add('error');
-                    formResponse.classList.remove('success');
-                    responseParagraph.textContent = data.message;
-                }
-                
-                // Scroll to response message
-                formResponse.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            })
-            .catch(error => {
-                // Handle network errors
-                submitButton.disabled = false;
-                submitButton.textContent = 'Submit Application';
-                
-                formResponse.style.display = 'block';
-                formResponse.classList.add('error');
-                formResponse.classList.remove('success');
-                formResponse.querySelector('p').textContent = 'Something went wrong. Please try again later.';
-            });
-        });
-    }
-});
-</script>
+<script src="js/forms.js"></script>

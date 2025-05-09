@@ -156,8 +156,8 @@ window.setupMagicTricks = function () {
 
     // First set - only number cards, mixed non-sequentially from different suits
     const firstSetOfCards = ["🂢", "🃄", "🃙", "🂦", "🃓"]; // 2♠, 4♦, 9♦, 6♠, 3♣
-    // Define the second set of cards here (missing definition was causing the error)
-    const secondSetOfCards = ["🂢", "🃄", "🃙", "🂤", "🃓"]; // Same cards but with one changed
+    // Second set - completely different number cards from the first set
+    const secondSetOfCards = ["🂣", "🃅", "🂧", "🃉", "🃂"]; // 3♠, 5♦, 7♠, 9♣, 2♣
 
     $("#magic-trick-overlay #magic-area").html(`
       <h2>Mind Reading Magic Trick</h2>
