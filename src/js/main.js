@@ -10,4 +10,5 @@ $(document).ready(function () {
   window.setupHamburgerMenu();
   window.setupMagicTricks();
   window.setupBackToTopButton();
+  window.setupLinksPage(); // Added links page setup
 });

@@ -87,9 +87,9 @@ include_once('includes/header.php');
                 <div class="content-col content-col-full">
                     <div class="content-details-card">
                         <h3>Support Financially</h3>
-                        <p>Your financial contributions help us fund events, workshops, and other activities that keep our club thriving. Every donation, big or small, makes a significant impact.</p>
-                        <p>Click the button below to make a secure donation via PayPal.</p>
-                        <a href="#" class="content-btn content-mt-medium">Donate via PayPal</a>
+                        <p>Your financial support helps us maintain our club activities, host special events, and continue promoting the art of magic in San Diego. Every contribution, no matter the size, makes a difference.</p>
+                        <p>Donations can be made via PayPal to payments@ring76.com. We also will accept a check. If you'd like to make a donation, please contact us.</p>
+                        <a href="contact.php" class="content-btn content-mt-medium">Contact Us</a>
                     </div>
                 </div>
             </div>

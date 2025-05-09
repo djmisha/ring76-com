@@ -1,26 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Magic Links Directory | Ring 76 - San Diego Magic Club</title>
-    <meta name="description" content="Explore our curated list of magic-related websites, organizations, shops, and resources for magicians of all levels.">
-    <meta name="keywords" content="magic links, magician resources, magic organizations, magic shops, magic forums, magic clubs, magic learning">
-    <meta name="author" content="Ring 76 - San Diego Magic Club">
-    <meta property="og:title" content="Magic Links Directory | Ring 76 - San Diego Magic Club">
-    <meta property="og:description" content="Explore our curated list of magic-related websites, organizations, shops, and resources for magicians of all levels.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://ring76.com/links">
-
-    <?php include_once('includes/styles.php'); ?>
-    <link href="https://fonts.googleapis.com/css2?family=Lobster+Two:wght@400;700&family=Fredoka:wght@300;400;500;600&display=swap" rel="stylesheet">
-</head>
-<body>
-
 <?php
-// Include site header with navigation
-include_once('includes/header.php');
-
 // Include database connection
 include_once('utils/db-connect.php');
 
@@ -78,11 +56,85 @@ function getTypeFriendlyName($type) {
     return isset($names[$type]) ? $names[$type] : $type;
 }
 
+// Function to group links by first letter
+function groupLinksByFirstLetter($links) {
+    $grouped = [];
+    
+    foreach ($links as $link) {
+        if (!isset($link['Name']) || empty($link['Name'])) {
+            continue; // Skip links with no name
+        }
+        
+        $letter = strtoupper(substr($link['Name'], 0, 1));
+        if (!isset($grouped[$letter])) {
+            $grouped[$letter] = [];
+        }
+        
+        $grouped[$letter][] = $link;
+    }
+    
+    // Sort by letter
+    ksort($grouped);
+    
+    // Now sort links inside each letter group
+    foreach ($grouped as $letter => $letterLinks) {
+        usort($letterLinks, function($a, $b) {
+            return strcasecmp($a['Name'], $b['Name']);
+        });
+        $grouped[$letter] = $letterLinks;
+    }
+    
+    return $grouped;
+}
+
 // Get all link types for navigation
 $linkTypes = getLinkTypes($pdo);
 
-// Get all links for JavaScript to filter
+// Sort the link types alphabetically by their display names
+usort($linkTypes, function($a, $b) {
+    $nameA = getTypeFriendlyName($a['Type']);
+    $nameB = getTypeFriendlyName($b['Type']);
+    return strcasecmp($nameA, $nameB);
+});
+
+// Get all links
 $allLinks = getLinks($pdo);
+
+// Group all links by first letter
+$groupedAllLinks = groupLinksByFirstLetter($allLinks);
+
+// Create grouped links by type for quick access
+$linksByType = [];
+foreach ($linkTypes as $typeRow) {
+    $linkType = $typeRow['Type'];
+    $typeLinks = array_filter($allLinks, function($link) use ($linkType) {
+        return $link['Type'] === $linkType;
+    });
+    $linksByType[$linkType] = groupLinksByFirstLetter($typeLinks);
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic Links Directory | Ring 76 - San Diego Magic Club</title>
+    <meta name="description" content="Explore our curated list of magic-related websites, organizations, shops, and resources for magicians of all levels.">
+    <meta name="keywords" content="magic links, magician resources, magic organizations, magic shops, magic forums, magic clubs, magic learning">
+    <meta name="author" content="Ring 76 - San Diego Magic Club">
+    <meta property="og:title" content="Magic Links Directory | Ring 76 - San Diego Magic Club">
+    <meta property="og:description" content="Explore our curated list of magic-related websites, organizations, shops, and resources for magicians of all levels.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ring76.com/links">
+
+    <?php include_once('includes/styles.php'); ?>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster+Two:wght@400;700&family=Fredoka:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<?php
+// Include site header with navigation
+include_once('includes/header.php');
 ?>
 
 <main>
@@ -114,12 +166,12 @@ $allLinks = getLinks($pdo);
     <nav id="link-filter-nav" class="award-navigation">
         <div class="content-container">
             <ul id="link-filter">
-                <li><a href="#" data-type="all" class="active">All Links</a></li>
+                <li><a href="#links-display" data-type="all" class="active">All Links</a></li>
                 <?php
                 foreach ($linkTypes as $typeRow) {
                     $linkType = $typeRow['Type'];
                     $typeName = getTypeFriendlyName($linkType);
-                    echo '<li><a href="#links-heading" data-type="' . $linkType . '">' . $typeName . '</a></li>';
+                    echo '<li><a href="#links-display" data-type="' . $linkType . '">' . $typeName . '</a></li>';
                 }
                 ?>
             </ul>
@@ -134,9 +186,49 @@ $allLinks = getLinks($pdo);
                 <div class="content-col content-col-full">
                     <div class="content-details-card links-card">
                         <div id="links-display">
-                            <?php
-                            // This section will be dynamically populated by JavaScript
-                            ?>
+                            <!-- All Links (Pre-rendered but hidden) -->
+                            <div id="links-all" class="links-category active">
+                                <?php foreach ($groupedAllLinks as $letter => $letterLinks) : ?>
+                                    <h3 class="links-letter-group"><?php echo htmlspecialchars($letter); ?></h3>
+                                    <ul class="links-list">
+                                        <?php foreach ($letterLinks as $link) : ?>
+                                            <?php 
+                                            $url = !empty($link['LinkURL']) ? trim($link['LinkURL']) : '#';
+                                            $name = !empty($link['Name']) ? $link['Name'] : 'Unnamed Link';
+                                            $description = !empty($link['Description']) ? ' - ' . $link['Description'] : '';
+                                            ?>
+                                            <li>
+                                                <a href="<?php echo htmlspecialchars($url); ?>" class="external-link" target="_blank" rel="noopener noreferrer"><?php echo htmlspecialchars($name); ?></a><?php echo htmlspecialchars($description); ?>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                <?php endforeach; ?>
+                            </div>
+                            
+                            <!-- Type-specific Links (Pre-rendered but hidden) -->
+                            <?php foreach ($linksByType as $linkType => $groupedLinks) : ?>
+                                <div id="links-<?php echo htmlspecialchars($linkType); ?>" class="links-category" style="display: none;">
+                                    <?php if (empty($groupedLinks)) : ?>
+                                        <p>No links found for this category.</p>
+                                    <?php else : ?>
+                                        <?php foreach ($groupedLinks as $letter => $letterLinks) : ?>
+                                            <h3 class="links-letter-group"><?php echo htmlspecialchars($letter); ?></h3>
+                                            <ul class="links-list">
+                                                <?php foreach ($letterLinks as $link) : ?>
+                                                    <?php 
+                                                    $url = !empty($link['LinkURL']) ? trim($link['LinkURL']) : '#';
+                                                    $name = !empty($link['Name']) ? $link['Name'] : 'Unnamed Link';
+                                                    $description = !empty($link['Description']) ? ' - ' . $link['Description'] : '';
+                                                    ?>
+                                                    <li>
+                                                        <a href="<?php echo htmlspecialchars($url); ?>" class="external-link" target="_blank" rel="noopener noreferrer"><?php echo htmlspecialchars($name); ?></a><?php echo htmlspecialchars($description); ?>
+                                                    </li>
+                                                <?php endforeach; ?>
+                                            </ul>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                 </div>
@@ -158,94 +250,5 @@ include_once('includes/chatbot.php');
 // Include scripts
 include_once('includes/scripts.php');
 ?>
-
-<script id="linksPageScript"> // Added id="linksPageScript"
-window.initializeLinksPageLogic = function() {
-    const allLinksData = <?php echo json_encode($allLinks); ?>;
-    
-    const linksDisplay = document.getElementById('links-display');
-    const linksHeading = document.getElementById('links-heading');
-    const linkFilters = document.querySelectorAll('#link-filter a');
-    const linkFilterNav = document.getElementById('link-filter-nav');
-
-    if (!linksDisplay || !linksHeading || !linkFilters.length || !linkFilterNav) {
-        return;
-    }
-    
-    linksDisplay.innerHTML = ''; // Clear display area for idempotency
-
-    function formatLinksByFirstLetter(links) {
-        const grouped = links.reduce((acc, link) => {
-            if (!link.Name || typeof link.Name !== 'string' || link.Name.length === 0) {
-                return acc; // Skip if Name is invalid
-            }
-            const letter = link.Name[0].toUpperCase();
-            if (!acc[letter]) acc[letter] = [];
-            acc[letter].push(link);
-            return acc;
-        }, {});
-
-        let html = '';
-        Object.keys(grouped).sort().forEach(letter => {
-            html += `<h3 class="links-letter-group">${letter}</h3><ul class="links-list">`;
-            grouped[letter].forEach(link => {
-                let url = link.LinkURL && link.LinkURL.trim() !== '' ? link.LinkURL.trim() : '#';
-                
-                const nameText = link.Name ? link.Name : 'Unnamed Link';
-                const descriptionText = link.Description ? link.Description : '';
-                
-                html += `<li><a href="${url}" class="external-link" target="_blank" rel="noopener noreferrer" onclick="window.open('${url}', '_blank'); return false;">${nameText}</a>${descriptionText ? ' - ' + descriptionText : ''}</li>`;
-            });
-            html += `</ul>`;
-        });
-        return html;
-    }
-
-    function filterLinks(type) {
-        linksDisplay.innerHTML = ''; // Clear display for new filter
-
-        const activeFilterLink = document.querySelector(`#link-filter a[data-type="${type}"]`);
-        linksHeading.textContent = type === 'all' ? 'All Links' : (activeFilterLink ? activeFilterLink.textContent : 'Links');
-
-        const filteredLinks = type === 'all' ? allLinksData : allLinksData.filter(link => link.Type === type);
-        
-        if (filteredLinks.length === 0) {
-            linksDisplay.innerHTML = '<p>No links found for this category.</p>';
-            return;
-        }
-        linksDisplay.innerHTML = formatLinksByFirstLetter(filteredLinks);
-    }
-
-    linkFilters.forEach(link => {
-        link.addEventListener('click', function(event) {
-            event.preventDefault();
-            linkFilters.forEach(l => l.classList.remove('active'));
-            this.classList.add('active');
-            filterLinks(this.dataset.type);
-        });
-    });
-    
-    const initialActiveFilter = document.querySelector('#link-filter a[data-type="all"]');
-    if (initialActiveFilter) {
-        initialActiveFilter.classList.add('active');
-    }
-    filterLinks('all'); // Initialize with all links
-};
-
-// This auto-execution block should only run on a direct, non-AJAX load.
-if (typeof window.isTransitioning === 'undefined' || !window.isTransitioning) {
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() {
-            if (typeof window.initializeLinksPageLogic === 'function') {
-                window.initializeLinksPageLogic();
-            }
-        });
-    } else {
-        if (typeof window.initializeLinksPageLogic === 'function') {
-             window.initializeLinksPageLogic();
-        }
-    }
-}
-</script>
 </body>
 </html>

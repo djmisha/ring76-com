@@ -95,7 +95,7 @@ include_once('includes/header.php');
     <!-- Application Form Section -->
     <section class="attending-info">
         <div class="content-container">
-          <h2>Membership Application</h2>
+          <h2>Start Your Membership Application</h2>
           <?php
            // Include Contact Form
            include_once('includes//sections/contact-form.php');

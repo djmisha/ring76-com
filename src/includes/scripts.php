@@ -10,6 +10,8 @@
 <!-- Particles.js -->
 <script src="js/particles.js"></script>
 <script src="js/particleManager.js"></script>
+<!-- Links Module -->
+<script src="js/links.js"></script>
 <!-- Main Coordinator JS -->
 <script src="js/main.js"></script>
 <script src="js/transitions.js"></script>

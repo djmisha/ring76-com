@@ -37,16 +37,26 @@ document.addEventListener("DOMContentLoaded", () => {
         window.isTransitioning = false; // Clear flag on error before returning
         return;
       }
+
       const text = await response.text();
       const parser = new DOMParser();
       const newDoc = parser.parseFromString(text, "text/html");
       const newBody = newDoc.body;
       const newTitle = newDoc.title;
 
+      // Extract any inline scripts before replacing body
+      const inlineScripts = [];
+      const scriptElements = newDoc.querySelectorAll("script:not([src])");
+      scriptElements.forEach((script) => {
+        inlineScripts.push(script.textContent);
+      });
+
+      // Extract page-specific data like linksData if present
+      let linksDataScript = inlineScripts.find((script) =>
+        script.includes("window.allLinksData")
+      );
+
       // Replace body content
-      // It's important to manage scripts and styles carefully here.
-      // For simplicity, this example replaces the entire body.innerHTML.
-      // A more robust solution might involve diffing or specific content replacement.
       document.body.innerHTML = newBody.innerHTML;
       document.title = newTitle;
 
@@ -58,6 +68,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="curtain right"></div>
             `;
       document.body.appendChild(curtainContainer);
+
+      // Execute important inline scripts after body content is replaced
+      inlineScripts.forEach((script) => {
+        try {
+          eval(script);
+        } catch (e) {
+          console.error("Error executing inline script:", e);
+        }
+      });
+
       // Ensure body still has the closed class for the open animation
       document.body.classList.add("transitioning");
       document.body.classList.add("curtains-closed");
@@ -66,8 +86,6 @@ document.addEventListener("DOMContentLoaded", () => {
       history.pushState({ path: url }, "", url);
 
       // Re-initialize any scripts or event listeners if needed for the new content
-      // This is a common challenge with AJAX-loaded content.
-      // For example, re-attach navigation listeners if they were part of the old body.
       initializePageSpecificScripts(); // Placeholder for re-initialization logic
     } catch (error) {
       console.error("Error during page transition:", error);
@@ -196,9 +214,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // Custom page-specific initializers
-    if (typeof window.initializeLinksPageLogic === "function") {
-      window.initializeLinksPageLogic();
+    // Special handling for links page
+    if (typeof window.setupLinksPage === "function") {
+      if ($("#links-display").length) {
+        window.setupLinksPage();
+      }
     }
 
     console.log("Page specific scripts re-initialized.");
