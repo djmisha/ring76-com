@@ -1,6 +1,5 @@
 /* Content Hero Section (Formerly Meeting Hero) */
 .content-hero {
-    /* background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../images/meetings-hero.jpg'); */
     background-size: cover;
     background-position: center;
     height: 400px;
@@ -51,7 +50,6 @@
 }
 
 .content-details-card:hover {
-    /* transform: translateY(-5px); */
 }
 
 .content-details-card h3 {
@@ -87,43 +85,6 @@
 .content-details-card em {
     color: #d4ac0d;
     font-style: italic;
-}
-
-.content-details-card .btn {
-    margin-top: 10px;
-    background-color: transparent;
-    border: 2px solid #8b0000;
-    color: #8b0000;
-    transition: all 0.3s ease;
-}
-
-.content-details-card .btn:hover {
-    background-color: #8b0000;
-    color: #f0f0f0;
-}
-
-/* Custom button styles extending nav-btn */
-.content-btn {
-  /* background-color: #8b0000; */
-  background: linear-gradient(135deg, #8b0000, #d4ac0d);
-  padding: 8px 18px;
-  border-radius: 20px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  color: #fff !important;
-  font-family: 'Lobster Two', cursive;
-  font-size: 1.3rem;
-  margin-top: 20px !important;
-  display: inline-block;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-}
-
-.content-btn:hover {
-    background-color: #d4ac0d;
-    text-decoration: none;
-    color: #f0f0f0 !important;
 }
 
 /* Newsletter archive styles */
@@ -402,23 +363,6 @@
     line-height: 1.5;
 }
 
-.content-item-info .btn {
-    background-color: #8b0000;
-    color: #f0f0f0;
-    border: none;
-    padding: 8px 20px;
-    border-radius: 20px;
-    font-size: 0.95rem;
-    transition: all 0.3s ease;
-}
-
-.content-item-info .btn:hover {
-    background-color: #d4ac0d;
-    color: #292929;
-    transform: translateY(-3px);
-}
-
-/* Update content card buttons */
 .content-item-info .nav-btn {
     padding: 8px 20px;
     font-size: 0.95rem;
@@ -640,11 +584,6 @@
     .attendance-info h3,
     .attendance-info p {
         text-align: center;
-    }
-    
-    .attending-info .btn {
-        display: block;
-        margin: 0 auto;
     }
     
     .attending-info .nav-btn {

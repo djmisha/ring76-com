@@ -58,7 +58,7 @@
 #magic-area {
   max-width: 800px;
   width: 90%;
-  padding: 40px;
+  padding: 30px 20px;
   font-size: 1.5rem;
   text-align: center;
   color: #fff;
@@ -66,19 +66,22 @@
   border-radius: 10px;
   box-shadow: 0 0 30px rgba(212, 172, 13, 0.5);
   transition: all 0.5s ease;
-  margin: 20px;
+  margin: 10px;
+  overflow-y: auto;
+  max-height: 90vh;
 }
 
 .cards-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin: 30px 0;
+  margin: 20px 0;
+  gap: 5px;
 }
 
 .card {
-  font-size: 6rem;
-  margin: 10px;
+  font-size: 7rem;
+  margin: 5px;
   transition: all 0.5s ease;
   cursor: default;
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
@@ -103,6 +106,47 @@
   0% { transform: scale(1); opacity: 0.7; }
   50% { transform: scale(1.1); opacity: 1; }
   100% { transform: scale(1); opacity: 0.7; }
+}
+
+/* Mobile adjustments for magic area */
+@media (max-width: 768px) {
+  #magic-area {
+    padding: 20px 15px;
+    font-size: 1.2rem;
+    width: 95%;
+    max-height: 85vh;
+  }
+  
+  .card {
+    font-size: 5rem;
+    margin: 3px;
+  }
+  
+  .mind-reading-animation {
+    font-size: 2rem;
+    margin: 15px;
+  }
+  
+  .crystal-ball {
+    font-size: 4rem;
+  }
+}
+
+/* Further adjustments for very small screens */
+@media (max-width: 480px) {
+  #magic-area {
+    padding: 15px 10px;
+    font-size: 1rem;
+  }
+  
+  .card {
+    font-size: 4.5rem;
+    margin: 2px;
+  }
+  
+  .crystal-ball {
+    font-size: 3.5rem;
+  }
 }
 
 /* Secret Overlay */

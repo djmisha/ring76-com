@@ -32,7 +32,7 @@
                         <li><a href="meetings.php">Meetings</a></li>
                         <li><a href="board.php">Board of Directors</a></li>
                         <li><a href="membership.php">Membership</a></li>
-                        <li><a href="contact.php" class="nav-btn">Join Our Club</a></li>
+                        <li><a href="contact.php" class="btn nav-btn">Join Our Club</a></li>
                     </ul>
                 </div>
             </nav>
