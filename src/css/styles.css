@@ -299,8 +299,9 @@ h2 {
     border-radius: 2px;
 }
 .event-card p {
-    color: #c5c5c5; /* Changed from #bbb to be slightly lighter */
-    font-size: 1.05rem; /* Added font size */
+    color: #d4d4d4;
+    font-size: 1rem;
+    line-height: 1.5;
 }
 .membership-section {
     padding: 80px 0;
@@ -1922,10 +1923,6 @@ footer ul li {
 }
 
 /* Links Directory Styles */
-.links-page-title {
-    color: red !important;
-}
-
 .links-card {
     padding: 2rem;
 }
