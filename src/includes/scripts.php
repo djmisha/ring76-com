@@ -7,6 +7,9 @@
 <script src="js/forms.js"></script>
 <script src="js/chatbot.js"></script>
 <script src="js/magicTricks.js"></script>
+<!-- Particles.js -->
+<script src="js/particles.js"></script>
+<script src="js/particleManager.js"></script>
 <!-- Main Coordinator JS -->
 <script src="js/main.js"></script>
 <script src="js/transitions.js"></script>

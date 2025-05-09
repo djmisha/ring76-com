@@ -206,8 +206,8 @@ window.setupMagicTricks = function () {
           clearInterval(readingInterval);
 
           $("#magic-trick-overlay #magic-area").html(`
-            <h2>Voilà! Your card has vanished!</h2>
-            <p>Look at the cards now.</p>
+            <p>Voilà! Look at the cards now.</p>
+            <h2>Your card has vanished!</h2>
             <div class="cards-container">
               ${secondSetOfCards
                 .map((card) => `<span class="card">${card}</span>`)
