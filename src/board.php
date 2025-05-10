@@ -13,7 +13,6 @@
     <meta property="og:url" content="https://ring76.com/board">
 
     <?php include_once('includes/styles.php'); ?>
-    <link href="https://fonts.googleapis.com/css2?family=Lobster+Two:wght@400;700&family=Fredoka:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -44,6 +43,19 @@ include_once('includes/header.php');
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Officer Bios Section -->
+    <section class="content-info">
+        <div class="content-container">
+            <h2>Meet Our Current Officers</h2>
+            
+            <?php 
+            // Include the dynamically generated board members section
+            include_once('includes/sections/board-members.php'); 
+            ?>
+            
         </div>
     </section>
 
@@ -139,18 +151,7 @@ include_once('includes/header.php');
         </div>
     </section>
 
-    <!-- Officer Bios Section -->
-    <section class="content-info">
-        <div class="content-container">
-            <h2>Meet Our Current Officers</h2>
-            
-            <?php 
-            // Include the dynamically generated board members section
-            include_once('includes/sections/board-members.php'); 
-            ?>
-            
-        </div>
-    </section>
+    
 
     <!-- Join the Board Section -->
     <section class="attending-info">

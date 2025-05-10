@@ -2,11 +2,17 @@
 .content-hero {
     background-size: cover;
     background-position: center;
-    height: calc(100vh - 121px);
+    height: 480px;
     position: relative;
     display: flex;
     align-items: center;
     text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+    .content-hero {
+        height: 350px;
+    }
 }
 
 .content-hero .content-container {
@@ -15,7 +21,7 @@
 }
 
 .content-hero h1 {
-    font-family: 'Lobster Two', cursive;
+    font-family: 'Prata', serif;
     font-size: 3.5rem;
     line-height: 3.5rem;
     margin-bottom: 1rem;
@@ -25,7 +31,7 @@
 
 .content-hero .lead {
     font-size: 1.5rem;
-    color: #f0f0f0;
+    color: #bbbbbb;
     max-width: 600px;
     margin: 0 auto;
 }

@@ -13,7 +13,6 @@
     <meta property="og:url" content="https://ring76.com/contact">
 
     <?php include_once('includes/styles.php'); ?>
-    <link href="https://fonts.googleapis.com/css2?family=Lobster+Two:wght@400;700&family=Fredoka:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -28,6 +27,17 @@ include_once('includes/header.php');
         <div class="content-container">
             <h1>Contact & Join Ring 76</h1>
             <p class="lead">Connect with San Diego's magical community</p>
+        </div>
+    </section>
+
+     <!-- Application Form Section -->
+     <section class="attending-info">
+        <div class="content-container">
+          <h2>Start Your Membership Application</h2>
+          <?php
+           // Include Contact Form
+           include_once('includes//sections/contact-form.php');
+           ?>
         </div>
     </section>
 
@@ -90,18 +100,8 @@ include_once('includes/header.php');
 
     <!-- Membership Benefits Section -->
    
-    <!-- ADD THE BENEFITS SECTIOM PHP --> 
 
-    <!-- Application Form Section -->
-    <section class="attending-info">
-        <div class="content-container">
-          <h2>Start Your Membership Application</h2>
-          <?php
-           // Include Contact Form
-           include_once('includes//sections/contact-form.php');
-           ?>
-        </div>
-    </section>
+   
    
     <!-- Payment Section -->
     <section class="content-info">

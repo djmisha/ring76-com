@@ -13,7 +13,6 @@
     <meta property="og:url" content="https://ring76.com/meetings">
 
     <?php include_once('includes/styles.php'); ?>
-    <link href="https://fonts.googleapis.com/css2?family=Lobster+Two:wght@400;700&family=Fredoka:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -28,6 +27,15 @@ include_once('includes/header.php');
         <div class="content-container">
             <h1>Ring 76 Meetings</h1>
             <p class="lead">Join us for magic, learning, and community</p>
+        </div>
+    </section>
+
+    <!-- Upcoming Meetings -->
+    <section class="content-listing">
+        <div class="content-container">
+            <?php
+              include_once('includes/sections/events.php');
+            ?>
         </div>
     </section>
 
@@ -157,14 +165,6 @@ include_once('includes/header.php');
         </div>
     </section>
 
-    <!-- Upcoming Meetings -->
-    <section class="content-listing">
-        <div class="content-container">
-            <?php
-              include_once('includes/sections/events.php');
-            ?>
-        </div>
-    </section>
    
     <!-- Add divider between Contact section and Footer -->
     <div class="section-divider divider-wave"></div>

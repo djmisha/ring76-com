@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     body.classList.remove("curtains-open");
 
     // Wait for curtains to close
-    await new Promise((resolve) => setTimeout(resolve, 1200)); // Duration of CSS transition (increased from 750)
+    await new Promise((resolve) => setTimeout(resolve, 400)); // Duration of CSS transition (reduced from 600ms to 400ms)
 
     window.isTransitioning = true; // Set flag before loading new content
 
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
     body.classList.add("curtains-open");
 
     // Wait for curtains to open
-    await new Promise((resolve) => setTimeout(resolve, 1200)); // Duration of CSS transition (increased from 750)
+    await new Promise((resolve) => setTimeout(resolve, 400)); // Duration of CSS transition (reduced from 600ms to 400ms)
     body.classList.remove("transitioning");
     body.classList.remove("curtains-open"); // Clean up
     // Remove the old curtain container if it was duplicated, ensure only one exists

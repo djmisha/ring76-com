@@ -43,7 +43,7 @@ body.transitioning {
         inset 8px 0 12px rgba(0,0,0,0.15),  /* Softer inner shadow on the hinge edge */
         7px 0 18px rgba(0,0,0,0.35);         /* Outer shadow for detachment */
     /* Changed transition timing function to ease-out for no bounce */
-    transition: transform 1.2s ease-out;
+    transition: transform 0.4s ease-out; /* Reduced from 0.6s to 0.4s */
     overflow: hidden; /* Ensure pseudo-elements or complex backgrounds don't spill */
 }
 

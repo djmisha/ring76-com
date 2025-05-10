@@ -138,7 +138,7 @@ try {
         
         echo json_encode([
             'success' => true,
-            'message' => 'Thank you! Your message has been sent successfully.'
+            'message' => 'Thank you! Your message has been sent successfully. Someone will be in touch with you shortly.'
         ]);
     } else {
         throw new Exception('Failed to send email');

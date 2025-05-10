@@ -13,7 +13,6 @@
     <meta property="og:url" content="https://ring76.com">
 
     <?php include_once('includes/styles.php'); ?>
-    <link href="https://fonts.googleapis.com/css2?family=Lobster+Two:wght@400;700&family=Fredoka:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -30,7 +29,7 @@ include_once('includes/header.php');
 <main>
     <section id="hero" class="hero-section hero-home">
         <div class="hero-content">
-            <h2>Welcome to your Magical World</h2>
+            <h1>Your Magical World</h1>
             <p>Discover the art of illusion with fellow enthusiasts</p>
             <a href="#membership" class="btn">Join Our Club</a>
         </div>

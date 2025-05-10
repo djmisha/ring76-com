@@ -128,7 +128,6 @@ foreach ($linkTypes as $typeRow) {
     <meta property="og:url" content="https://ring76.com/links">
 
     <?php include_once('includes/styles.php'); ?>
-    <link href="https://fonts.googleapis.com/css2?family=Lobster+Two:wght@400;700&family=Fredoka:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 

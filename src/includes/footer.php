@@ -3,7 +3,7 @@
         <div class="footer-content">
             <div class="footer-sections">
                 <div class="footer-info">
-                    <h3>Ring 76</h3>
+                    <h3>I.B.M. Ring 76</h3>
                     <p>The Honest Sid Gerhart Ring, San Diego</p>
                     <p>International Brotherhood of Magicians</p>
                     <p>503(c) Non-Profit Organization</p>
@@ -43,8 +43,8 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; <?php echo getCopyrightYears(1948); ?> All rights reserved - Ring 76 - San Diego Magic Club</p>
-            <div class="back-to-top">
+            <p>&copy; <?php echo getCopyrightYears(1948); ?> All rights reserved - I.B.M. Ring 76 - San Diego Magic Club</p>
+            <div class="back-to-top"><br >
                 <a href="#" id="back-to-top-btn">⌛ Turn Back Time</a>
             </div>
         </div>

@@ -45,30 +45,30 @@ window.setupHamburgerMenu = function () {
       $(this).toggleClass("active");
 
       // Toggle the main-nav open class directly
-      if ($(".main-nav").hasClass("open")) {
+      if ($(".jumbo-nav").hasClass("open")) {
         // If menu is open, close it with animation
-        $(".main-nav").css("right", "-100%");
+        $(".jumbo-nav").css("right", "-100%");
         setTimeout(function () {
-          $(".main-nav").removeClass("open");
-          $(".main-nav").css("right", "");
+          $(".jumbo-nav").removeClass("open");
+          $(".jumbo-nav").css("right", "");
         }, 300);
       } else {
         // If menu is closed, open it
-        $(".main-nav").addClass("open");
-        $(".main-nav").css("right", "0");
+        $(".jumbo-nav").addClass("open");
+        $(".jumbo-nav").css("right", "0");
       }
     });
 
-  $(".main-nav a")
+  $(".jumbo-nav a")
     .off("click.hamburger")
     .on("click.hamburger", function () {
       $(".hamburger-menu").removeClass("active");
 
       // Close the menu
-      $(".main-nav").css("right", "-100%");
+      $(".jumbo-nav").css("right", "-100%");
       setTimeout(function () {
-        $(".main-nav").removeClass("open");
-        $(".main-nav").css("right", "");
+        $(".jumbo-nav").removeClass("open");
+        $(".jumbo-nav").css("right", "");
       }, 300);
     });
 
@@ -77,16 +77,16 @@ window.setupHamburgerMenu = function () {
     .on("click.hamburgerClose", function (event) {
       if (
         !$(event.target).closest(".hamburger-menu").length &&
-        !$(event.target).closest(".main-nav").length &&
-        $(".main-nav").hasClass("open")
+        !$(event.target).closest(".jumbo-nav").length &&
+        $(".jumbo-nav").hasClass("open")
       ) {
         $(".hamburger-menu").removeClass("active");
 
         // Close the menu when clicking outside
-        $(".main-nav").css("right", "-100%");
+        $(".jumbo-nav").css("right", "-100%");
         setTimeout(function () {
-          $(".main-nav").removeClass("open");
-          $(".main-nav").css("right", "");
+          $(".jumbo-nav").removeClass("open");
+          $(".jumbo-nav").css("right", "");
         }, 300);
       }
     });
